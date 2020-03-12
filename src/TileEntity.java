@@ -15,9 +15,9 @@ public abstract class TileEntity implements Moveable, Clearable{
         imgV = new ImageView(img);
     }
 
-    public TileEntity(double x, double y, double width, double height, String color)
+    public TileEntity(double x, double y, double width, String color)
     {
-        this.rect = new Rectangle(x, y, width, height);
+        this.rect = new Rectangle(x, y, width, width);
         this.rect.setFill(Paint.valueOf(color));
     }
 
