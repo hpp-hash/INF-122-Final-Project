@@ -1,39 +1,33 @@
-public class GameLogic {
-    private GameLogic gameLogicInstance;
+public abstract class GameLogic {
 
-    public GameLogic getInstance() {
-        return null;
+    final void start() {
+        initializeTileMap();
+        do{
+            generateTileEntity();
+            handleUserInput();
+            clearTiles();
+            // TODO: abstract method for score calculation? or handle it in checkEndGame()?
+        } while(checkEndGame());
+
+        end();
     }
 
-    public void start() {
+    abstract void initializeTileMap();
 
+    abstract void generateTileEntity();
+
+    abstract void handleUserInput();
+
+    abstract void clearTiles();
+
+    abstract boolean checkEndGame();
+
+    final void end() {
+        save();
+        quit();
     }
 
-    public void initializeTileMap() {
+    abstract void save();
 
-    }
-
-    public void handleUserInput() {
-
-    }
-
-    public void clearTiles() {
-
-    }
-
-    public boolean checkEndGame() {
-        return false;
-    }
-
-    public void end() {
-
-    }
-
-    public void save() {
-
-    }
-
-    public void quit() {
-
-    }
+    abstract void quit();
 }
