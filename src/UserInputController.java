@@ -2,7 +2,7 @@ public class UserInputController
 {
     private Input input;
 
-    private UserInputController controller;
+    private static UserInputController controller;
 
     private UserInputController() {}
 
@@ -10,7 +10,7 @@ public class UserInputController
         this.input = input;
     }
 
-    public UserInputController getInstance() {
+    public static UserInputController getInstance() {
         if (controller == null) {
             controller = new UserInputController();
         }
