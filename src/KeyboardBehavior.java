@@ -1,3 +1,3 @@
 public interface KeyboardBehavior {
-    public void addKeyboardListener();
+    public void onKeyboardEvent();
 }

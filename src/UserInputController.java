@@ -1,18 +1,31 @@
 public class UserInputController
 {
-    public KeyboardBehavior[] keyboardBehavior;
-    public MouseBehavior[] mouseBehavior;
-    private UserInputController controllerInstance;
+    public KeyboardBehavior keyboardBehavior;
+    public MouseBehavior mouseBehavior;
+    private UserInputController controller;
 
-    public void handleKeyboardInput() {
+    private UserInputController() {}
 
+    public void setKeyboardBehavior(KeyboardBehavior keyboardBehavior) {
+        this.keyboardBehavior = keyboardBehavior;
     }
 
-    public void handleMouseInput() {
-
+    public void setMouseBehavior(MouseBehavior mouseBehavior) {
+        this.mouseBehavior = mouseBehavior;
     }
 
     public UserInputController getInstance() {
-        return null;
+        if (controller == null){
+            controller = new UserInputController();
+        }
+        return controller;
+    }
+
+    public void onKeyboardEvent() {
+        keyboardBehavior.onKeyboardEvent();
+    }
+
+    public void onMouseEvent() {
+        mouseBehavior.onMouseEvent();
     }
 }

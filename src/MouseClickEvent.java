@@ -1,5 +1,6 @@
-class MouseClickEvent {
-    public void addMouseListener() {
+public class MouseClickEvent implements MouseBehavior {
+    @Override
+    public void onMouseEvent() {
 
     }
 }

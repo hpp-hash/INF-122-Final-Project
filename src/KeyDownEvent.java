@@ -1,5 +1,7 @@
-public class KeyDownEvent {
-    public void addKeyboardListener() {
+public class KeyDownEvent implements  KeyboardBehavior{
+
+    @Override
+    public void onKeyboardEvent() {
 
     }
 }
