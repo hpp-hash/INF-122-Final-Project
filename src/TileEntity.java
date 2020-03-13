@@ -4,12 +4,14 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public abstract class TileEntity implements Moveable, Clearable{
+    String name;
     String iconSrc;
     Image img;
     ImageView imgV;
     Rectangle rect;
 
-    public TileEntity(String iconSrc) {
+    public TileEntity(String name, String iconSrc) {
+        this.name = name;
         this.iconSrc = iconSrc;
         img = new Image(iconSrc);
         imgV = new ImageView(img);
@@ -19,6 +21,14 @@ public abstract class TileEntity implements Moveable, Clearable{
     {
         this.rect = new Rectangle(x, y, width, width);
         this.rect.setFill(Paint.valueOf(color));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getIconSrc() {
