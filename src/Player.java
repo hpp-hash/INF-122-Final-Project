@@ -8,7 +8,7 @@ public class Player {
 
     public Player() {
         playerID = UUID.randomUUID().toString();
-        currentSession = new Session(playerID);
+//        currentSession = new Session(playerID);
     }
 
     public void startSession() {
