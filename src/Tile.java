@@ -4,7 +4,14 @@ public class Tile {
     public Object currentObj;
     public int objSize;
 
-    public void isEmpty() {
+    public Tile(int xCoordinate, int yCoordinate){
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+    }
+
+    public boolean isEmpty() {
+
+        return true;
 
     }
 
