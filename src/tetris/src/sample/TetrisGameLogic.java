@@ -34,17 +34,12 @@ public class TetrisGameLogic extends GameLogic {
     private static Form nextObj = Controller.makeRect();
     private static int linesNo = 0;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        initializeTileMap(stage);
-    }
-
     // initialize the background
-    public void initializeTileMap(Stage stage) {
+    public void initializeTileMap() {
+        Stage stage = new Stage();
+
+        System.out.println("start Starts");
+
         for (int[] a : MESH) {
             Arrays.fill(a, 0);
         }

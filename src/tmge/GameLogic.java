@@ -4,11 +4,11 @@ import javafx.application.Application;
 
 import javafx.stage.Stage;
 
-public abstract class GameLogic extends Application {
+public abstract class GameLogic {
 
     // final means no one can change the method
-    public final void startGame(Stage stage) {
-        initializeTileMap(stage);
+    public final void startGame() {
+        initializeTileMap();
         do{
             generateTileEntity();
             handleUserInput();
@@ -19,7 +19,7 @@ public abstract class GameLogic extends Application {
         end();
     }
 
-    public abstract void initializeTileMap(Stage stage);
+    public abstract void initializeTileMap();
 
     public abstract void generateTileEntity();
 
