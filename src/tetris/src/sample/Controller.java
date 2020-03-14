@@ -1,4 +1,4 @@
-package tetris.src.sample;
+package sample;
 
 
 import javafx.scene.shape.Rectangle;

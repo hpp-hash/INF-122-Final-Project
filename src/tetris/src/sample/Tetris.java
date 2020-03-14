@@ -1,4 +1,4 @@
-package tetris.src.sample;
+package sample;
 
 import java.util.ArrayList;
 import java.util.Arrays;
