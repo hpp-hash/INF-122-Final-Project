@@ -1,37 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bejeweled2;
 
-import java.awt.event.ActionEvent;
-import java.util.Random;
-import java.util.Timer;
-import javafx.application.Application;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-
-import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.stage.StageStyle;
-import java.awt.event.ActionListener;
-import javafx.animation.TranslateTransition;
-import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import tmge.GameLogic;
 
+import java.util.Random;
 
-/**
- *
- * @author chuon
- */
-public class Bejeweled2 extends Application {
+public class BejeweledGameLogic extends GameLogic {
     int gameWidth = 1280, gameHeight = 720, gemSize = 64;
     int row = 10, column = 14;
     Group root = new Group();
@@ -41,28 +27,70 @@ public class Bejeweled2 extends Application {
     int board[][];
     int cX = 0, cY = 0, tX = 0, tY = 0;
     Label label;
-    @Override    
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("INF122 Team 6 - Bejeweled Fruits");
-        
+
+    private static BejeweledGameLogic gameLogic;
+
+    public static BejeweledGameLogic getInstance(){
+        if (gameLogic == null){
+            gameLogic = new BejeweledGameLogic();
+        }
+        return gameLogic;
+    }
+
+    @Override
+    public void initializeTileMap() {
+        Stage gameStage = new Stage();
+        gameStage.setTitle("INF122 Team 6 - Bejeweled Fruits");
+
         setup();
         draw();
 
         Scene scene = new Scene(root, gameWidth, gameHeight, Color.TRANSPARENT);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        gameStage.setScene(scene);
+        gameStage.show();
     }
+
+    @Override
+    public void generateTileEntity() {
+
+    }
+
+    @Override
+    public void handleUserInput() {
+
+    }
+
+    @Override
+    public void clearTiles() {
+
+    }
+
+    @Override
+    public boolean checkEndGame() {
+        return false;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void quit() {
+
+    }
+
     private void setup() {
         // Set Background
         background = new ImageView(new Image("images/bejeweled2/images/border.png"));
         background.setFitWidth(gameWidth);
         background.setFitHeight(gameHeight);
-        
+
         // Set Cursor
         cursor = new ImageView(new Image("images/bejeweled2/images/cursor.png"));
         cursor.setFitWidth(gemSize);
         cursor.setFitHeight(gemSize);
-        
+
         images = new Image[7];
         images[0] = new Image("images/bejeweled2/fruits/blue.png");
         images[1] = new Image("images/bejeweled2/fruits/green.png");
@@ -71,15 +99,15 @@ public class Bejeweled2 extends Application {
         images[4] = new Image("images/bejeweled2/fruits/red.png");
         images[5] = new Image("images/bejeweled2/fruits/white.png");
         images[6] = new Image("images/bejeweled2/fruits/yellow.png");
-        
+
         cells = new ImageView[row][column];
         board = new int[row][column];
-        
+
         label = new Label();
         label.setTranslateX(gameWidth - 330);
         label.setTranslateY(200);
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        
+
         Random random = new Random();
         ImageView tempImage;
         for(int r = 0; r < row; r++) {
@@ -125,14 +153,14 @@ public class Bejeweled2 extends Application {
                         int temp = board[tY][tX];
                         board[tY][tX] = board[cY][cX];
                         board[cY][cX] = temp;
-                        
+
                         ImageView tempI = cells[tY][tX];
                         cells[tY][tX] = cells[cY][cX];
                         cells[cY][cX] = tempI;
-                        
+
                         moveAnimation(tX, tY);
                         moveAnimation(cX, cY);
-                        
+
                         if(eatable(tY, tX) || eatable(cY, cX))
                         {
                             label.setText("EatAble");
@@ -144,7 +172,7 @@ public class Bejeweled2 extends Application {
                             board[tY][tX] = board[cY][cX];
                             board[cY][cX] = temp;
 
-                            
+
                             tempI = cells[tY][tX];
                             cells[tY][tX] = cells[cY][cX];
                             cells[cY][cX] = tempI;
@@ -162,7 +190,7 @@ public class Bejeweled2 extends Application {
         b = temp;
     }
     private void moveAnimation(int X, int Y)
-    { 
+    {
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(1));
         transition.setToX(X * gemSize + 20);
@@ -279,8 +307,5 @@ public class Bejeweled2 extends Application {
             }
         }
         return false;
-    }
-    public static void main(String[] args) {
-        launch(args);
     }
 }
