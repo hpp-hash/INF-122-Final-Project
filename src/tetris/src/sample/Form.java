@@ -2,6 +2,7 @@ package tetris.src.sample;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import tmge.TileEntity;
 
 public class Form {
 	Rectangle a;
@@ -28,7 +29,7 @@ public class Form {
 
 		switch (name) {
 		case "j":
-			color = Color.SLATEGRAY;
+			color = Color.BLUE;
 			break;
 		case "l":
 			color = Color.DARKGOLDENROD;

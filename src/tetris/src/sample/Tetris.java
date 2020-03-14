@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 public class Tetris extends Application {
 	// The variables
 	public static final int MOVE = 25;
@@ -42,6 +43,7 @@ public class Tetris extends Application {
 		for (int[] a : MESH) {
 			Arrays.fill(a, 0);
 		}
+
 
 		Line line = new Line(XMAX, 0, XMAX, YMAX);
 		Text scoretext = new Text("Score: ");

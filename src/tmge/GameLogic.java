@@ -2,7 +2,8 @@ package tmge;
 
 public abstract class GameLogic {
 
-    final void start() {
+    // final means no one can change the method
+    public final void start() {
         initializeTileMap();
         do{
             generateTileEntity();
@@ -14,22 +15,22 @@ public abstract class GameLogic {
         end();
     }
 
-    abstract void initializeTileMap();
+    public abstract void initializeTileMap();
 
-    abstract void generateTileEntity();
+    public abstract void generateTileEntity();
 
-    abstract void handleUserInput();
+    public abstract void handleUserInput();
 
-    abstract void clearTiles();
+    public abstract void clearTiles();
 
-    abstract boolean checkEndGame();
+    public abstract boolean checkEndGame();
 
-    final void end() {
+    public final void end() {
         save();
         quit();
     }
 
-    abstract void save();
+    public abstract void save();
 
-    abstract void quit();
+    public abstract void quit();
 }
