@@ -50,12 +50,12 @@ public class Tetris extends Application {
 		scoretext.setStyle("-fx-font: 20 arial;");
 		scoretext.setY(50);
 		scoretext.setX(XMAX + 5);
-		Text level = new Text("Lines: ");
-		level.setStyle("-fx-font: 20 arial;");
-		level.setY(100);
-		level.setX(XMAX + 5);
-		level.setFill(Color.GREEN);
-		group.getChildren().addAll(scoretext, line, level);
+//		Text level = new Text("Lines: ");
+//		level.setStyle("-fx-font: 20 arial;");
+//		level.setY(100);
+//		level.setX(XMAX + 5);
+//		level.setFill(Color.GREEN);
+		group.getChildren().addAll(scoretext, line);
 
 		Form a = nextObj;
 		group.getChildren().addAll(a.a, a.b, a.c, a.d);
@@ -95,7 +95,7 @@ public class Tetris extends Application {
 						if (game) {
 							MoveDown(object);
 							scoretext.setText("Score: " + Integer.toString(score));
-							level.setText("Lines: " + Integer.toString(linesNo));
+//							level.setText("Lines: " + Integer.toString(linesNo));
 						}
 					}
 				});
