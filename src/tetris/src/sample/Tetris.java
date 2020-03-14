@@ -1,4 +1,4 @@
-package sample;
+package tetris.src.sample;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +61,7 @@ public class Tetris extends Application {
 		object = a;
 		nextObj = Controller.makeRect();
 		stage.setScene(scene);
-		stage.setTitle("INF 122 - T E T R I S");
+		stage.setTitle("INF 122 - Tetris");
 		stage.show();
 
 		Timer fall = new Timer();

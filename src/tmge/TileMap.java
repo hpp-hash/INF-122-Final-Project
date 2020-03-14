@@ -12,7 +12,7 @@ public abstract class TileMap {
         this.length=col;
         this.width=row;
         board = new int[row][col];
-        cells = new TileEntity[[row][cells];
+        cells = new TileEntity[row][col];
     }
 
     public void boardInsert(int row, int col, int value) {

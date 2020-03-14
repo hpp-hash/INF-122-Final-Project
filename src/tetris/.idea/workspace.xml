@@ -51,6 +51,13 @@
   <component name="FavoritesManager">
     <favorites_list name="JavaFxApplication" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="FindManager">
     <FindUsagesManager>
       <setting name="OPEN_NEW_TAB" value="false" />
@@ -189,22 +196,26 @@
       <screen x="0" y="23" width="1680" height="980" />
     </state>
     <state x="519" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.980@0.23.1680.980" timestamp="1584217529339" />
-    <state width="1638" height="264" key="GridCell.Tab.0.bottom" timestamp="1584218159099">
-      <screen x="0" y="23" width="1680" height="980" />
+    <state width="1055" height="264" key="GridCell.Tab.0.bottom" timestamp="1584219923031">
+      <screen x="0" y="23" width="1680" height="981" />
     </state>
     <state width="1638" height="264" key="GridCell.Tab.0.bottom/0.23.1680.980@0.23.1680.980" timestamp="1584218159099" />
-    <state width="1638" height="264" key="GridCell.Tab.0.center" timestamp="1584218159098">
-      <screen x="0" y="23" width="1680" height="980" />
+    <state width="1055" height="264" key="GridCell.Tab.0.bottom/0.23.1680.981@0.23.1680.981" timestamp="1584219923031" />
+    <state width="1055" height="264" key="GridCell.Tab.0.center" timestamp="1584219923031">
+      <screen x="0" y="23" width="1680" height="981" />
     </state>
     <state width="1638" height="264" key="GridCell.Tab.0.center/0.23.1680.980@0.23.1680.980" timestamp="1584218159098" />
-    <state width="1638" height="264" key="GridCell.Tab.0.left" timestamp="1584218159098">
-      <screen x="0" y="23" width="1680" height="980" />
+    <state width="1055" height="264" key="GridCell.Tab.0.center/0.23.1680.981@0.23.1680.981" timestamp="1584219923031" />
+    <state width="1055" height="264" key="GridCell.Tab.0.left" timestamp="1584219923030">
+      <screen x="0" y="23" width="1680" height="981" />
     </state>
     <state width="1638" height="264" key="GridCell.Tab.0.left/0.23.1680.980@0.23.1680.980" timestamp="1584218159098" />
-    <state width="1638" height="264" key="GridCell.Tab.0.right" timestamp="1584218159098">
-      <screen x="0" y="23" width="1680" height="980" />
+    <state width="1055" height="264" key="GridCell.Tab.0.left/0.23.1680.981@0.23.1680.981" timestamp="1584219923030" />
+    <state width="1055" height="264" key="GridCell.Tab.0.right" timestamp="1584219923031">
+      <screen x="0" y="23" width="1680" height="981" />
     </state>
     <state width="1638" height="264" key="GridCell.Tab.0.right/0.23.1680.980@0.23.1680.980" timestamp="1584218159098" />
+    <state width="1055" height="264" key="GridCell.Tab.0.right/0.23.1680.981@0.23.1680.981" timestamp="1584219923031" />
     <state x="731" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1584217293121">
       <screen x="0" y="23" width="1680" height="980" />
     </state>
