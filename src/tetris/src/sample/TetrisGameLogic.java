@@ -49,7 +49,6 @@ public class TetrisGameLogic extends GameLogic {
             Arrays.fill(a, 0);
         }
 
-
         Line line = new Line(XMAX, 0, XMAX, YMAX);
         Text scoretext = new Text("Score: ");
         scoretext.setStyle("-fx-font: 20 arial;");
