@@ -1,9 +1,14 @@
 package tmge;
 
-public abstract class GameLogic {
+import javafx.application.Application;
 
-    final void start() {
-        initializeTileMap();
+import javafx.stage.Stage;
+
+public abstract class GameLogic extends Application {
+
+    // final means no one can change the method
+    public final void startGame(Stage stage) {
+        initializeTileMap(stage);
         do{
             generateTileEntity();
             handleUserInput();
@@ -14,22 +19,22 @@ public abstract class GameLogic {
         end();
     }
 
-    abstract void initializeTileMap();
+    public abstract void initializeTileMap(Stage stage);
 
-    abstract void generateTileEntity();
+    public abstract void generateTileEntity();
 
-    abstract void handleUserInput();
+    public abstract void handleUserInput();
 
-    abstract void clearTiles();
+    public abstract void clearTiles();
 
-    abstract boolean checkEndGame();
+    public abstract boolean checkEndGame();
 
-    final void end() {
+    public final void end() {
         save();
         quit();
     }
 
-    abstract void save();
+    public abstract void save();
 
-    abstract void quit();
+    public abstract void quit();
 }

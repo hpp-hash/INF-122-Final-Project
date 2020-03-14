@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
 public class Tetris extends Application {
 	// The variables
 	public static final int MOVE = 25;
@@ -43,17 +44,18 @@ public class Tetris extends Application {
 			Arrays.fill(a, 0);
 		}
 
+
 		Line line = new Line(XMAX, 0, XMAX, YMAX);
 		Text scoretext = new Text("Score: ");
 		scoretext.setStyle("-fx-font: 20 arial;");
 		scoretext.setY(50);
 		scoretext.setX(XMAX + 5);
-		Text level = new Text("Lines: ");
-		level.setStyle("-fx-font: 20 arial;");
-		level.setY(100);
-		level.setX(XMAX + 5);
-		level.setFill(Color.GREEN);
-		group.getChildren().addAll(scoretext, line, level);
+//		Text level = new Text("Lines: ");
+//		level.setStyle("-fx-font: 20 arial;");
+//		level.setY(100);
+//		level.setX(XMAX + 5);
+//		level.setFill(Color.GREEN);
+		group.getChildren().addAll(scoretext, line);
 
 		Form a = nextObj;
 		group.getChildren().addAll(a.a, a.b, a.c, a.d);
@@ -93,7 +95,7 @@ public class Tetris extends Application {
 						if (game) {
 							MoveDown(object);
 							scoretext.setText("Score: " + Integer.toString(score));
-							level.setText("Lines: " + Integer.toString(linesNo));
+//							level.setText("Lines: " + Integer.toString(linesNo));
 						}
 					}
 				});
