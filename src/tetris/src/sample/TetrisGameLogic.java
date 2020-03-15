@@ -20,25 +20,16 @@ import tmge.GameLogic;
 
 
 public class TetrisGameLogic extends GameLogic {
-    public static final int MOVE = 25;
-    public static final int SIZE = 25;
-    public static int XMAX = SIZE * 12;
-    public static int YMAX = SIZE * 24;
-    public static int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
-    private static Pane group = new Pane();
-    private static Form object;
-    private static Scene scene = new Scene(group, XMAX + 150, YMAX);
     public static int score = 0;
     private static int top = 0;
     private static boolean game = true;
-    private static Form nextObj = Controller.makeRect();
-    private static int linesNo = 0;
     private TetrisUI tui;
 
     // initialize the background
     public void initializeTileMap() {
         System.out.println("start Starts");
         tui = new TetrisUI();
+        tui.setScore(0);
     }
 
     @Override
