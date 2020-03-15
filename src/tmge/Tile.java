@@ -1,73 +1,52 @@
 package tmge;
 
 public class Tile {
-    int xCoordinate;
-    int yCoordinate;
-    Object currentObj;
-    int objSize;
+    int rowIndex;
+    int columnIndex;
     TileEntity tileEntity;
 
-    public Tile(String iconSrc) {
-        this.tileEntity = new TileEntity(iconSrc);
+    public Tile(int rowIndex, int columnIndex, TileEntity entity) {
+        this.rowIndex = rowIndex;
+        this.columnIndex = columnIndex;
+        this.tileEntity = entity;
     }
 
-    public Tile(Tile otherTile) {
-        this.tileEntity = new TileEntity(otherTile.getTileEntity().getIconSrc());
-        this.xCoordinate = otherTile.xCoordinate;
-        this.yCoordinate = otherTile.yCoordinate;
-        this.objSize = otherTile.objSize;
-        //TODO what is currentObj
+//    public Tile(Tile otherTile) {
+//        this.tileEntity = new TileEntity(otherTile.getTileEntity().getIconSrc());
+//        this.columnIndex = otherTile.columnIndex;
+//        this.rowIndex = otherTile.rowIndex;
+//        this.objSize = otherTile.objSize;
+//    }
+
+    public boolean isEmpty() {
+        return tileEntity == null;
     }
 
-    public void isEmpty() {
-
-    }
-
-    public void addEntity() {
-
+    public void addEntity(TileEntity entity) {
+        tileEntity = entity;
     }
 
     public void removeEntity() {
-
+        tileEntity = null;
     }
 
-    public int getxCoordinate() {
-        return xCoordinate;
+    public int getColumnIndex() {
+        return columnIndex;
     }
 
-    public void setxCoordinate(int xCoordinate) {
-        this.xCoordinate = xCoordinate;
+    public void setColumnIndex(int columnIndex) {
+        this.columnIndex = columnIndex;
     }
 
-    public int getyCoordinate() {
-        return yCoordinate;
+    public int getRowIndex() {
+        return rowIndex;
     }
 
-    public void setyCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
-    }
-
-    public Object getCurrentObj() {
-        return currentObj;
-    }
-
-    public void setCurrentObj(Object currentObj) {
-        this.currentObj = currentObj;
-    }
-
-    public int getObjSize() {
-        return objSize;
-    }
-
-    public void setObjSize(int objSize) {
-        this.objSize = objSize;
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = rowIndex;
     }
 
     public TileEntity getTileEntity() {
         return tileEntity;
-    }
-
-    public void setTileEntity(TileEntity tileEntity) {
-        this.tileEntity = tileEntity;
     }
 }

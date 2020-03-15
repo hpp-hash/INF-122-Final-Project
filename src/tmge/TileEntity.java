@@ -10,20 +10,25 @@ public class TileEntity {
     String iconSrc;
     Image img;
     ImageView imgV;
-    Rectangle rect;
+    //Rectangle rect;
+    int tileSize;
 
-    public TileEntity(String iconSrc) {
+    public TileEntity(String name, int tileSize, String iconSrc) {
         this.name = name;
+        this.tileSize = tileSize;
+
         this.iconSrc = iconSrc;
         img = new Image(iconSrc);
         imgV = new ImageView(img);
+        imgV.setFitHeight(this.tileSize);
+        imgV.setFitWidth(this.tileSize);
     }
 
-    public TileEntity(double x, double y, double width, String color)
-    {
-        this.rect = new Rectangle(x, y, width, width);
-        this.rect.setFill(Paint.valueOf(color));
-    }
+//    public TileEntity(double x, double y, double width, String color)
+//    {
+//        this.rect = new Rectangle(x, y, width, width);
+//        this.rect.setFill(Paint.valueOf(color));
+//    }
 
     public String getName() {
         return name;
@@ -57,11 +62,11 @@ public class TileEntity {
         this.imgV = imgV;
     }
 
-    public Rectangle getRect() {
-        return rect;
-    }
-
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
-    }
+//    public Rectangle getRect() {
+//        return rect;
+//    }
+//
+//    public void setRect(Rectangle rect) {
+//        this.rect = rect;
+//    }
 }

@@ -14,6 +14,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import tmge.GameLogic;
+import tmge.UserInputController;
 
 import java.util.Random;
 
@@ -104,6 +105,9 @@ public class BejeweledGameLogic extends GameLogic {
                 });
             }
         }
+        BejeweledController controller = new BejeweledController();
+        BejeweledInputAdapter inputAdapter = new BejeweledInputAdapter(controller);
+        UserInputController.getInstance(inputAdapter).onInput();
     }
 
     @Override

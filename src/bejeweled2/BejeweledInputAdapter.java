@@ -12,7 +12,7 @@ public class BejeweledInputAdapter implements Input {
 
     @Override
     public void onMoveInput() {
-        controller.moveOnKeyPress();
+        controller.moveOnMouseDrag();
         // other methods can go here
     }
 

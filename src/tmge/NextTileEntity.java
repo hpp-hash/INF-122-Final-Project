@@ -1,6 +1,6 @@
 package tmge;
 
-public class NextTileEntity {
+public abstract class NextTileEntity implements TileEntityFactory {
 
     private TileEntityFactory factory;
 
@@ -9,7 +9,6 @@ public class NextTileEntity {
     }
 
     public void addNewTileEntity(String entityName, Tile tile){
-        factory.createTileEntity(entityName);
-        // TODO: add entity to tile if free
+        tile.addEntity(factory.createTileEntity(entityName));
     }
 }
