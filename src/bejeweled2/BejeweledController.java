@@ -1,14 +1,20 @@
 package bejeweled2;
 
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+
 public class BejeweledController {
 
     // TODO: attributes (if any)
 
-
     public BejeweledController() {
     }
 
-    public void moveOnKeyPress() {
+    public void moveOnMouseDrag() {
         // TODO: implement movement
     }
 

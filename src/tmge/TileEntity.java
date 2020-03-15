@@ -6,32 +6,27 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class TileEntity {
-    String name;
     String iconSrc;
     Image img;
     ImageView imgV;
-    Rectangle rect;
+    //Rectangle rect;
+    int tileSize;
 
-    public TileEntity(String iconSrc) {
-        this.name = name;
+    public TileEntity(int tileSize, String iconSrc) {
+        this.tileSize = tileSize;
+
         this.iconSrc = iconSrc;
         img = new Image(iconSrc);
         imgV = new ImageView(img);
+        imgV.setFitHeight(this.tileSize);
+        imgV.setFitWidth(this.tileSize);
     }
 
-    public TileEntity(double x, double y, double width, String color)
-    {
-        this.rect = new Rectangle(x, y, width, width);
-        this.rect.setFill(Paint.valueOf(color));
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public TileEntity(double x, double y, double width, String color)
+//    {
+//        this.rect = new Rectangle(x, y, width, width);
+//        this.rect.setFill(Paint.valueOf(color));
+//    }
 
     public String getIconSrc() {
         return iconSrc;
@@ -57,11 +52,11 @@ public class TileEntity {
         this.imgV = imgV;
     }
 
-    public Rectangle getRect() {
-        return rect;
-    }
-
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
-    }
+//    public Rectangle getRect() {
+//        return rect;
+//    }
+//
+//    public void setRect(Rectangle rect) {
+//        this.rect = rect;
+//    }
 }
