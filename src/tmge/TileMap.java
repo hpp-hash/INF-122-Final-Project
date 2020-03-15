@@ -11,6 +11,8 @@ public abstract class TileMap {
         this.numberOfRows = row;
         this.numberOfColumns = col;
 
+        this.board = new Tile[this.numberOfRows][this.numberOfColumns];
+
         for (int r = 0; r < numberOfRows; r++){
             for (int c = 0; c < numberOfColumns; c++){
                 board[r][c] = new Tile(r,c, null);
@@ -42,5 +44,9 @@ public abstract class TileMap {
 
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
+    }
+
+    public Tile getTile(int rowIndex, int columnIndex){
+        return board[rowIndex][columnIndex];
     }
 }

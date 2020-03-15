@@ -1,6 +1,6 @@
 package tmge;
 
-public abstract class NextTileEntity implements TileEntityFactory {
+public class NextTileEntity{
 
     private TileEntityFactory factory;
 

@@ -24,6 +24,8 @@ public class Tile {
 
     public void addEntity(TileEntity entity) {
         tileEntity = entity;
+        tileEntity.getImgV().setTranslateX(columnIndex * entity.tileSize + 20); // TODO: must change hardcoded numbers
+        tileEntity.getImgV().setTranslateY(rowIndex * entity.tileSize + 30);    // TODO: must change hardcoded numbers
     }
 
     public void removeEntity() {

@@ -6,15 +6,13 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class TileEntity {
-    String name;
     String iconSrc;
     Image img;
     ImageView imgV;
     //Rectangle rect;
     int tileSize;
 
-    public TileEntity(String name, int tileSize, String iconSrc) {
-        this.name = name;
+    public TileEntity(int tileSize, String iconSrc) {
         this.tileSize = tileSize;
 
         this.iconSrc = iconSrc;
@@ -29,14 +27,6 @@ public class TileEntity {
 //        this.rect = new Rectangle(x, y, width, width);
 //        this.rect.setFill(Paint.valueOf(color));
 //    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getIconSrc() {
         return iconSrc;
