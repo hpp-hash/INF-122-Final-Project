@@ -18,14 +18,14 @@ import tmge.GameLogic;
 import java.util.Random;
 
 public class BejeweledGameLogic extends GameLogic {
-    int gameWidth = 1280, gameHeight = 720, gemSize = 64;
-    int row = 10, column = 14;
+    private final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
+    private final int ROW = 10, COLUMN = 14;
     Group root = new Group();
     private ImageView cursor, background;
     private Image[] images;
     private ImageView[][] cells;
-    int board[][];
-    int cX = 0, cY = 0, tX = 0, tY = 0;
+    int[][] board;
+    private int cX = 0, cY = 0, tX = 0, tY = 0;
     Label label;
 
     private static BejeweledGameLogic gameLogic;
@@ -45,7 +45,7 @@ public class BejeweledGameLogic extends GameLogic {
         setup();
         draw();
 
-        Scene scene = new Scene(root, gameWidth, gameHeight, Color.TRANSPARENT);
+        Scene scene = new Scene(root, GAME_WIDTH, GAME_HEIGHT, Color.TRANSPARENT);
         gameStage.setScene(scene);
         gameStage.show();
     }
@@ -57,99 +57,21 @@ public class BejeweledGameLogic extends GameLogic {
 
     @Override
     public void handleUserInput() {
-
-    }
-
-    @Override
-    public void clearTiles() {
-
-    }
-
-    @Override
-    public boolean checkEndGame() {
-        return false;
-    }
-
-    @Override
-    public void save() {
-
-    }
-
-    @Override
-    public void quit() {
-
-    }
-
-    private void setup() {
-        // Set Background
-        background = new ImageView(new Image("images/bejeweled2/images/border.png"));
-        background.setFitWidth(gameWidth);
-        background.setFitHeight(gameHeight);
-
-        // Set Cursor
-        cursor = new ImageView(new Image("images/bejeweled2/images/cursor.png"));
-        cursor.setFitWidth(gemSize);
-        cursor.setFitHeight(gemSize);
-
-        images = new Image[7];
-        images[0] = new Image("images/bejeweled2/fruits/blue.png");
-        images[1] = new Image("images/bejeweled2/fruits/green.png");
-        images[2] = new Image("images/bejeweled2/fruits/orange.png");
-        images[3] = new Image("images/bejeweled2/fruits/purple.png");
-        images[4] = new Image("images/bejeweled2/fruits/red.png");
-        images[5] = new Image("images/bejeweled2/fruits/white.png");
-        images[6] = new Image("images/bejeweled2/fruits/yellow.png");
-
-        cells = new ImageView[row][column];
-        board = new int[row][column];
-
-        label = new Label();
-        label.setTranslateX(gameWidth - 330);
-        label.setTranslateY(200);
-        label.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-
-        Random random = new Random();
-        ImageView tempImage;
-        for(int r = 0; r < row; r++) {
-            for(int c = 0; c < column; c++) {
-                int randImageIndex = random.nextInt(images.length);
-                tempImage = new ImageView(images[randImageIndex]);
-                cells[r][c] = tempImage;
-                board[r][c] = randImageIndex;
-            }
-        }
-    }
-    private void draw()
-    {
-        root.getChildren().clear();
-        root.getChildren().add(background);
-        root.getChildren().add(label);
-        for(int r = 0; r < row; r++) {
-            for(int c = 0; c < column; c++) {
-                cells[r][c].setFitWidth(gemSize);
-                cells[r][c].setFitHeight(gemSize);
-                cells[r][c].setTranslateX(c * gemSize + 20);
-                cells[r][c].setTranslateY(r * gemSize + 30);
-                if(c == tX && r == tY)
-                {
-                    cursor.setTranslateX(c * gemSize + 20);
-                    cursor.setTranslateY(r * gemSize + 30);
-                    root.getChildren().add(cursor);
-                }
-                root.getChildren().add(cells[r][c]);
+        for(int r = 0; r < ROW; r++) {
+            for(int c = 0; c < COLUMN; c++) {
                 cells[r][c].setOnMousePressed(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event)
                     {
-                        cX = tX = (int)((event.getSceneX() - 20) / gemSize);
-                        cY = tY = (int)((event.getSceneY() - 30) / gemSize);
+                        cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
+                        cY = tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
                         draw();
                     }
                 });
                 cells[r][c].setOnMouseReleased(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event)
                     {
-                        tX = (int)((event.getSceneX() - 20) / gemSize);
-                        tY = (int)((event.getSceneY() - 30) / gemSize);
+                        tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
+                        tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
                         int temp = board[tY][tX];
                         board[tY][tX] = board[cY][cX];
                         board[cY][cX] = temp;
@@ -183,6 +105,87 @@ public class BejeweledGameLogic extends GameLogic {
             }
         }
     }
+
+    @Override
+    public void clearTiles() {
+
+    }
+
+    @Override
+    public boolean checkEndGame() {
+        return false;
+    }
+
+    @Override
+    public void save() {
+
+    }
+
+    @Override
+    public void quit() {
+
+    }
+
+    private void setup() {
+        // Set Background
+        background = new ImageView(new Image("images/bejeweled2/images/border.png"));
+        background.setFitWidth(GAME_WIDTH);
+        background.setFitHeight(GAME_HEIGHT);
+
+        // Set Cursor
+        cursor = new ImageView(new Image("images/bejeweled2/images/cursor.png"));
+        cursor.setFitWidth(GEM_SIZE);
+        cursor.setFitHeight(GEM_SIZE);
+
+        images = new Image[7];
+        images[0] = new Image("images/bejeweled2/fruits/blue.png");
+        images[1] = new Image("images/bejeweled2/fruits/green.png");
+        images[2] = new Image("images/bejeweled2/fruits/orange.png");
+        images[3] = new Image("images/bejeweled2/fruits/purple.png");
+        images[4] = new Image("images/bejeweled2/fruits/red.png");
+        images[5] = new Image("images/bejeweled2/fruits/white.png");
+        images[6] = new Image("images/bejeweled2/fruits/yellow.png");
+
+        cells = new ImageView[ROW][COLUMN];
+        board = new int[ROW][COLUMN];
+
+        label = new Label();
+        label.setTranslateX(GAME_WIDTH - 330);
+        label.setTranslateY(200);
+        label.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+
+        Random random = new Random();
+        ImageView tempImage;
+        for(int r = 0; r < ROW; r++) {
+            for(int c = 0; c < COLUMN; c++) {
+                int randImageIndex = random.nextInt(images.length);
+                tempImage = new ImageView(images[randImageIndex]);
+                cells[r][c] = tempImage;
+                board[r][c] = randImageIndex;
+            }
+        }
+    }
+    private void draw()
+    {
+        root.getChildren().clear();
+        root.getChildren().add(background);
+        root.getChildren().add(label);
+        for(int r = 0; r < ROW; r++) {
+            for(int c = 0; c < COLUMN; c++) {
+                cells[r][c].setFitWidth(GEM_SIZE);
+                cells[r][c].setFitHeight(GEM_SIZE);
+                cells[r][c].setTranslateX(c * GEM_SIZE + 20);
+                cells[r][c].setTranslateY(r * GEM_SIZE + 30);
+                if(c == tX && r == tY)
+                {
+                    cursor.setTranslateX(c * GEM_SIZE + 20);
+                    cursor.setTranslateY(r * GEM_SIZE + 30);
+                    root.getChildren().add(cursor);
+                }
+                root.getChildren().add(cells[r][c]);
+            }
+        }
+    }
     private void swapInt(int a, int b)
     {
         int temp = a;
@@ -193,8 +196,8 @@ public class BejeweledGameLogic extends GameLogic {
     {
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(1));
-        transition.setToX(X * gemSize + 20);
-        transition.setToY(Y * gemSize + 30);
+        transition.setToX(X * GEM_SIZE + 20);
+        transition.setToY(Y * GEM_SIZE + 30);
         transition.setNode(cells[Y][X]);
         transition.play();
     }
@@ -205,9 +208,9 @@ public class BejeweledGameLogic extends GameLogic {
         ImageView tempImage;
         for(int i = 1; i < 3; i++)
         {
-            if(y + 1 >= row - 1)down = false;
+            if(y + 1 >= ROW - 1)down = false;
             if(y - 1 <= 0)up = false;
-            if(x + 1 >= column - 1)right = false;
+            if(x + 1 >= COLUMN - 1)right = false;
             if(x - 1 <= 0)left = false;
         }
         if(up == true && down == true)
