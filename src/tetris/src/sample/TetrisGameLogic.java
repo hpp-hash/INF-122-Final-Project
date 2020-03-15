@@ -20,9 +20,12 @@ import tmge.GameLogic;
 
 
 public class TetrisGameLogic extends GameLogic {
-    public static int score = 0;
-    private static int top = 0;
-    private static boolean game = true;
+    public int score = 0;
+    private int top = 0;
+    private boolean game = true;
+
+    private Form activeBlock;
+
     private TetrisUI tui;
 
     // initialize the background
@@ -30,6 +33,9 @@ public class TetrisGameLogic extends GameLogic {
         System.out.println("start Starts");
         tui = new TetrisUI();
         tui.setScore(0);
+
+        activeBlock = Controller.makeRect();
+        tui.addBlock(activeBlock);
     }
 
     @Override

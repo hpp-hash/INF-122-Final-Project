@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -61,5 +62,9 @@ public class TetrisUI {
         } else {
             gameOverText.setText("");
         }
+    }
+
+    public void addBlock(Form block){
+        group.getChildren().addAll(block.a, block.b, block.c, block.d);
     }
 }
