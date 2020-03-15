@@ -49,4 +49,8 @@ public abstract class TileMap {
     public Tile getTile(int rowIndex, int columnIndex){
         return board[rowIndex][columnIndex];
     }
+
+    public Tile[][] getBoard(){
+        return board;
+    }
 }
