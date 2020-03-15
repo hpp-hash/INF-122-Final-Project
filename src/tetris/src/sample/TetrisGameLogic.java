@@ -20,22 +20,54 @@ import tmge.GameLogic;
 
 
 public class TetrisGameLogic extends GameLogic {
+    //constants
+    public static final int MOVE = 25;
+    public static final int SIZE = 25;
+    public static final int XMAX = SIZE * 12;
+    public static final int YMAX = SIZE * 24;
+
+    //Scoreboard
     public int score = 0;
-    private int top = 0;
+
+    //Is game over?
     private boolean game = true;
 
+    //Current block
     private Form activeBlock;
+    protected int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
 
+    //TetrisUI View
     private TetrisUI tui;
+
+    //TetrisController
+    private TetrisController tc;
+
+    public TetrisGameLogic(){
+        System.out.println("start Starts");
+        tui = new TetrisUI();
+        tc = new TetrisController(tui.getScene(), this);
+    }
 
     // initialize the background
     public void initializeTileMap() {
-        System.out.println("start Starts");
-        tui = new TetrisUI();
         tui.setScore(0);
-
-        activeBlock = Controller.makeRect();
+        activeBlock = Form.makeRect();
         tui.addBlock(activeBlock);
+
+        Timer fall = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        if (game) {
+                            MoveDown(activeBlock);
+                            tui.setScore(score);
+                        }
+                    }
+                });
+            }
+        };
+        fall.schedule(task, 0, 300);
     }
 
     @Override
@@ -66,5 +98,36 @@ public class TetrisGameLogic extends GameLogic {
     @Override
     public void quit() {
 
+    }
+
+    private void MoveDown(Form form) {
+        if (form.a.getY() == YMAX - SIZE || form.b.getY() == YMAX - SIZE || form.c.getY() == YMAX - SIZE
+                || form.d.getY() == YMAX - SIZE || moveA(form) || moveB(form) || moveC(form) || moveD(form)) {
+            MESH[(int) form.a.getX() / SIZE][(int) form.a.getY() / SIZE] = 1;
+            MESH[(int) form.b.getX() / SIZE][(int) form.b.getY() / SIZE] = 1;
+            MESH[(int) form.c.getX() / SIZE][(int) form.c.getY() / SIZE] = 1;
+            MESH[(int) form.d.getX() / SIZE][(int) form.d.getY() / SIZE] = 1;
+            RemoveRows(group);
+
+            Form a = nextObj;
+            nextObj = Controller.makeRect();
+            object = a;
+            group.getChildren().addAll(a.a, a.b, a.c, a.d);
+            moveOnKeyPress(a);
+        }
+
+        if (form.a.getY() + MOVE < YMAX && form.b.getY() + MOVE < YMAX && form.c.getY() + MOVE < YMAX
+                && form.d.getY() + MOVE < YMAX) {
+            int movea = MESH[(int) form.a.getX() / SIZE][((int) form.a.getY() / SIZE) + 1];
+            int moveb = MESH[(int) form.b.getX() / SIZE][((int) form.b.getY() / SIZE) + 1];
+            int movec = MESH[(int) form.c.getX() / SIZE][((int) form.c.getY() / SIZE) + 1];
+            int moved = MESH[(int) form.d.getX() / SIZE][((int) form.d.getY() / SIZE) + 1];
+            if (movea == 0 && movea == moveb && moveb == movec && movec == moved) {
+                form.a.setY(form.a.getY() + MOVE);
+                form.b.setY(form.b.getY() + MOVE);
+                form.c.setY(form.c.getY() + MOVE);
+                form.d.setY(form.d.getY() + MOVE);
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package tetris.src.sample;
 
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -9,10 +11,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class TetrisUI {
-    public static final int MOVE = 25;
-    public static final int SIZE = 25;
-    public static final int XMAX = SIZE * 12;
-    public static final int YMAX = SIZE * 24;
 
     private Pane group;
 
@@ -28,16 +26,16 @@ public class TetrisUI {
     public TetrisUI(){
         group = new Pane();
 
-        scene = new Scene(group, XMAX + 150, YMAX);
+        scene = new Scene(group, TetrisGameLogic.XMAX + 150, TetrisGameLogic.YMAX);
 
         stage = new Stage();
 
-        line = new Line(XMAX, 0, XMAX, YMAX);
+        line = new Line(TetrisGameLogic.XMAX, 0, TetrisGameLogic.XMAX, TetrisGameLogic.YMAX);
 
         scoreText = new Text();
         scoreText.setStyle("-fx-font: 20 arial;");
         scoreText.setY(50);
-        scoreText.setX(XMAX + 5);
+        scoreText.setX(TetrisGameLogic.XMAX + 5);
 
         gameOverText = new Text();
         gameOverText.setFill(Color.BLUE);
@@ -66,5 +64,9 @@ public class TetrisUI {
 
     public void addBlock(Form block){
         group.getChildren().addAll(block.a, block.b, block.c, block.d);
+    }
+
+    public Scene getScene(){
+        return scene;
     }
 }
