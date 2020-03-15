@@ -167,19 +167,4 @@ public class Form {
 		}
 	}
 
-	private static boolean moveA(Form form, TetrisGameLogic logic) {
-		return (logic.MESH[(int) form.a.getX() / TetrisGameLogic.SIZE][((int) form.a.getY() / TetrisGameLogic.SIZE) + 1] == 1);
-	}
-
-	private static boolean moveB(Form form, TetrisGameLogic logic) {
-		return (logic.MESH[(int) form.b.getX() / TetrisGameLogic.SIZE][((int) form.b.getY() / TetrisGameLogic.SIZE) + 1] == 1);
-	}
-
-	private static boolean moveC(Form form, TetrisGameLogic logic) {
-		return (logic.MESH[(int) form.c.getX() / TetrisGameLogic.SIZE][((int) form.c.getY() / TetrisGameLogic.SIZE) + 1] == 1);
-	}
-
-	private static boolean moveD(Form form, TetrisGameLogic logic) {
-		return (logic.MESH[(int) form.d.getX() / TetrisGameLogic.SIZE][((int) form.d.getY() / TetrisGameLogic.SIZE) + 1] == 1);
-	}
 }
