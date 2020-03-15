@@ -25,9 +25,6 @@ public class BejeweledGameLogic extends GameLogic {
     private final int ROW = 10, COLUMN = 14;
     Group root = new Group();
     private ImageView cursor, background;
-    //private Image[] images;
-    //private ImageView[][] cells;
-    //int[][] board;
     BejeweledTileMap map = new BejeweledTileMap(ROW, COLUMN);
     private int cX = 0, cY = 0, tX = 0, tY = 0;
     Label label;
@@ -56,7 +53,7 @@ public class BejeweledGameLogic extends GameLogic {
 
     @Override
     public void generateTileEntity() {
-
+        draw();
     }
 
     @Override
@@ -76,19 +73,10 @@ public class BejeweledGameLogic extends GameLogic {
                     {
                         tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
                         tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-//                        int temp = board[tY][tX];
-//                        board[tY][tX] = board[cY][cX];
-//                        board[cY][cX] = temp;
-//
-//                        ImageView tempI = cells[tY][tX];
-//                        cells[tY][tX] = cells[cY][cX];
-//                        cells[cY][cX] = tempI;
+
                         TileEntity temp = map.getTile(tY, tX).getTileEntity();
                         map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                         map.getTile(cY, cX).addEntity(temp);
-
-                        moveAnimation(tX, tY);
-                        moveAnimation(cX, cY);
 
                         if(eatable(tY, tX) || eatable(cY, cX))
                         {
@@ -97,15 +85,6 @@ public class BejeweledGameLogic extends GameLogic {
                         else
                         {
                             label.setText("Swap Back");
-//                            temp = board[tY][tX];
-//                            board[tY][tX] = board[cY][cX];
-//                            board[cY][cX] = temp;
-//
-//
-//                            tempI = cells[tY][tX];
-//                            cells[tY][tX] = cells[cY][cX];
-//                            cells[cY][cX] = tempI;
-
                             temp = map.getTile(tY, tX).getTileEntity();
                             map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                             map.getTile(cY, cX).addEntity(temp);
@@ -152,35 +131,12 @@ public class BejeweledGameLogic extends GameLogic {
         cursor.setFitWidth(GEM_SIZE);
         cursor.setFitHeight(GEM_SIZE);
 
-//        images = new Image[7];
-//        images[0] = new Image("images/bejeweled2/fruits/blue.png");
-//        images[1] = new Image("images/bejeweled2/fruits/green.png");
-//        images[2] = new Image("images/bejeweled2/fruits/orange.png");
-//        images[3] = new Image("images/bejeweled2/fruits/purple.png");
-//        images[4] = new Image("images/bejeweled2/fruits/red.png");
-//        images[5] = new Image("images/bejeweled2/fruits/white.png");
-//        images[6] = new Image("images/bejeweled2/fruits/yellow.png");
-//
-//        cells = new ImageView[ROW][COLUMN];
-//        board = new int[ROW][COLUMN];
-
         label = new Label();
         label.setTranslateX(GAME_WIDTH - 330);
         label.setTranslateY(200);
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 
         map.fillMap();
-
-//        Random random = new Random();
-//        ImageView tempImage;
-//        for(int r = 0; r < ROW; r++) {
-//            for(int c = 0; c < COLUMN; c++) {
-//                int randImageIndex = random.nextInt(images.length);
-//                tempImage = new ImageView(images[randImageIndex]);
-//                cells[r][c] = tempImage;
-//                board[r][c] = randImageIndex;
-//            }
-//        }
     }
     private void draw()
     {
@@ -189,20 +145,16 @@ public class BejeweledGameLogic extends GameLogic {
         root.getChildren().add(label);
         for(int r = 0; r < ROW; r++) {
             for(int c = 0; c < COLUMN; c++) {
-//                cells[r][c].setFitWidth(GEM_SIZE);
-//                cells[r][c].setFitHeight(GEM_SIZE);
-//                cells[r][c].setTranslateX(c * GEM_SIZE + 20);
-//                cells[r][c].setTranslateY(r * GEM_SIZE + 30);
                 if(c == tX && r == tY)
                 {
                     cursor.setTranslateX(c * GEM_SIZE + 20);
                     cursor.setTranslateY(r * GEM_SIZE + 30);
                     root.getChildren().add(cursor);
                 }
-                //root.getChildren().add(cells[r][c]);
                 root.getChildren().add(map.getTile(r,c).getTileEntity().getImgV());
             }
         }
+        handleUserInput();
     }
     private void moveAnimation(int X, int Y)
     {
@@ -220,7 +172,6 @@ public class BejeweledGameLogic extends GameLogic {
         NextTileEntity nextTileEntity = new NextTileEntity(BejeweledGemFactory.getInstance());
         String[] tileEntityNames = {"blue", "green", "orange", "purple", "red", "white", "yellow"};
         Random random = new Random();
-        ImageView tempImage;
         for(int i = 1; i < 3; i++)
         {
             if(y + 1 >= ROW - 1)down = false;
@@ -230,7 +181,6 @@ public class BejeweledGameLogic extends GameLogic {
         }
         if(up == true && down == true)
         {
-            //if(board[y][x] == board[y + 1][x] && board[y][x] == board[y - 1][x])count = 3;
             if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y + 1,x).getTileEntity().getIconSrc()
                 && map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y - 1,x).getTileEntity().getIconSrc()){
                 count = 3;
@@ -238,10 +188,6 @@ public class BejeweledGameLogic extends GameLogic {
             if(count == 3)
             {
                 for(int i = -1; i < 2; i++){
-//                    int randImageIndex = random.nextInt(images.length);
-//                    tempImage = new ImageView(images[randImageIndex]);
-//                    cells[y - i][x] = tempImage;
-//                    board[y - i][x] = randImageIndex;
                     int randomIndex = random.nextInt(tileEntityNames.length);
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y - i,x));
                 }
@@ -250,7 +196,6 @@ public class BejeweledGameLogic extends GameLogic {
         }
         if(left == true && right == true)
         {
-            //if(board[y][x] == board[y][x - 1] && board[y][x] == board[y][x + 1])count = 3;
             if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x-1).getTileEntity().getIconSrc()
                     && map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x+1).getTileEntity().getIconSrc()){
                 count = 3;
@@ -258,10 +203,6 @@ public class BejeweledGameLogic extends GameLogic {
             if(count == 3)
             {
                 for(int i = -1; i < 2; i++){
-//                    int randImageIndex = random.nextInt(images.length);
-//                    tempImage = new ImageView(images[randImageIndex]);
-//                    cells[y][x - i] = tempImage;
-//                    board[y][x - i] = randImageIndex;
                     int randomIndex = random.nextInt(tileEntityNames.length);
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x-i));
                 }
@@ -271,7 +212,6 @@ public class BejeweledGameLogic extends GameLogic {
         if(up == true)
         {
             for(int i = 1; i < 3; i++){
-                //if(board[y][x] == board[y - i][x])count++;
                 if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y-i,x).getTileEntity().getIconSrc()){
                     count++;
                 }
@@ -280,10 +220,6 @@ public class BejeweledGameLogic extends GameLogic {
             if(count == 3)
             {
                 for(int i = 0; i < 3; i++){
-//                    int randImageIndex = random.nextInt(images.length);
-//                    tempImage = new ImageView(images[randImageIndex]);
-//                    cells[y - i][x] = tempImage;
-//                    board[y - i][x] = randImageIndex;
                     int randomIndex = random.nextInt(tileEntityNames.length);
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y-i,x));
                 }
@@ -293,7 +229,6 @@ public class BejeweledGameLogic extends GameLogic {
         if(down == true)
         {
             for(int i = 1; i < 3; i++){
-                //if(board[y][x] == board[y + i][x])count++;
                 if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y+i,x).getTileEntity().getIconSrc()){
                     count++;
                 }
@@ -302,10 +237,6 @@ public class BejeweledGameLogic extends GameLogic {
             if(count == 3)
             {
                 for(int i = 0; i < 3; i++){
-//                    int randImageIndex = random.nextInt(images.length);
-//                    tempImage = new ImageView(images[randImageIndex]);
-//                    cells[y + i][x] = tempImage;
-//                    board[y + i][x] = randImageIndex;
                     int randomIndex = random.nextInt(tileEntityNames.length);
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y+i,x));
                 }
@@ -315,7 +246,6 @@ public class BejeweledGameLogic extends GameLogic {
         if(left == true)
         {
             for(int i = 1; i < 3; i++){
-                //if(board[y][x] == board[y][x - i])count++;
                 if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x-i).getTileEntity().getIconSrc()){
                     count++;
                 }
@@ -324,10 +254,6 @@ public class BejeweledGameLogic extends GameLogic {
             if(count == 3)
             {
                 for(int i = 0; i < 3; i++){
-//                    int randImageIndex = random.nextInt(images.length);
-//                    tempImage = new ImageView(images[randImageIndex]);
-//                    cells[y][x - i] = tempImage;
-//                    board[y][x - i] = randImageIndex;
                     int randomIndex = random.nextInt(tileEntityNames.length);
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x-i));
                 }
@@ -337,7 +263,6 @@ public class BejeweledGameLogic extends GameLogic {
         if(right == true)
         {
             for(int i = 1; i < 3; i++){
-                //if(board[y][x] == board[y][x + i])count++;
                 if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x+i).getTileEntity().getIconSrc()){
                     count++;
                 }
@@ -346,10 +271,6 @@ public class BejeweledGameLogic extends GameLogic {
             if(count == 3)
             {
                 for(int i = 0; i < 3; i++){
-//                    int randImageIndex = random.nextInt(images.length);
-//                    tempImage = new ImageView(images[randImageIndex]);
-//                    cells[y][x + i] = tempImage;
-//                    board[y][x + i] = randImageIndex;
                     int randomIndex = random.nextInt(tileEntityNames.length);
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x+i));
                 }
