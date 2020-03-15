@@ -1,41 +1,52 @@
 package tmge;
 
 public abstract class TileMap {
-    int length;
-    int width;
-    int[][] board;
-    TileEntity [][] cells;
+    int numberOfRows;
+    int numberOfColumns;
+    Tile[][] board;
 
     public abstract void fillMap();
 
     public TileMap (int row, int col) {
-        this.length=col;
-        this.width=row;
-        board = new int[row][col];
-        cells = new TileEntity[row][col];
+        this.numberOfRows = row;
+        this.numberOfColumns = col;
+
+        this.board = new Tile[this.numberOfRows][this.numberOfColumns];
+
+        for (int r = 0; r < numberOfRows; r++){
+            for (int c = 0; c < numberOfColumns; c++){
+                board[r][c] = new Tile(r,c, null);
+            }
+        }
+
+        //cells = new TileEntity[row][col];
     }
 
-    public void boardInsert(int row, int col, int value) {
-        board[row][col] = value;
+//    public void boardInsert(int row, int col, int value) {
+//        board[row][col] = value;
+//    }
+//
+//    public void cellInsert(int row, int col, TileEntity teValue) {
+//        cells[row][col] = teValue;
+//    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
     }
 
-    public void cellInsert(int row, int col, TileEntity teValue) {
-        cells[row][col] = teValue;
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
     }
 
-    public int getLength() {
-        return length;
+    public int getNumberOfColumns() {
+        return numberOfColumns;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setNumberOfColumns(int numberOfColumns) {
+        this.numberOfColumns = numberOfColumns;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
+    public Tile getTile(int rowIndex, int columnIndex){
+        return board[rowIndex][columnIndex];
     }
 }

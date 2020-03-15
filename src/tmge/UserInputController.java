@@ -6,15 +6,17 @@ public class UserInputController
 
     private static UserInputController controller;
 
-    private UserInputController() {}
+    private UserInputController(Input input) {
+        this.input = input;
+    }
 
     public void setInput(Input input) {
         this.input = input;
     }
 
-    public static UserInputController getInstance() {
+    public static UserInputController getInstance(Input input) {
         if (controller == null) {
-            controller = new UserInputController();
+            controller = new UserInputController(input);
         }
         return controller;
     }
