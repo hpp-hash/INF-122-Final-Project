@@ -60,7 +60,8 @@ public class BejeweledGameLogic extends GameLogic {
     public void handleUserInput() {
         for(int r = 0; r < ROW; r++) {
             for(int c = 0; c < COLUMN; c++) {
-                map.getTile(r,c).getTileEntity().getImgV().setOnMousePressed(new EventHandler<MouseEvent>() {
+                ImageView tileImageView = map.getTile(r,c).getTileEntity().getImgV();
+                tileImageView.setOnMousePressed(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event)
                     {
                         cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
@@ -68,7 +69,7 @@ public class BejeweledGameLogic extends GameLogic {
                         draw();
                     }
                 });
-                map.getTile(r,c).getTileEntity().getImgV().setOnMouseReleased(new EventHandler<MouseEvent>() {
+                tileImageView.setOnMouseReleased(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event)
                     {
                         tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
