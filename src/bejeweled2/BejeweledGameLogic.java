@@ -74,7 +74,12 @@ public class BejeweledGameLogic extends GameLogic {
 
     @Override
     public void clearTiles() {
-
+        for (int r = 0; r < ROW; r++){
+            for (int c = 0; c < COLUMN; c++){
+                eatable(r, c);
+            }
+        }
+        draw();
     }
 
     @Override
@@ -206,10 +211,14 @@ public class BejeweledGameLogic extends GameLogic {
         {
             for(int i = 0; i < maxCount; i++){
                 int randomIndex = random.nextInt(tileEntityNames.length);
-                if(verticle == true)
+                if(verticle == true) {
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY + i, startX));
-                else
+                    eatable(startY + i, startX);
+                }
+                else {
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY, startX + i));
+                    eatable(startY, startX + i);
+                }
             }
             return true;
         }
