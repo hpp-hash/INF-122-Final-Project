@@ -27,6 +27,9 @@ public class BejeweledController{
     private int cX = 0, cY = 0, tX = 0, tY = 0;
     private Label label;
 
+    private Random rand = new Random();
+    private String[] dialogue = {"Somethin's Cookin'", "You're On Fire!", "Indiana Jones\nin the House",
+        "That's What's Up", "Nice!", "Jewel THIEF!", "BIG BRAIN PLAYS", "Your IQ > Einstein"};
     private int score = 0;
 
     private static BejeweledController controller;
@@ -59,22 +62,23 @@ public class BejeweledController{
                     {
                         tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
                         tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-
+                        
                         if((tX == cX + 1 && tY == cY) || (tX == cX - 1 && tY == cY)
-                                || (tX == cX && tY == cY + 1) || (tX == cX && tY == cY - 1)
-                                || (tX == cX && tY == cY)) {
+                        || (tX == cX && tY == cY + 1) || (tX == cX && tY == cY - 1)
+                        || (tX == cX && tY == cY) || true) {
                             TileEntity temp = map.getTile(tY, tX).getTileEntity();
                             map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                             map.getTile(cY, cX).addEntity(temp);
-
+                            
                             if (eatable(tY, tX) || eatable(cY, cX)) {
-                                label.setText("EatAble\nScore: " + score);
+                                label.setText("Your Score: " + score + "\n     --Cleared--\n\n" + dialogue[rand.nextInt(dialogue.length)]);
                             } else {
-                                label.setText("Swap Back\nScore: " + score);
+                                label.setText("Your Score: " + score + "\n--None Cleared--\nSwapping Back");
+                                moveAnimation(tX, tY, cX, cY);
+                                moveAnimation(cX, cY, tX, tY);
                                 temp = map.getTile(tY, tX).getTileEntity();
                                 map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                                 map.getTile(cY, cX).addEntity(temp);
-
                             }
                             draw();
                             counter++;
@@ -128,14 +132,14 @@ public class BejeweledController{
         moveOnMouseDrag();
         otherMove();
     }
-    public void moveAnimation(int X, int Y)
+    public void moveAnimation(int X, int Y, int dX, int dY)
     {
         TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(1));
-        transition.setToX(X * GEM_SIZE + 20);
-        transition.setToY(Y * GEM_SIZE + 30);
-        //transition.setNode(cells[Y][X]);
         transition.setNode(map.getTile(Y,X).getTileEntity().getImgV());
+        transition.setDuration(Duration.seconds(1));
+        transition.setToX(dX * GEM_SIZE + 20);
+        transition.setToY(dY * GEM_SIZE + 30);
+        //transition.setNode(cells[Y][X]);
         transition.play();
     }
     // private boolean eatable(int y, int x) {
