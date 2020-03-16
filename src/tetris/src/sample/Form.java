@@ -2,7 +2,6 @@ package tetris.src.sample;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import tmge.TileEntity;
 
 public class Form {
 	Rectangle a;
