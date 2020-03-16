@@ -32,6 +32,7 @@ public class BejeweledGameLogic extends GameLogic {
     protected static int cX = 0, cY = 0, tX = 0, tY = 0;
     protected static Label label;
 
+    protected static int score = 0;
     private static BejeweledGameLogic gameLogic;
 
     public static BejeweledGameLogic getInstance(){
@@ -76,7 +77,9 @@ public class BejeweledGameLogic extends GameLogic {
     public void clearTiles() {
         for (int r = 0; r < ROW; r++){
             for (int c = 0; c < COLUMN; c++){
+                int temp = score;
                 eatable(r, c);
+                score = temp;
             }
         }
         draw();
@@ -214,13 +217,18 @@ public class BejeweledGameLogic extends GameLogic {
                 int randomIndex = random.nextInt(tileEntityNames.length);
                 if(verticle == true) {
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY + i, startX));
+                    int temp = score;
                     eatable(startY + i, startX);
+                    score = temp;
                 }
                 else {
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY, startX + i));
+                    int temp = score;
                     eatable(startY, startX + i);
+                    score = temp;
                 }
             }
+            score += maxCount * 10;
             return true;
         }
 
