@@ -181,6 +181,7 @@ public class BejeweledGameLogic extends GameLogic {
             }else count = 0;
         }
         if(maxCount > 2)verticle = true;
+        
         // Case - Horizontal
         begin = -3;
         end = 3;
