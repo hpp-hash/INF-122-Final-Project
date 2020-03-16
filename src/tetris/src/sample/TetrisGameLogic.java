@@ -82,7 +82,7 @@ public class TetrisGameLogic extends GameLogic {
 
     @Override
     public void handleUserInput() {
-
+        tc.moveOnKeyPress(activeBlock);
     }
 
     @Override
