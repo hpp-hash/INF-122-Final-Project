@@ -43,7 +43,7 @@ public class Form {
 			color = Color.SANDYBROWN;
 			break;
 		}
-		
+
 		this.a.setFill(color);
 		this.b.setFill(color);
 		this.c.setFill(color);
