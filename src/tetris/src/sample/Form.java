@@ -2,7 +2,7 @@ package tetris.src.sample;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import tmge.TileEntity;
+
 
 public class Form {
 	Rectangle a;
@@ -12,13 +12,6 @@ public class Form {
 	Color color;
 	private String name;
 	public int form = 1;
-
-	public Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
-	}
 
 	public Form(Rectangle a, Rectangle b, Rectangle c, Rectangle d, String name) {
 		this.a = a;
@@ -49,8 +42,8 @@ public class Form {
 		case "i":
 			color = Color.SANDYBROWN;
 			break;
-
 		}
+
 		this.a.setFill(color);
 		this.b.setFill(color);
 		this.c.setFill(color);
@@ -133,38 +126,6 @@ public class Form {
 			name = "i";
 		}
 		return new Form(a, b, c, d, name);
-	}
-
-	public static void MoveRight(Form form, TetrisGameLogic logic) {
-		if (form.a.getX() + TetrisGameLogic.MOVE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE && form.b.getX() + TetrisGameLogic.MOVE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE
-				&& form.c.getX() + TetrisGameLogic.MOVE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE && form.d.getX() + TetrisGameLogic.MOVE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE) {
-			int movea = logic.MESH[((int) form.a.getX() / TetrisGameLogic.SIZE) + 1][((int) form.a.getY() / TetrisGameLogic.SIZE)];
-			int moveb = logic.MESH[((int) form.b.getX() / TetrisGameLogic.SIZE) + 1][((int) form.b.getY() / TetrisGameLogic.SIZE)];
-			int movec = logic.MESH[((int) form.c.getX() / TetrisGameLogic.SIZE) + 1][((int) form.c.getY() / TetrisGameLogic.SIZE)];
-			int moved = logic.MESH[((int) form.d.getX() / TetrisGameLogic.SIZE) + 1][((int) form.d.getY() / TetrisGameLogic.SIZE)];
-			if (movea == 0 && movea == moveb && moveb == movec && movec == moved) {
-				form.a.setX(form.a.getX() + TetrisGameLogic.MOVE);
-				form.b.setX(form.b.getX() + TetrisGameLogic.MOVE);
-				form.c.setX(form.c.getX() + TetrisGameLogic.MOVE);
-				form.d.setX(form.d.getX() + TetrisGameLogic.MOVE);
-			}
-		}
-	}
-
-	public static void MoveLeft(Form form, TetrisGameLogic logic) {
-		if (form.a.getX() - TetrisGameLogic.MOVE >= 0 && form.b.getX() - TetrisGameLogic.MOVE >= 0 && form.c.getX() - TetrisGameLogic.MOVE >= 0
-				&& form.d.getX() - TetrisGameLogic.MOVE >= 0) {
-			int movea = logic.MESH[((int) form.a.getX() / TetrisGameLogic.SIZE) - 1][((int) form.a.getY() / TetrisGameLogic.SIZE)];
-			int moveb = logic.MESH[((int) form.b.getX() / TetrisGameLogic.SIZE) - 1][((int) form.b.getY() / TetrisGameLogic.SIZE)];
-			int movec = logic.MESH[((int) form.c.getX() / TetrisGameLogic.SIZE) - 1][((int) form.c.getY() / TetrisGameLogic.SIZE)];
-			int moved = logic.MESH[((int) form.d.getX() / TetrisGameLogic.SIZE) - 1][((int) form.d.getY() / TetrisGameLogic.SIZE)];
-			if (movea == 0 && movea == moveb && moveb == movec && movec == moved) {
-				form.a.setX(form.a.getX() - TetrisGameLogic.MOVE);
-				form.b.setX(form.b.getX() - TetrisGameLogic.MOVE);
-				form.c.setX(form.c.getX() - TetrisGameLogic.MOVE);
-				form.d.setX(form.d.getX() - TetrisGameLogic.MOVE);
-			}
-		}
 	}
 
 }
