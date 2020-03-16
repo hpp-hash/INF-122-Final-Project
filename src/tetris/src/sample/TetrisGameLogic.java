@@ -17,7 +17,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import tmge.GameLogic;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class TetrisGameLogic extends GameLogic {
     //constants
@@ -44,9 +45,14 @@ public class TetrisGameLogic extends GameLogic {
 
     private int totalHeight;
 
-    public TetrisGameLogic(){
+    public TetrisGameLogic() {
         System.out.println("start Starts");
-        tui = new TetrisUI();
+        try {
+            tui = new TetrisUI();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.print("Tetris UI failed");
+        }
         tc = new TetrisController(tui.getScene(), this);
     }
 
