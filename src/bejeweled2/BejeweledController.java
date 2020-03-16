@@ -42,9 +42,9 @@ public class BejeweledController extends BejeweledGameLogic{
                     map.getTile(cY, cX).addEntity(temp);
 
                     if (eatable(tY, tX) || eatable(cY, cX)) {
-                        label.setText("EatAble");
+                        label.setText("EatAble\nScore: " + score);
                     } else {
-                        label.setText("Swap Back");
+                        label.setText("Swap Back\nScore: " + score);
                         temp = map.getTile(tY, tX).getTileEntity();
                         map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                         map.getTile(cY, cX).addEntity(temp);
