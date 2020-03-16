@@ -3,6 +3,7 @@ package tetris.src.sample;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+
 public class Form {
 	Rectangle a;
 	Rectangle b;
@@ -41,8 +42,8 @@ public class Form {
 		case "i":
 			color = Color.SANDYBROWN;
 			break;
-
 		}
+		
 		this.a.setFill(color);
 		this.b.setFill(color);
 		this.c.setFill(color);
