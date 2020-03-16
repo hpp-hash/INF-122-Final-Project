@@ -23,6 +23,7 @@ public class BejeweledController extends BejeweledGameLogic{
             {
                 cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
                 cY = tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
+                draw();
             }
         });
 
@@ -48,6 +49,7 @@ public class BejeweledController extends BejeweledGameLogic{
                     map.getTile(cY, cX).addEntity(temp);
 
                 }
+                draw();
             }
         });
     }
@@ -55,12 +57,5 @@ public class BejeweledController extends BejeweledGameLogic{
     // placeholder for non-movement handling; can involve keyboard or mouse
     public void otherMove(){
         // TODO: implement other moves (if any)
-    //     currentTile.setOnMousePressed(new EventHandler<MouseEvent>() {
-    //         public void handle(MouseEvent event)
-    //         {
-    //             cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
-    //             cY = tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-    //         }
-    //     });
     }
 }

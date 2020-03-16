@@ -23,7 +23,7 @@ import java.util.Random;
 public class BejeweledGameLogic extends GameLogic {
     private static final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
     private static final int ROW = 10, COLUMN = 14;
-    Group root = new Group();
+    protected static Group root = new Group();
     // private ImageView cursor, background;
     protected static ImageView cursor, background, currentTileImageView;
     protected static BejeweledTileMap map = new BejeweledTileMap(ROW, COLUMN);
@@ -64,42 +64,8 @@ public class BejeweledGameLogic extends GameLogic {
         BejeweledInputAdapter inputAdapter = new BejeweledInputAdapter(controller);
         for(int r = 0; r < ROW; r++) {
             for(int c = 0; c < COLUMN; c++) {
-                draw();
                 currentTileImageView = map.getTile(r,c).getTileEntity().getImgV();
                 UserInputController.getInstance(inputAdapter).onInput();
-                // currentTile.setOnMousePressed(new EventHandler<MouseEvent>() {
-                //     public void handle(MouseEvent event)
-                //     {
-                //         cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
-                //         cY = tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-                //         draw();
-                //     }
-                // });
-                // currentTile.setOnMouseReleased(new EventHandler<MouseEvent>() {
-                //     public void handle(MouseEvent event)
-                //     {
-                //         tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
-                //         tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-
-                //         TileEntity temp = map.getTile(tY, tX).getTileEntity();
-                //         map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
-                //         map.getTile(cY, cX).addEntity(temp);
-
-                //         if(eatable(tY, tX) || eatable(cY, cX))
-                //         {
-                //             label.setText("EatAble");
-                //         }
-                //         else
-                //         {
-                //             label.setText("Swap Back");
-                //             temp = map.getTile(tY, tX).getTileEntity();
-                //             map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
-                //             map.getTile(cY, cX).addEntity(temp);
-
-                //         }
-                //         draw();
-                //     }
-                // });
             }
         }
     }
@@ -142,7 +108,7 @@ public class BejeweledGameLogic extends GameLogic {
 
         map.fillMap();
     }
-    private void draw()
+    protected static void draw()
     {
         root.getChildren().clear();
         root.getChildren().add(background);
