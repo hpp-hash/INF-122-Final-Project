@@ -9,7 +9,9 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -45,6 +47,8 @@ public class TetrisGameLogic extends GameLogic {
 
     private int totalHeight;
 
+    private boolean removeRestartBtn = false;
+
     public TetrisGameLogic() {
         System.out.println("start Starts");
         try {
@@ -71,8 +75,28 @@ public class TetrisGameLogic extends GameLogic {
                             if (MESH[i][0] != 0) {
                                 game = false;
                                 tui.setGameOverText(true);
+
+                                Button exitBtn = new Button("Exit");
+                                exitBtn.relocate(TetrisGameLogic.XMAX + 35, 350);
+                                exitBtn.setStyle("-fx-font-size: 15px;");
+                                exitBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent mouseEvent) {
+                                        removeRestartBtn = true;
+                                        System.exit(0);
+                                    }
+                                });
+
+                                if (removeRestartBtn) {
+                                    tui.getPane().getChildren().clear();
+                                    tui.getPane().getChildren().remove(exitBtn);
+                                }
+                                else {
+                                    tui.getPane().getChildren().addAll(exitBtn);
+                                }
                             }
                         }
+
 
                         if (game) {
                             fall(activeBlock);
@@ -83,6 +107,7 @@ public class TetrisGameLogic extends GameLogic {
             }
         };
         fall.schedule(task, 0, 300);
+
     }
 
     // suggestion to add incrementScore to the framework

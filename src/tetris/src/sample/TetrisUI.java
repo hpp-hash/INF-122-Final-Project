@@ -3,7 +3,9 @@ package tetris.src.sample;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -53,7 +55,7 @@ public class TetrisUI {
         imageView = new ImageView(image);
 
         imageView.setX(TetrisGameLogic.XMAX + 15);
-        imageView.setY(10);
+        imageView.setY(130);
 
         imageView.setFitWidth(119);
         imageView.setFitHeight(95.4444);
@@ -65,11 +67,11 @@ public class TetrisUI {
         Region rectangle = new Region();
         rectangle.setPrefSize(140, 40);
         rectangle.setStyle("-fx-background-color: white; -fx-background-radius: 10 10 10 10");
-        rectangle.relocate(TetrisGameLogic.XMAX + 5, 124);
+        rectangle.relocate(TetrisGameLogic.XMAX + 5, 264);
 
         scoreText = new Text();
         scoreText.setStyle("-fx-font: 15 arial;");
-        scoreText.setY(150);
+        scoreText.setY(290);
         scoreText.setX(TetrisGameLogic.XMAX + 15);
 
         gameOverText = new Text();
@@ -93,6 +95,9 @@ public class TetrisUI {
         if(isOver){
             gameOverText.setText("GAME OVER");
             gameOverText.toFront();
+        }
+        else {
+            gameOverText.setText("");
         }
     }
 
