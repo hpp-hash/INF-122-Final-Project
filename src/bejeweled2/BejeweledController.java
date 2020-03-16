@@ -62,29 +62,25 @@ public class BejeweledController{
                     {
                         tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
                         tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
+
+                        TileEntity temp = map.getTile(tY, tX).getTileEntity();
+                        map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
+                        map.getTile(cY, cX).addEntity(temp);
                         
-                        if((tX == cX + 1 && tY == cY) || (tX == cX - 1 && tY == cY)
-                        || (tX == cX && tY == cY + 1) || (tX == cX && tY == cY - 1)
-                        || (tX == cX && tY == cY) || true) {
-                            TileEntity temp = map.getTile(tY, tX).getTileEntity();
+                        if (eatable(tY, tX) || eatable(cY, cX)) {
+                            label.setText("Your Score: " + score + "\n     --Cleared--\n\n" + dialogue[rand.nextInt(dialogue.length)]);
+                        } else {
+                            label.setText("Your Score: " + score + "\n--None Cleared--\nSwapping Back");
+                            moveAnimation(tX, tY, cX, cY);
+                            moveAnimation(cX, cY, tX, tY);
+                            temp = map.getTile(tY, tX).getTileEntity();
                             map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                             map.getTile(cY, cX).addEntity(temp);
-                            
-                            if (eatable(tY, tX) || eatable(cY, cX)) {
-                                label.setText("Your Score: " + score + "\n     --Cleared--\n\n" + dialogue[rand.nextInt(dialogue.length)]);
-                            } else {
-                                label.setText("Your Score: " + score + "\n--None Cleared--\nSwapping Back");
-                                moveAnimation(tX, tY, cX, cY);
-                                moveAnimation(cX, cY, tX, tY);
-                                temp = map.getTile(tY, tX).getTileEntity();
-                                map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
-                                map.getTile(cY, cX).addEntity(temp);
-                            }
-                            draw();
-                            counter++;
                         }
-                    }
-                });
+                        draw();
+                        counter++;
+                        }
+                    });
             }
         }
     }
