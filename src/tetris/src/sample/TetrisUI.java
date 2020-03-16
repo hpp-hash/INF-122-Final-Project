@@ -42,6 +42,7 @@ public class TetrisUI {
         gameOverText.setStyle("-fx-font: 70 arial;");
         gameOverText.setY(250);
         gameOverText.setX(10);
+        gameOverText.setScaleZ(10000);
 
         group.getChildren().addAll(scoreText, line, gameOverText);
 
@@ -57,8 +58,10 @@ public class TetrisUI {
     public void setGameOverText(boolean isOver){
         if(isOver){
             gameOverText.setText("GAME OVER!");
-        } else {
-            gameOverText.setText("");
+            gameOverText.setFill(Color.RED);
+            gameOverText.setStyle("-fx-font: 70 arial;");
+            gameOverText.setY(250);
+            gameOverText.setX(10);
         }
     }
 
@@ -68,5 +71,9 @@ public class TetrisUI {
 
     public Scene getScene(){
         return scene;
+    }
+
+    public Pane getPane() {
+        return group;
     }
 }
