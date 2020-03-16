@@ -21,13 +21,16 @@ import tmge.UserInputController;
 import java.util.Random;
 
 public class BejeweledGameLogic extends GameLogic {
-    private final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
-    private final int ROW = 10, COLUMN = 14;
-    Group root = new Group();
-    private ImageView cursor, background;
-    BejeweledTileMap map = new BejeweledTileMap(ROW, COLUMN);
-    private int cX = 0, cY = 0, tX = 0, tY = 0;
-    Label label;
+    static int counter = 0;
+    private static final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
+    private static final int ROW = 10, COLUMN = 14;
+    protected static Group root = new Group();
+    // private ImageView cursor, background;
+    protected static ImageView cursor, background, currentTileImageView;
+    BejeweledTileMap map = BejeweledTileMap.getInstance(ROW, COLUMN);
+    // private int cX = 0, cY = 0, tX = 0, tY = 0;
+    protected static int cX = 0, cY = 0, tX = 0, tY = 0;
+    protected static Label label;
 
     private static BejeweledGameLogic gameLogic;
 
@@ -37,6 +40,8 @@ public class BejeweledGameLogic extends GameLogic {
         }
         return gameLogic;
     }
+
+    protected static int score = 0;
 
     @Override
     public void initializeTileMap() {
@@ -50,64 +55,45 @@ public class BejeweledGameLogic extends GameLogic {
         gameStage.setScene(scene);
         gameStage.show();
     }
-
+    
     @Override
     public void generateTileEntity() {
         draw();
     }
-
+    
     @Override
     public void handleUserInput() {
-        for(int r = 0; r < ROW; r++) {
-            for(int c = 0; c < COLUMN; c++) {
-                ImageView tileImageView = map.getTile(r,c).getTileEntity().getImgV();
-                tileImageView.setOnMousePressed(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event)
-                    {
-                        cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
-                        cY = tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-                        draw();
-                    }
-                });
-                tileImageView.setOnMouseReleased(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event)
-                    {
-                        tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
-                        tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
-
-                        TileEntity temp = map.getTile(tY, tX).getTileEntity();
-                        map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
-                        map.getTile(cY, cX).addEntity(temp);
-
-                        if(eatable(tY, tX) || eatable(cY, cX))
-                        {
-                            label.setText("EatAble");
-                        }
-                        else
-                        {
-                            label.setText("Swap Back");
-                            temp = map.getTile(tY, tX).getTileEntity();
-                            map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
-                            map.getTile(cY, cX).addEntity(temp);
-
-                        }
-                        draw();
-                    }
-                });
-            }
-        }
         BejeweledController controller = new BejeweledController();
         BejeweledInputAdapter inputAdapter = new BejeweledInputAdapter(controller);
-        UserInputController.getInstance(inputAdapter).onInput();
+        for(int r = 0; r < ROW; r++) {
+            for(int c = 0; c < COLUMN; c++) {
+                currentTileImageView = map.getTile(r,c).getTileEntity().getImgV();
+                UserInputController.getInstance(inputAdapter).onInput();
+            }
+        }
+        return;
     }
 
     @Override
     public void clearTiles() {
-
+        for (int r = 0; r < ROW; r++){
+            for (int c = 0; c < COLUMN; c++){
+                int temp = score;
+                eatable(r, c);
+                score = temp;
+            }
+        }
+        draw();
     }
 
     @Override
     public boolean checkEndGame() {
+        System.out.println(counter);
+        if(counter == 2)
+        {
+            counter = 0;
+            return true;
+        }
         return false;
     }
 
@@ -139,7 +125,7 @@ public class BejeweledGameLogic extends GameLogic {
 
         map.fillMap();
     }
-    private void draw()
+    protected void draw()
     {
         root.getChildren().clear();
         root.getChildren().add(background);
@@ -167,117 +153,86 @@ public class BejeweledGameLogic extends GameLogic {
         transition.setNode(map.getTile(Y,X).getTileEntity().getImgV());
         transition.play();
     }
-    private boolean eatable(int y, int x) {
-        int count = 1;
-        boolean up = true, down = true, left = true, right = true;
+    // private boolean eatable(int y, int x) {
+    protected boolean eatable(int y, int x) {
+        int count = 0, maxCount = 0;
+        int startX = x, startY = y;
+        int begin = -3, end = 3;
+        boolean verticle = false;
+
         NextTileEntity nextTileEntity = new NextTileEntity(BejeweledGemFactory.getInstance());
         String[] tileEntityNames = {"blue", "green", "orange", "purple", "red", "white", "yellow"};
         Random random = new Random();
-        for(int i = 1; i < 3; i++)
+
+        // Case - Verticle
+        while(y + begin < 0)begin++;
+        while(y + end > ROW - 1)end--;
+        for(int i = begin; i <= end; i++)
         {
-            if(y + 1 >= ROW - 1)down = false;
-            if(y - 1 <= 0)up = false;
-            if(x + 1 >= COLUMN - 1)right = false;
-            if(x - 1 <= 0)left = false;
-        }
-        if(up == true && down == true)
-        {
-            if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y + 1,x).getTileEntity().getIconSrc()
-                && map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y - 1,x).getTileEntity().getIconSrc()){
-                count = 3;
-            }
-            if(count == 3)
+            if(map.getTile(y,x).getTileEntity().getIconSrc().equals(map.getTile(y + i,x).getTileEntity().getIconSrc()))
             {
-                for(int i = -1; i < 2; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y - i,x));
+                count++;
+                if(count >= 2)
+                {
+                    startY = y + i - count + 1;
+                    if(startY < 0)
+                    {
+                        startY = 0;
+                        count--;
+                    }
+                    maxCount = count;
                 }
-                return true;
-            }
+            }else count = 0;
         }
-        if(left == true && right == true)
+        if(maxCount > 2)verticle = true;
+        
+        // Case - Horizontal
+        begin = -3;
+        end = 3;
+        if(maxCount <= 2)
         {
-            if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x-1).getTileEntity().getIconSrc()
-                    && map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x+1).getTileEntity().getIconSrc()){
-                count = 3;
-            }
-            if(count == 3)
+            while(x + begin < 0)begin++;
+            while(x + end > COLUMN - 1)end--;
+            for(int i = begin; i <= end; i++)
             {
-                for(int i = -1; i < 2; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x-i));
-                }
-                return true;
-            }
-        }
-        if(up == true)
-        {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y-i,x).getTileEntity().getIconSrc()){
+                if(map.getTile(y,x).getTileEntity().getIconSrc().equals(map.getTile(y,x + i).getTileEntity().getIconSrc()))
+                {
                     count++;
-                }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y-i,x));
-                }
-                return true;
+                    if(count >= 2)
+                    {
+                        startX = x + i - count + 1;
+                        if(startX < 0)
+                        {
+                            startX = 0;
+                            count--;
+                        }
+                        maxCount = count;
+                    }
+                }else count = 0;
             }
         }
-        if(down == true)
+
+        if(maxCount > 2)
         {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y+i,x).getTileEntity().getIconSrc()){
-                    count++;
+            for(int i = 0; i < maxCount; i++){
+                int randomIndex = random.nextInt(tileEntityNames.length);
+                if(verticle == true) {
+                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY + i, startX));
+                    int temp = score;
+                    eatable(startY + i, startX);
+                    score = temp;
                 }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y+i,x));
+                else {
+                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY, startX + i));
+                    int temp = score;
+                    eatable(startY, startX + i);
+                    score = temp;
                 }
-                return true;
             }
+            score += maxCount * 10;
+            return true;
         }
-        if(left == true)
-        {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x-i).getTileEntity().getIconSrc()){
-                    count++;
-                }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x-i));
-                }
-                return true;
-            }
-        }
-        if(right == true)
-        {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x+i).getTileEntity().getIconSrc()){
-                    count++;
-                }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x+i));
-                }
-                return true;
-            }
-        }
+
         return false;
     }
 }
