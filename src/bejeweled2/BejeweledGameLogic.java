@@ -27,7 +27,7 @@ public class BejeweledGameLogic extends GameLogic {
     protected static Group root = new Group();
     // private ImageView cursor, background;
     protected static ImageView cursor, background, currentTileImageView;
-    protected static BejeweledTileMap map = new BejeweledTileMap(ROW, COLUMN);
+    BejeweledTileMap map = BejeweledTileMap.getInstance(ROW, COLUMN);
     // private int cX = 0, cY = 0, tX = 0, tY = 0;
     protected static int cX = 0, cY = 0, tX = 0, tY = 0;
     protected static Label label;

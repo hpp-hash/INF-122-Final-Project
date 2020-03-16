@@ -8,8 +8,18 @@ import tmge.TileMap;
 import java.util.Random;
 
 public class BejeweledTileMap extends TileMap {
-    public BejeweledTileMap(int row, int col) {
+
+    private static BejeweledTileMap map;
+
+    private BejeweledTileMap(int row, int col) {
         super(row, col);
+    }
+
+    public static BejeweledTileMap getInstance(int row, int col){
+        if (map == null){
+            map = new BejeweledTileMap(row, col);
+        }
+        return map;
     }
 
     @Override
