@@ -24,6 +24,7 @@ public class BejeweledController extends BejeweledGameLogic{
                 cX = tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
                 cY = tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
                 draw();
+                counter++;
             }
         });
 
@@ -33,23 +34,25 @@ public class BejeweledController extends BejeweledGameLogic{
                 tX = (int)((event.getSceneX() - 20) / GEM_SIZE);
                 tY = (int)((event.getSceneY() - 30) / GEM_SIZE);
 
-                TileEntity temp = map.getTile(tY, tX).getTileEntity();
-                map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
-                map.getTile(cY, cX).addEntity(temp);
-
-                if(eatable(tY, tX) || eatable(cY, cX))
-                {
-                    label.setText("EatAble");
-                }
-                else
-                {
-                    label.setText("Swap Back");
-                    temp = map.getTile(tY, tX).getTileEntity();
+                if((tX == cX + 1 && tY == cY) || (tX == cX - 1 && tY == cY)
+                        || (tX == cX && tY == cY + 1) || (tX == cX && tY == cY - 1)
+                        || (tX == cX && tY == cY)) {
+                    TileEntity temp = map.getTile(tY, tX).getTileEntity();
                     map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                     map.getTile(cY, cX).addEntity(temp);
 
+                    if (eatable(tY, tX) || eatable(cY, cX)) {
+                        label.setText("EatAble");
+                    } else {
+                        label.setText("Swap Back");
+                        temp = map.getTile(tY, tX).getTileEntity();
+                        map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
+                        map.getTile(cY, cX).addEntity(temp);
+
+                    }
+                    draw();
+                    counter++;
                 }
-                draw();
             }
         });
     }

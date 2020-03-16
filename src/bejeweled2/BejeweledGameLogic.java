@@ -21,6 +21,7 @@ import tmge.UserInputController;
 import java.util.Random;
 
 public class BejeweledGameLogic extends GameLogic {
+    static int counter = 0;
     private static final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
     private static final int ROW = 10, COLUMN = 14;
     protected static Group root = new Group();
@@ -68,6 +69,7 @@ public class BejeweledGameLogic extends GameLogic {
                 UserInputController.getInstance(inputAdapter).onInput();
             }
         }
+        return;
     }
 
     @Override
@@ -77,6 +79,12 @@ public class BejeweledGameLogic extends GameLogic {
 
     @Override
     public boolean checkEndGame() {
+        System.out.println(counter);
+        if(counter == 2)
+        {
+            counter = 0;
+            return true;
+        }
         return false;
     }
 
@@ -108,7 +116,7 @@ public class BejeweledGameLogic extends GameLogic {
 
         map.fillMap();
     }
-    protected static void draw()
+    protected void draw()
     {
         root.getChildren().clear();
         root.getChildren().add(background);
@@ -124,7 +132,7 @@ public class BejeweledGameLogic extends GameLogic {
                 root.getChildren().add(map.getTile(r,c).getTileEntity().getImgV());
             }
         }
-        // handleUserInput();
+        handleUserInput();
     }
     private void moveAnimation(int X, int Y)
     {
@@ -138,116 +146,74 @@ public class BejeweledGameLogic extends GameLogic {
     }
     // private boolean eatable(int y, int x) {
     protected boolean eatable(int y, int x) {
-        int count = 1;
-        boolean up = true, down = true, left = true, right = true;
+        int count = 0, maxCount = 0;
+        int startX = x, startY = y;
+        int begin = -3, end = 3;
+        boolean verticle = false;
+
         NextTileEntity nextTileEntity = new NextTileEntity(BejeweledGemFactory.getInstance());
         String[] tileEntityNames = {"blue", "green", "orange", "purple", "red", "white", "yellow"};
         Random random = new Random();
-        for(int i = 1; i < 3; i++)
+
+        // Case - Verticle
+        while(y + begin < 0)begin++;
+        while(y + end > ROW - 1)end--;
+        for(int i = begin; i <= end; i++)
         {
-            if(y + 1 >= ROW - 1)down = false;
-            if(y - 1 <= 0)up = false;
-            if(x + 1 >= COLUMN - 1)right = false;
-            if(x - 1 <= 0)left = false;
-        }
-        if(up == true && down == true)
-        {
-            if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y + 1,x).getTileEntity().getIconSrc()
-                && map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y - 1,x).getTileEntity().getIconSrc()){
-                count = 3;
-            }
-            if(count == 3)
+            if(map.getTile(y,x).getTileEntity().getIconSrc().equals(map.getTile(y + i,x).getTileEntity().getIconSrc()))
             {
-                for(int i = -1; i < 2; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y - i,x));
+                count++;
+                if(count >= 2)
+                {
+                    startY = y + i - count + 1;
+                    if(startY < 0)
+                    {
+                        startY = 0;
+                        count--;
+                    }
+                    maxCount = count;
                 }
-                return true;
-            }
+            }else count = 0;
         }
-        if(left == true && right == true)
+        if(maxCount > 2)verticle = true;
+        // Case - Horizontal
+        begin = -3;
+        end = 3;
+        if(maxCount <= 2)
         {
-            if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x-1).getTileEntity().getIconSrc()
-                    && map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x+1).getTileEntity().getIconSrc()){
-                count = 3;
-            }
-            if(count == 3)
+            while(x + begin < 0)begin++;
+            while(x + end > COLUMN - 1)end--;
+            for(int i = begin; i <= end; i++)
             {
-                for(int i = -1; i < 2; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x-i));
-                }
-                return true;
-            }
-        }
-        if(up == true)
-        {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y-i,x).getTileEntity().getIconSrc()){
+                if(map.getTile(y,x).getTileEntity().getIconSrc().equals(map.getTile(y,x + i).getTileEntity().getIconSrc()))
+                {
                     count++;
-                }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y-i,x));
-                }
-                return true;
+                    if(count >= 2)
+                    {
+                        startX = x + i - count + 1;
+                        if(startX < 0)
+                        {
+                            startX = 0;
+                            count--;
+                        }
+                        maxCount = count;
+                    }
+                }else count = 0;
             }
         }
-        if(down == true)
+
+        if(maxCount > 2)
         {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y+i,x).getTileEntity().getIconSrc()){
-                    count++;
-                }
-                else count = 1;
+            for(int i = 0; i < maxCount; i++){
+                int randomIndex = random.nextInt(tileEntityNames.length);
+                if(verticle == true)
+                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY + i, startX));
+                else
+                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startY, startX + i));
             }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y+i,x));
-                }
-                return true;
-            }
+            return true;
         }
-        if(left == true)
-        {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x-i).getTileEntity().getIconSrc()){
-                    count++;
-                }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x-i));
-                }
-                return true;
-            }
-        }
-        if(right == true)
-        {
-            for(int i = 1; i < 3; i++){
-                if(map.getTile(y,x).getTileEntity().getIconSrc() == map.getTile(y,x+i).getTileEntity().getIconSrc()){
-                    count++;
-                }
-                else count = 1;
-            }
-            if(count == 3)
-            {
-                for(int i = 0; i < 3; i++){
-                    int randomIndex = random.nextInt(tileEntityNames.length);
-                    nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(y,x+i));
-                }
-                return true;
-            }
-        }
+
         return false;
     }
 }
