@@ -18,22 +18,24 @@ public class TetrisController {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                 if (gameLogic.getGameStatus()) {
                     switch (event.getCode()) {
                         case RIGHT:
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             MoveRight(form);
                             break;
                         case DOWN:
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             gameLogic.fall(form);
                             gameLogic.incrementScore();
                             break;
                         case LEFT:
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             MoveLeft(form);
                             break;
                         case UP:
                             // rotate block
-                            System.out.println("UP");
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             Rotate(form);
                             break;
                     }
@@ -46,24 +48,23 @@ public class TetrisController {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                 if (gameLogic.getGameStatus()) {
                     switch (event.getCode()) {
                         case A:
-                            System.out.println("A");
-                            MoveRight1(form);
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
+                            MoveLeft1(form);
                             break;
                         case S:
-                            System.out.println("S");
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             gameLogic.fall1(form);
                             gameLogic.incrementScore();
                             break;
                         case D:
-                            System.out.println("D");
-                            MoveLeft1(form);
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
+                            MoveRight1(form);
                             break;
                         case W:
-                            System.out.println("W");
+                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             // rotate block
                             Rotate1(form);
                             break;

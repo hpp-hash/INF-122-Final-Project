@@ -99,7 +99,6 @@ public class TetrisGameLogic extends GameLogic {
 
                         if (game) {
                             fall(activeBlock);
-                            fall1(activeBlock1);
                             tui.setScore(score);
                         }
                     }
@@ -107,6 +106,46 @@ public class TetrisGameLogic extends GameLogic {
             }
         };
         fall.schedule(task, 0, 100);
+
+        TimerTask task1 = new TimerTask() {
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        for (int i = 0; i < (XMAX / SIZE + 18); i++) {
+                            if (MESH1[i][0] != 0) {
+                                game = false;
+                                tui.setGameOverText(true);
+
+                                Button exitBtn = new Button("Exit");
+                                exitBtn.relocate(TetrisGameLogic.XMAX + 55 + 450, 400);
+                                exitBtn.setStyle("-fx-font-size: 15px;");
+                                exitBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent mouseEvent) {
+                                        removeRestartBtn = true;
+                                        System.exit(0);
+                                    }
+                                });
+
+                                if (removeRestartBtn) {
+                                    tui.getPane().getChildren().clear();
+                                    tui.getPane().getChildren().remove(exitBtn);
+                                }
+                                else {
+                                    tui.getPane().getChildren().addAll(exitBtn);
+                                }
+                            }
+                        }
+
+                        if (game) {
+                            fall1(activeBlock1);
+//                            tui.setScore(score);
+                        }
+                    }
+                });
+            }
+        };
+        fall.schedule(task1, 0, 100);
 
     }
 
