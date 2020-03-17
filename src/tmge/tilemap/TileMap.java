@@ -1,4 +1,4 @@
-package tmge;
+package tmge.tilemap;
 
 public abstract class TileMap {
     int numberOfRows;
@@ -49,5 +49,9 @@ public abstract class TileMap {
 
     public Tile getTile(int rowIndex, int columnIndex){
         return board[rowIndex][columnIndex];
+    }
+
+    public Tile[][] getBoard(){
+        return board;
     }
 }

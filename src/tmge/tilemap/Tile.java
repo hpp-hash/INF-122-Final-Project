@@ -1,4 +1,4 @@
-package tmge;
+package tmge.tilemap;
 
 public class Tile {
     int rowIndex;

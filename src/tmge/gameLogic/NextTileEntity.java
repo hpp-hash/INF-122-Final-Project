@@ -1,4 +1,6 @@
-package tmge;
+package tmge.gameLogic;
+
+import tmge.tilemap.Tile;
 
 public class NextTileEntity{
 

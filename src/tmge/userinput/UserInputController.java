@@ -1,4 +1,4 @@
-package tmge;
+package tmge.userinput;
 
 public class UserInputController
 {

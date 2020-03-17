@@ -1,6 +1,6 @@
 package bejeweled2;
 
-import tmge.Input;
+import tmge.userinput.Input;
 
 public class BejeweledInputAdapter implements Input {
 

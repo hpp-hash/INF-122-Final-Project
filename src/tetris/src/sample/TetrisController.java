@@ -18,21 +18,23 @@ public class TetrisController {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case RIGHT:
-                        MoveRight(form);
-                        break;
-                    case DOWN:
-                        gameLogic.fall(form);
-                        gameLogic.incrementScore();
-                        break;
-                    case LEFT:
-                        MoveLeft(form);
-                        break;
-                    case UP:
-                        // rotate block
-                        Rotate(form);
-                        break;
+                if (gameLogic.getGameStatus()) {
+                    switch (event.getCode()) {
+                        case RIGHT:
+                            MoveRight(form);
+                            break;
+                        case DOWN:
+                            gameLogic.fall(form);
+                            gameLogic.incrementScore();
+                            break;
+                        case LEFT:
+                            MoveLeft(form);
+                            break;
+                        case UP:
+                            // rotate block
+                            Rotate(form);
+                            break;
+                    }
                 }
             }
         });
