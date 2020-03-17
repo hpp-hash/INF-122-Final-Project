@@ -50,7 +50,7 @@ public class TetrisGameLogic extends GameLogic {
     public TetrisGameLogic() {
         System.out.println("start Starts");
         try {
-            tui = new TetrisUI();
+            tui = TetrisUI.getInstance();
         } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
             System.out.print("Tetris UI failed");
