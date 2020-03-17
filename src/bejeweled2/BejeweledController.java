@@ -1,6 +1,7 @@
 package bejeweled2;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -12,7 +13,9 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import tmge.NextTileEntity;
 import tmge.TileEntity;
-import tmge.UserInputController;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import java.util.Random;
 
@@ -26,6 +29,9 @@ public class BejeweledController{
     BejeweledTileMap map = BejeweledTileMap.getInstance(ROW, COLUMN);
     private int cX = 0, cY = 0, tX = 0, tY = 0;
     private Label label;
+    private static Label showTime;
+    private static int gameLength = 300; // in seconds
+    static Timer timer;
 
     private Random rand = new Random();
     private String[] dialogue = {"Somethin's Cookin'", "You're On Fire!", "Indiana Jones\nin the House",
@@ -90,6 +96,7 @@ public class BejeweledController{
         // TODO: implement other moves (if any)
     }
 
+
     public void setup() {
         // Set Background
         background = new ImageView(new Image("images/bejeweled2/images/border.png"));
@@ -104,15 +111,52 @@ public class BejeweledController{
         label = new Label();
         label.setTranslateX(GAME_WIDTH - 330);
         label.setTranslateY(200);
-        label.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        label.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+
+        showTime = new Label();
+        showTime.setTranslateX(GAME_WIDTH - 150);
+        showTime.setTranslateY(400);
+        showTime.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
         map.fillMap();
+        setTimmer();
     }
+    private static final void setTimmer()
+    {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                Platform.runLater(() -> {
+                    showTime.setText(S2H(setInterval()));
+                });
+            }
+        }, 1000, 1000);
+    }
+    private static final int setInterval() {
+        if (gameLength == 1)
+        {
+            timer.cancel();
+            Platform.runLater(() -> {
+                showTime.setText("Game Over!");
+            });
+        }
+        return --gameLength;
+    }
+    private static String S2H(int secs)
+    {
+        int nDays = secs / 86400;
+        int nHours = (secs % 86400 ) / 3600;
+        int nMinutes = ((secs % 86400 ) % 3600 ) / 60;
+        int nSeconds = ((secs % 86400 ) % 3600 ) % 60;
+        return String.format("%02d", nHours) + ":" + String.format("%02d", nMinutes) + ":" + String.format("%02d", nSeconds);
+    }
+
     public void draw()
     {
         root.getChildren().clear();
         root.getChildren().add(background);
         root.getChildren().add(label);
+        root.getChildren().add(showTime);
         for(int r = 0; r < ROW; r++) {
             for(int c = 0; c < COLUMN; c++) {
                 if(c == tX && r == tY)
