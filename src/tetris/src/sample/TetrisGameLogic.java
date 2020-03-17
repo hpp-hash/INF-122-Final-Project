@@ -145,7 +145,7 @@ public class TetrisGameLogic extends GameLogic {
                 });
             }
         };
-        fall.schedule(task1, 0, 100);
+        fall.schedule(task1, 0, 300);
 
     }
 
