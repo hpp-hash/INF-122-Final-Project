@@ -1,5 +1,6 @@
 package tetris.src.sample;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +47,7 @@ public class TetrisGameLogic extends GameLogic {
         System.out.println("start Starts");
         try {
             tui = new TetrisUI();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
             System.out.print("Tetris UI failed");
         }

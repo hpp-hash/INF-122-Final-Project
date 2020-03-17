@@ -16,8 +16,10 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 
@@ -34,7 +36,7 @@ public class TetrisUI {
 
     Stage stage;
 
-    public TetrisUI() throws FileNotFoundException {
+    public TetrisUI() throws FileNotFoundException, URISyntaxException {
         group = new Pane();
 
         group.setId("pane");
@@ -50,7 +52,7 @@ public class TetrisUI {
 
         ClassLoader resource = this.getClass().getClassLoader();
         URL path = this.getClass().getResource("./resources/logo.png");
-        inputStream = new FileInputStream(path.getFile());
+        inputStream = new FileInputStream(new File(path.toURI()));
         image = new Image(inputStream);
         imageView = new ImageView(image);
 
