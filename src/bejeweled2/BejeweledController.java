@@ -30,7 +30,7 @@ public class BejeweledController{
     private int cX = 0, cY = 0, tX = 0, tY = 0;
     private Label label;
     private static Label showTime;
-    private static int gameLength = 300; // in seconds
+    private static int gameLength = 15; // in seconds
     static Timer timer;
 
     private Random rand = new Random();
@@ -121,7 +121,7 @@ public class BejeweledController{
         map.fillMap();
         setTimmer();
     }
-    private static final void setTimmer()
+    private void setTimmer()
     {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -132,10 +132,11 @@ public class BejeweledController{
             }
         }, 1000, 1000);
     }
-    private static final int setInterval() {
+    private int setInterval() {
         if (gameLength == 1)
         {
             timer.cancel();
+            gameOver();
             Platform.runLater(() -> {
                 showTime.setText("Game Over!");
             });
@@ -150,7 +151,18 @@ public class BejeweledController{
         int nSeconds = ((secs % 86400 ) % 3600 ) % 60;
         return String.format("%02d", nHours) + ":" + String.format("%02d", nMinutes) + ":" + String.format("%02d", nSeconds);
     }
+    private void gameOver()
+    {
+        root.getChildren().clear();
+        root.getChildren().add(background);
 
+        label.setTranslateX(320);
+        label.setTranslateY(200);
+        label.setFont(Font.font("Verdana", FontWeight.BOLD, 35));
+
+        root.getChildren().add(label);
+        root.getChildren().add(showTime);
+    }
     public void draw()
     {
         root.getChildren().clear();
