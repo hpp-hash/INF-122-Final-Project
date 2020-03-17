@@ -1,25 +1,18 @@
 package tetris.src.sample;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
-import javafx.application.Application;
+
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import tmge.GameLogic;
-import java.io.FileInputStream;
+import tmge.gameLogic.GameLogic;
+
 import java.io.FileNotFoundException;
 
 public class TetrisGameLogic extends GameLogic {

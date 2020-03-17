@@ -1,4 +1,4 @@
-package tmge;
+package tmge.tilemap;
 
 public abstract class TileMap {
     int numberOfRows;

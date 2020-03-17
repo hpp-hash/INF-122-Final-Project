@@ -1,9 +1,7 @@
 package bejeweled2;
 
-import tmge.NextTileEntity;
-import tmge.Tile;
-import tmge.TileEntity;
-import tmge.TileMap;
+import tmge.gameLogic.NextTileEntity;
+import tmge.tilemap.TileMap;
 
 import java.util.Random;
 

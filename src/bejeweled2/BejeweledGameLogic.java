@@ -1,24 +1,10 @@
 package bejeweled2;
 
-import javafx.animation.TranslateTransition;
-import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import tmge.GameLogic;
-import tmge.NextTileEntity;
-import tmge.TileEntity;
-import tmge.UserInputController;
-
-import java.util.Random;
+import tmge.gameLogic.GameLogic;
+import tmge.userinput.UserInputController;
 
 public class BejeweledGameLogic extends GameLogic {
 //    static int counter = 0;

@@ -11,8 +11,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
-import tmge.NextTileEntity;
-import tmge.TileEntity;
+import tmge.gameLogic.NextTileEntity;
+import tmge.tilemap.TileEntity;
 
 import java.util.Timer;
 import java.util.TimerTask;

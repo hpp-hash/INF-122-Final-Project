@@ -1,4 +1,4 @@
-package tmge;
+package tmge.gameLogic;
 
 import javafx.application.Application;
 

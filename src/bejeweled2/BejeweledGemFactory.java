@@ -1,7 +1,7 @@
 package bejeweled2;
 
-import tmge.TileEntity;
-import tmge.TileEntityFactory;
+import tmge.tilemap.TileEntity;
+import tmge.gameLogic.TileEntityFactory;
 
 public class BejeweledGemFactory implements TileEntityFactory {
 

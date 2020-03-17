@@ -1,4 +1,4 @@
-package tmge;
+package tmge.session;
 
 import java.io.BufferedWriter;
 import java.io.File;

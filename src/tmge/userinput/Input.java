@@ -1,4 +1,4 @@
-package tmge;
+package tmge.userinput;
 
 public interface Input {
     // Handling input dealing with translational movement of a tile entity (e.g. move left, right, up, down)

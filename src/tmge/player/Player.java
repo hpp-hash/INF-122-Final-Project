@@ -1,4 +1,6 @@
-package tmge;
+package tmge.player;
+
+import tmge.session.Session;
 
 import java.util.UUID;
 
