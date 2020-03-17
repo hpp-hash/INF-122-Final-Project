@@ -77,7 +77,7 @@ public class TetrisGameLogic extends GameLogic {
                                 tui.setGameOverText(true);
 
                                 Button exitBtn = new Button("Exit");
-                                exitBtn.relocate(TetrisGameLogic.XMAX + 35, 350);
+                                exitBtn.relocate(TetrisGameLogic.XMAX + 57, 350);
                                 exitBtn.setStyle("-fx-font-size: 15px;");
                                 exitBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
                                     @Override
