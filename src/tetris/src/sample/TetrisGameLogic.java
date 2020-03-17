@@ -31,7 +31,11 @@ public class TetrisGameLogic extends GameLogic {
 
     //Current block
     private Form activeBlock;
+    private Form activeBlock1;
+    // [12][24]
     protected int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
+    // [30][24]
+    protected int[][] MESH1 = new int[XMAX / SIZE + 18][YMAX / SIZE];
 
     //TetrisUI View
     private TetrisUI tui;
@@ -58,7 +62,9 @@ public class TetrisGameLogic extends GameLogic {
     public void initializeTileMap() {
         tui.setScore(0);
         activeBlock = Form.makeRect();
+        activeBlock1 = Form.makeRect1();
         tui.addBlock(activeBlock);
+        tui.addBlock(activeBlock1);
 
         Timer fall = new Timer();
         TimerTask task = new TimerTask() {
@@ -91,16 +97,16 @@ public class TetrisGameLogic extends GameLogic {
                             }
                         }
 
-
                         if (game) {
                             fall(activeBlock);
+                            fall1(activeBlock1);
                             tui.setScore(score);
                         }
                     }
                 });
             }
         };
-        fall.schedule(task, 0, 10);
+        fall.schedule(task, 0, 100);
 
     }
 
@@ -156,6 +162,7 @@ public class TetrisGameLogic extends GameLogic {
             activeBlock = Form.makeRect();
             tui.addBlock(activeBlock);
             tc.moveOnKeyPress(activeBlock);
+
         }
 
         if (form.a.getY() + MOVE < YMAX && form.b.getY() + MOVE < YMAX && form.c.getY() + MOVE < YMAX
@@ -164,6 +171,36 @@ public class TetrisGameLogic extends GameLogic {
             int moveb = MESH[(int) form.b.getX() / SIZE][((int) form.b.getY() / SIZE) + 1];
             int movec = MESH[(int) form.c.getX() / SIZE][((int) form.c.getY() / SIZE) + 1];
             int moved = MESH[(int) form.d.getX() / SIZE][((int) form.d.getY() / SIZE) + 1];
+            if (movea == 0 && movea == moveb && moveb == movec && movec == moved) {
+                form.a.setY(form.a.getY() + MOVE);
+                form.b.setY(form.b.getY() + MOVE);
+                form.c.setY(form.c.getY() + MOVE);
+                form.d.setY(form.d.getY() + MOVE);
+            }
+        }
+    }
+
+    public void fall1(Form form) {
+        if (form.a.getY() == YMAX - SIZE || form.b.getY() == YMAX - SIZE || form.c.getY() == YMAX - SIZE
+                || form.d.getY() == YMAX - SIZE || moveA1(form) || moveB1(form) || moveC1(form) || moveD1(form)) {
+            MESH1[(int) form.a.getX() / SIZE][(int) form.a.getY() / SIZE] = 1;
+            MESH1[(int) form.b.getX() / SIZE][(int) form.b.getY() / SIZE] = 1;
+            MESH1[(int) form.c.getX() / SIZE][(int) form.c.getY() / SIZE] = 1;
+            MESH1[(int) form.d.getX() / SIZE][(int) form.d.getY() / SIZE] = 1;
+//            RemoveRows(tui.getPane());
+
+            activeBlock1 = Form.makeRect1();
+            tui.addBlock(activeBlock1);
+            tc.moveOnKeyPress1(activeBlock1);
+
+        }
+
+        if (form.a.getY() + MOVE < YMAX && form.b.getY() + MOVE < YMAX && form.c.getY() + MOVE < YMAX
+                && form.d.getY() + MOVE < YMAX) {
+            int movea = MESH1[(int) form.a.getX() / SIZE][((int) form.a.getY() / SIZE) + 1];
+            int moveb = MESH1[(int) form.b.getX() / SIZE][((int) form.b.getY() / SIZE) + 1];
+            int movec = MESH1[(int) form.c.getX() / SIZE][((int) form.c.getY() / SIZE) + 1];
+            int moved = MESH1[(int) form.d.getX() / SIZE][((int) form.d.getY() / SIZE) + 1];
             if (movea == 0 && movea == moveb && moveb == movec && movec == moved) {
                 form.a.setY(form.a.getY() + MOVE);
                 form.b.setY(form.b.getY() + MOVE);
@@ -188,6 +225,23 @@ public class TetrisGameLogic extends GameLogic {
     private boolean moveD(Form form) {
         return (MESH[(int) form.d.getX() / SIZE][((int) form.d.getY() / SIZE) + 1] == 1);
     }
+
+    private boolean moveA1(Form form) {
+        return (MESH1[(int) form.a.getX() / SIZE][((int) form.a.getY() / SIZE) + 1] == 1);
+    }
+
+    private boolean moveB1(Form form) {
+        return (MESH1[(int) form.b.getX() / SIZE][((int) form.b.getY() / SIZE) + 1] == 1);
+    }
+
+    private boolean moveC1(Form form) {
+        return (MESH1[(int) form.c.getX() / SIZE][((int) form.c.getY() / SIZE) + 1] == 1);
+    }
+
+    private boolean moveD1(Form form) {
+        return (MESH1[(int) form.d.getX() / SIZE][((int) form.d.getY() / SIZE) + 1] == 1);
+    }
+
     private void RemoveRows(Pane pane) {
         ArrayList<Node> rects = new ArrayList<Node>();
         ArrayList<Integer> lines = new ArrayList<Integer>();
