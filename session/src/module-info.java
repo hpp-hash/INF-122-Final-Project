@@ -1,0 +1,3 @@
+module session {
+    exports session;
+}
