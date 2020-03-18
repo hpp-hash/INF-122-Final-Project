@@ -32,19 +32,15 @@ public class TetrisGameLogic extends GameLogic {
 
     //Current block
     private Form activeBlock;
-    private Form activeBlock1;
+
     // [12][24]
     protected int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
-    // [30][24]
-    protected int[][] MESH1 = new int[XMAX / SIZE + 18][YMAX / SIZE];
 
     //TetrisUI View
     private TetrisUI tui;
 
     //TetrisController
     private TetrisController tc;
-
-    private int totalHeight;
 
     private boolean removeRestartBtn = false;
 
@@ -63,9 +59,7 @@ public class TetrisGameLogic extends GameLogic {
     public void initializeTileMap() {
         tui.setScore(0);
         activeBlock = Form.makeRect();
-        activeBlock1 = Form.makeRect1();
         tui.addBlock(activeBlock);
-        tui.addBlock(activeBlock1);
 
         Timer fall = new Timer();
         TimerTask task = new TimerTask() {
@@ -106,48 +100,7 @@ public class TetrisGameLogic extends GameLogic {
                 });
             }
         };
-        fall.schedule(task, 0, 100);
-
-        TimerTask task1 = new TimerTask() {
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    public void run() {
-                        for (int i = 0; i < (XMAX / SIZE + 18); i++) {
-                            if (MESH1[i][0] != 0) {
-                                game = false;
-                                tui.setGameOverText(true);
-
-                                Button exitBtn = new Button("Exit");
-                                exitBtn.relocate(TetrisGameLogic.XMAX + 55 + 450, 400);
-                                exitBtn.setStyle("-fx-font-size: 15px;");
-                                exitBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
-                                    @Override
-                                    public void handle(MouseEvent mouseEvent) {
-                                        removeRestartBtn = true;
-                                        System.exit(0);
-                                    }
-                                });
-
-                                if (removeRestartBtn) {
-                                    tui.getPane().getChildren().clear();
-                                    tui.getPane().getChildren().remove(exitBtn);
-                                }
-                                else {
-                                    tui.getPane().getChildren().addAll(exitBtn);
-                                }
-                            }
-                        }
-
-                        if (game) {
-                            fall1(activeBlock1);
-//                            tui.setScore(score);
-                        }
-                    }
-                });
-            }
-        };
-        fall.schedule(task1, 0, 300);
-
+        fall.schedule(task, 0, 1000);
     }
 
     // suggestion to add incrementScore to the framework
@@ -220,36 +173,6 @@ public class TetrisGameLogic extends GameLogic {
         }
     }
 
-    public void fall1(Form form) {
-        if (form.getA().getY() == YMAX - SIZE || form.getB().getY() == YMAX - SIZE || form.getC().getY() == YMAX - SIZE
-                || form.getD().getY() == YMAX - SIZE || moveA1(form) || moveB1(form) || moveC1(form) || moveD1(form)) {
-            MESH1[(int) form.getA().getX() / SIZE][(int) form.getA().getY() / SIZE] = 1;
-            MESH1[(int) form.getB().getX() / SIZE][(int) form.getB().getY() / SIZE] = 1;
-            MESH1[(int) form.getC().getX() / SIZE][(int) form.getC().getY() / SIZE] = 1;
-            MESH1[(int) form.getD().getX() / SIZE][(int) form.getD().getY() / SIZE] = 1;
-//            RemoveRows(tui.getPane());
-
-            activeBlock1 = Form.makeRect1();
-            tui.addBlock(activeBlock1);
-            tc.moveOnKeyPress1(activeBlock1);
-
-        }
-
-        if (form.getA().getY() + MOVE < YMAX && form.getB().getY() + MOVE < YMAX && form.getC().getY() + MOVE < YMAX
-                && form.getD().getY() + MOVE < YMAX) {
-            int movea = MESH1[(int) form.getA().getX() / SIZE][((int) form.getA().getY() / SIZE) + 1];
-            int moveb = MESH1[(int) form.getB().getX() / SIZE][((int) form.getB().getY() / SIZE) + 1];
-            int movec = MESH1[(int) form.getC().getX() / SIZE][((int) form.getC().getY() / SIZE) + 1];
-            int moved = MESH1[(int) form.getD().getX() / SIZE][((int) form.getD().getY() / SIZE) + 1];
-            if (movea == 0 && movea == moveb && moveb == movec && movec == moved) {
-                form.getA().setY(form.getA().getY() + MOVE);
-                form.getB().setY(form.getB().getY() + MOVE);
-                form.getC().setY(form.getC().getY() + MOVE);
-                form.getD().setY(form.getD().getY() + MOVE);
-            }
-        }
-    }
-
     private boolean moveA(Form form) {
         return (MESH[(int) form.getA().getX() / SIZE][((int) form.getA().getY() / SIZE) + 1] == 1);
     }
@@ -264,22 +187,6 @@ public class TetrisGameLogic extends GameLogic {
 
     private boolean moveD(Form form) {
         return (MESH[(int) form.getD().getX() / SIZE][((int) form.getD().getY() / SIZE) + 1] == 1);
-    }
-
-    private boolean moveA1(Form form) {
-        return (MESH1[(int) form.getA().getX() / SIZE][((int) form.getA().getY() / SIZE) + 1] == 1);
-    }
-
-    private boolean moveB1(Form form) {
-        return (MESH1[(int) form.getB().getX() / SIZE][((int) form.getB().getY() / SIZE) + 1] == 1);
-    }
-
-    private boolean moveC1(Form form) {
-        return (MESH1[(int) form.getC().getX() / SIZE][((int) form.getC().getY() / SIZE) + 1] == 1);
-    }
-
-    private boolean moveD1(Form form) {
-        return (MESH1[(int) form.getD().getX() / SIZE][((int) form.getD().getY() / SIZE) + 1] == 1);
     }
 
     private void RemoveRows(Pane pane) {
