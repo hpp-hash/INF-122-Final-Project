@@ -10,22 +10,24 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import player.Player;
 import tileEntityFactory.NextTileEntity;
 import tilemap.TileEntity;
+import java.awt.Desktop;
+import java.net.URI;
 
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import java.util.Random;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class BejeweledController{
 
@@ -59,6 +61,13 @@ public class BejeweledController{
     private Button player2Button;
     private Button playAgainButton;
     private Button exitButton;
+    // User Network
+    private Label userLabel;
+    private TextField userField;
+    private Button userLogin;
+    private int currentUser;
+    private String serverURL = "https://a5games.xyz/";
+    protected static LinkedList<Integer> GEM_SET;
 
     private Random rand = new Random();
     private String[] dialogue = {"Somethin's Cookin'", "You're On Fire!", "Indiana Jones\nin the House",
@@ -99,7 +108,7 @@ public class BejeweledController{
                         TileEntity temp = map.getTile(tY, tX).getTileEntity();
                         map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                         map.getTile(cY, cX).addEntity(temp);
-                        
+
                         if (eatable(tY, tX) || eatable(cY, cX)) {
                             label.setText("Your Score: " + score + "\n     --Cleared--\n\n" + dialogue[rand.nextInt(dialogue.length)]);
                             currentScoreLabel.setText("Score: " + score);
@@ -138,6 +147,7 @@ public class BejeweledController{
     public void setup() {
         // Set Background
 //        background = new ImageView(new Image("images/border.png"));
+        GEM_SET = new LinkedList<>();
         URL borderURL = this.getClass().getResource("/images/border.png");
         background = new ImageView(new Image(String.valueOf(borderURL)));
         background.setFitWidth(GAME_WIDTH);
@@ -229,6 +239,218 @@ public class BejeweledController{
         map.fillMap();
         setupPlayers();
         setTimmer();
+        loginForm();
+    }
+    private void loginForm()
+    {
+        userLabel = new Label("Username: ");
+        userLabel.setTranslateX(GAME_WIDTH - 300);
+        userLabel.setTranslateY(40);
+        userLabel.setFont(Font.font("Arial", FontWeight.BLACK, 20));
+        userField = new TextField();
+        userField.setPrefHeight(30);
+        userField.setTranslateX(GAME_WIDTH - 200);
+        userField.setTranslateY(40);
+        userLogin = new Button("Login");
+        userLogin.setTranslateX(GAME_WIDTH - 200);
+        userLogin.setTranslateY(100);
+        userLogin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                URL url = null; // URL to your application
+                try {
+                    url = new URL(serverURL + "login.php");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                Map<String,Object> params = new LinkedHashMap<>();
+                params.put("username", userField.getText().toString()); // All parameters, also easy
+
+                StringBuilder postData = new StringBuilder();
+                // POST as urlencoded is basically key-value pairs, as with GET
+                // This creates key=value&key=value&... pairs
+                for (Map.Entry<String,Object> param : params.entrySet()) {
+                    if (postData.length() != 0) postData.append('&');
+                    try {
+                        postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    postData.append('=');
+                    try {
+                        postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Convert string to byte array, as it should be sent
+                byte[] postDataBytes = new byte[0];
+                try {
+                    postDataBytes = postData.toString().getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                // Connect, easy
+                HttpURLConnection conn = null;
+                try {
+                    conn = (HttpURLConnection)url.openConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Tell server that this is POST and in which format is the data
+                try {
+                    conn.setRequestMethod("POST");
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                }
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                conn.setDoOutput(true);
+                try {
+                    conn.getOutputStream().write(postDataBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // This gets the output from your server
+                Reader in = null;
+                String output = "";
+                try {
+                    in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                    for (int c; (c = in.read()) >= 0;)
+                    {
+                        output += (char)c;
+                    }
+                    String[] arrOfStr = output.split(",");
+                    currentUser = Integer.parseInt(arrOfStr[0]);
+                    for(int i = 1; i < 1000; i++)
+                    {
+                        GEM_SET.push(Integer.parseInt(arrOfStr[i]));
+                    }
+                    DEFAULT_GAMELENGTH = 30;
+                    map.fillMap();
+                    draw();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String server = serverURL + "index.php";
+
+                if (Desktop.isDesktopSupported()) {
+                    // Windows
+                    try {
+                        Desktop.getDesktop().browse(new URI(server));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Ubuntu
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("/usr/bin/firefox -new-window " + url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+    private void checkResult()
+    {
+        URL url = null; // URL to your application
+        try {
+            url = new URL(serverURL + "action.php");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Map<String,Object> params = new LinkedHashMap<>();
+        params.put("action", "update_score"); // All parameters, also easy
+        params.put("user", currentUser); // All parameters, also easy
+        params.put("score", score);
+
+        StringBuilder postData = new StringBuilder();
+        // POST as urlencoded is basically key-value pairs, as with GET
+        // This creates key=value&key=value&... pairs
+        for (Map.Entry<String,Object> param : params.entrySet()) {
+            if (postData.length() != 0) postData.append('&');
+            try {
+                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            postData.append('=');
+            try {
+                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        // Convert string to byte array, as it should be sent
+        byte[] postDataBytes = new byte[0];
+        try {
+            postDataBytes = postData.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        // Connect, easy
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection)url.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Tell server that this is POST and in which format is the data
+        try {
+            conn.setRequestMethod("POST");
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        }
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+        conn.setDoOutput(true);
+        try {
+            conn.getOutputStream().write(postDataBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // This gets the output from your server
+        Reader in = null;
+        String output = "";
+        try {
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            for (int c; (c = in.read()) >= 0;)
+            {
+                output += (char)c;
+            }
+            System.out.println(output);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String server = serverURL + "index.php";
+        if (Desktop.isDesktopSupported()) {
+            // Windows
+            try {
+                Desktop.getDesktop().browse(new URI(server));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Ubuntu
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                runtime.exec("/usr/bin/firefox -new-window " + url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     private void setTimmer()
     {
@@ -241,7 +463,7 @@ public class BejeweledController{
             }
         }, 1000, 1000);
     }
-    
+
     private int setInterval() {
         if (gameLength == 1)
         {
@@ -295,6 +517,8 @@ public class BejeweledController{
     }
     private void gameOver()
     {
+        checkResult();
+
         root.getChildren().clear();
         root.getChildren().add(background);
 
@@ -378,6 +602,7 @@ public class BejeweledController{
         root.getChildren().add(showTime);
         root.getChildren().addAll(player1Label, region1, player1ScoreLabel);
         root.getChildren().addAll(player2Label, region2, player2ScoreLabel);
+        root.getChildren().addAll(userLabel, userField, userLogin);
 
         for(int r = 0; r < ROW; r++) {
             for(int c = 0; c < COLUMN; c++) {
@@ -462,11 +687,14 @@ public class BejeweledController{
                 }else count = 0;
             }
         }
-
+        int randomIndex;
         if(maxCount > 2)
         {
             for(int i = 0; i < maxCount; i++){
-                int randomIndex = random.nextInt(tileEntityNames.length);
+                if(BejeweledController.GEM_SET.size() == 0)
+                    randomIndex = random.nextInt(tileEntityNames.length);
+                else
+                    randomIndex = BejeweledController.GEM_SET.pop();
                 if(vertical == true) {
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startRowIndex + i, startColIndex));
                     int temp = score;
