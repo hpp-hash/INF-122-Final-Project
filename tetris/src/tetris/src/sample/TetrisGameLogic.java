@@ -26,9 +26,12 @@ public class TetrisGameLogic extends GameLogic {
 
     //Scoreboard
     public int score = 0;
+    public int score1 = 0;
 
     //Is game over?
     private boolean game = true;
+    private boolean game1 = false;
+    private boolean isPlayer1 = true;
 
     //Current block
     private Form activeBlock;
@@ -42,9 +45,13 @@ public class TetrisGameLogic extends GameLogic {
     //TetrisController
     private TetrisController tc;
 
-    private boolean removeRestartBtn = false;
+    private boolean removePlayer2Btn = false;
 
-    public TetrisGameLogic() {
+    private boolean alreadyAdded = false;
+
+    private static TetrisGameLogic instance = null;
+
+    private TetrisGameLogic() {
         System.out.println("start Starts");
         try {
             tui = TetrisUI.getInstance();
@@ -53,6 +60,14 @@ public class TetrisGameLogic extends GameLogic {
             System.out.print("Tetris UI failed");
         }
         tc = new TetrisController(tui.getScene(), this);
+    }
+
+    public static TetrisGameLogic getInstance() {
+        if (instance == null) {
+            instance = new TetrisGameLogic();
+        }
+
+        return instance;
     }
 
     // initialize the background
@@ -68,39 +83,61 @@ public class TetrisGameLogic extends GameLogic {
                     public void run() {
                         for (int i = 0; i < (XMAX / SIZE); i++) {
                             if (MESH[i][0] != 0) {
-                                game = false;
                                 tui.setGameOverText(true);
-
-                                Button exitBtn = new Button("Exit");
-                                exitBtn.relocate(TetrisGameLogic.XMAX + 55, 400);
-                                exitBtn.setStyle("-fx-font-size: 15px;");
-                                exitBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
-                                    @Override
-                                    public void handle(MouseEvent mouseEvent) {
-                                        removeRestartBtn = true;
-                                        System.exit(0);
+                                if (game) {
+                                    if (isPlayer1) {
+                                        tui.addPlayer2Btn();
+                                        alreadyAdded = true;
                                     }
-                                });
+                                    else {
+                                        tui.exitBtn();
+                                    }
+                                    game = false;
+                                }
+                                else if (game1 && alreadyAdded) {
+                                    tui.exitBtn();
+                                }
 
-                                if (removeRestartBtn) {
-                                    tui.getPane().getChildren().clear();
-                                    tui.getPane().getChildren().remove(exitBtn);
-                                }
-                                else {
-                                    tui.getPane().getChildren().addAll(exitBtn);
-                                }
                             }
+                        }
+
+                        if (removePlayer2Btn) {
+                            tui.removePlayer2Btn();
+//                            tui.getPane().getChildren().clear();
+                            switchPlayer();
+                            removePlayer2Btn = false;
+                            activeBlock = Form.makeRect();
+                            tui.addBlock(activeBlock);
+                            game = false;
+                            game1 = true;
                         }
 
                         if (game) {
                             fall(activeBlock);
                             tui.setScore(score);
                         }
+                        else if (game1) {
+                            fall(activeBlock);
+                            tui.setScore(score1);
+                        }
                     }
                 });
             }
         };
-        fall.schedule(task, 0, 1000);
+        fall.schedule(task, 0, 100);
+    }
+
+    public void switchPlayer() {
+        MESH = new int[XMAX / SIZE][YMAX / SIZE];
+        tui.resetPlayer();
+    }
+
+    public void setRemovePlayer2Btn(boolean in) {
+        removePlayer2Btn = in;
+    }
+
+    public boolean getAlreadyAdded() {
+        return alreadyAdded;
     }
 
     // suggestion to add incrementScore to the framework
