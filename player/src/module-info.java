@@ -1,0 +1,3 @@
+module player {
+    requires session;
+}
