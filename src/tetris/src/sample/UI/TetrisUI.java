@@ -1,16 +1,10 @@
 package tetris.src.sample.UI;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -27,6 +21,8 @@ import java.net.URL;
 
 public class TetrisUI {
 
+    private static TetrisUI instance = null;
+
     private Pane group;
 
     private Scene scene;
@@ -42,7 +38,7 @@ public class TetrisUI {
 
     Stage stage;
 
-    public TetrisUI() throws FileNotFoundException, URISyntaxException {
+    private TetrisUI() throws FileNotFoundException, URISyntaxException {
         group = new Pane();
 
         group.setId("pane");
@@ -113,6 +109,13 @@ public class TetrisUI {
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
         stage.show();
+    }
+
+    public static TetrisUI getInstance() throws FileNotFoundException, URISyntaxException {
+        if(instance == null){
+            instance = new TetrisUI();
+        }
+        return instance;
     }
 
     public void setScore(int score){
