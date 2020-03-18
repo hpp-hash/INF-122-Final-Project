@@ -60,9 +60,9 @@ public class BejeweledGameLogic extends GameLogic {
     public void clearTiles() {
         for (int r = 0; r < controller.getROW(); r++){
             for (int c = 0; c < controller.getCOLUMN(); c++){
-                // int temp = controller.getScore();
+                int temp = controller.getScore();
                 controller.eatable(r, c);
-                controller.setScore(controller.getScore());
+                controller.setScore(temp);
             }
         }
         controller.draw();

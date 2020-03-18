@@ -29,7 +29,7 @@ import java.util.Random;
 
 public class BejeweledController{
 
-    private static int DEFAULT_GAMELENGTH = 10;
+    private static int DEFAULT_GAMELENGTH = 5;
     int counter = 0;
     private final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
     private final int ROW = 10, COLUMN = 14;
@@ -313,8 +313,15 @@ public class BejeweledController{
             label.setText("Player 1 Go!");
             currentPlayer.saveSession(score);
             player2RawScore = score;
-            String winner = player1RawScore >= player2RawScore? "Player 1": "Player 2";
-            winner = winner + " WINS!!\n\nCONGRATULATIONS!";
+
+            String winner;
+            if(player1RawScore == player2RawScore)
+                winner = "IT'S A TIE!!\n\nPlay a tiebreaker!";
+            else {
+                winner = player1RawScore >= player2RawScore? "Player 1": "Player 2";
+                winner = winner + " WINS!!\n\nCONGRATULATIONS!";
+            }
+
             pauseBeforeWinnerAnnouance(winner);
             resetPlayer2Label();
         }
