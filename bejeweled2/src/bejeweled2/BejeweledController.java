@@ -241,6 +241,7 @@ public class BejeweledController{
             }
         }, 1000, 1000);
     }
+    
     private int setInterval() {
         if (gameLength == 1)
         {
@@ -252,6 +253,7 @@ public class BejeweledController{
         }
         return --gameLength;
     }
+
     private static String S2H(int secs)
     {
         int nDays = secs / 86400;
