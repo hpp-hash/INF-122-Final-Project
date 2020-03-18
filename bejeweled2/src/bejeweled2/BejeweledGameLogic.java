@@ -40,6 +40,7 @@ public class BejeweledGameLogic extends GameLogic {
         controller.draw();
 
         Scene scene = new Scene(controller.getRoot(), controller.getGAME_WIDTH(), controller.getGAME_HEIGHT(), Color.TRANSPARENT);
+        scene.getStylesheets().addAll(getClass().getResource("/style/style.css").toExternalForm());
         gameStage.setScene(scene);
         gameStage.show();
     }

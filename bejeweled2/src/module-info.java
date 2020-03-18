@@ -4,5 +4,6 @@ module bejeweled2 {
     requires tilemap;
     requires gameLogic;
     requires userinput;
+    requires player;
     exports bejeweled2;
 }

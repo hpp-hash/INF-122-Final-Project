@@ -4,16 +4,51 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Session {
-    public String sessionID;
-    public int currentScore;
-    public int[] bestScoreArr;
-    public int timeElapsed;
+    int sessionID;
+    int currentScore;
+    ArrayList<Integer> scoreArr;
+    int bestScore;
 
-    public Session(String playerID, int score) {
+    public Session(int playerID, int score) {
         sessionID = playerID; // each session is linked to a player
         currentScore = score;
+        scoreArr = new ArrayList<>();
+        bestScore = score;
+    }
+
+    public int getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(int sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public ArrayList<Integer> getScoreArr() {
+        return scoreArr;
+    }
+
+    public void addScore(int score) {
+        this.scoreArr.add(score);
+    }
+
+    public int getBestScore() {
+        return bestScore;
+    }
+
+    public void setBestScore(int bestScore) {
+        this.bestScore = bestScore;
     }
 
     public void start() {
