@@ -45,6 +45,8 @@ public class TetrisUI {
     Stage stage;
 
     Button player2Btn;
+    Button restartBtn;
+    Button exitBtn;
 
     private Stack<Form> formStack;
 
@@ -112,10 +114,10 @@ public class TetrisUI {
 
 
         gameOverText = new Text();
-        gameOverText.setFill(Color.BLUE);
-        gameOverText.setStyle("-fx-font: 30 arial;");
+        gameOverText.setFill(Color.BLACK);
+        gameOverText.setStyle("-fx-font: 40 arial;");
         gameOverText.setY(TetrisGameLogic.YMAX / 2);
-        gameOverText.setX((50));
+        gameOverText.setX((35));
 
         group.getChildren().addAll(line, gameOverText, rectangle, imageView, scoreText, rectangle1, playerText, player1Text, scoreText1);
 
@@ -123,6 +125,7 @@ public class TetrisUI {
         stage.setTitle("INF 122 - Tetris");
         stage.show();
     }
+
 
     public static TetrisUI getInstance() throws FileNotFoundException, URISyntaxException {
         if(instance == null){
@@ -178,7 +181,7 @@ public class TetrisUI {
     }
 
     public void exitBtn() {
-        Button exitBtn = new Button("Exit");
+        exitBtn = new Button("Exit");
         exitBtn.relocate(TetrisGameLogic.XMAX + 55, 400);
         exitBtn.setStyle("-fx-font-size: 15px;");
         exitBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
@@ -190,6 +193,38 @@ public class TetrisUI {
 
         getPane().getChildren().addAll(exitBtn);
     }
+
+    public void restartBtn() {
+        restartBtn = new Button("Restart");
+        restartBtn.relocate(TetrisGameLogic.XMAX + 45, 450);
+        restartBtn.setStyle("-fx-font-size: 15px;");
+        restartBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                TetrisGameLogic.getInstance().setRestartStatus(true);
+            }
+        });
+
+        getPane().getChildren().addAll(restartBtn);
+    }
+
+    public void restartGame() {
+        for (Form entry : formStack) {
+            getPane().getChildren().removeAll(entry.getA(), entry.getB(), entry.getC(), entry.getD());
+        }
+
+        formStack.clear();
+        getPane().getChildren().removeAll(restartBtn, exitBtn);
+        setGameOverText(false);
+        playerText.setText("Player 1 (current)");
+        player1Text.setText("Player 2");
+        TetrisGameLogic.getInstance().score = 0;
+        TetrisGameLogic.getInstance().score1 = 0;
+        scoreText.setText("Score: 0");
+        scoreText1.setText("Score: 0");
+    }
+
+
 
     public void setGameOverText(boolean isOver){
         if(isOver){

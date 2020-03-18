@@ -46,6 +46,7 @@ public class TetrisGameLogic extends GameLogic {
     private TetrisController tc;
 
     private boolean removePlayer2Btn = false;
+    private boolean restartStatus = false;
 
     private boolean alreadyAdded = false;
 
@@ -104,6 +105,7 @@ public class TetrisGameLogic extends GameLogic {
                                     else {
                                         tui.changePlayerText("Player 1 (Tie)", "Player 2 (Tie)");
                                     }
+                                    tui.restartBtn();
                                 }
                             }
                         }
@@ -119,18 +121,34 @@ public class TetrisGameLogic extends GameLogic {
                             game1 = true;
                         }
 
-                        if (game) {
-                            fall(activeBlock);
-                            tui.setScore(score);
-                        } else if (game1) {
-                            fall(activeBlock);
-                            tui.setScore1(score1);
+                        if (restartStatus) {
+                            MESH = new int[XMAX / SIZE][YMAX / SIZE];
+                            tui.restartGame();
+                            game = true;
+                            alreadyAdded = false;
+                            isPlayer1 = true;
+                            restartStatus = false;
+                            activeBlock = Form.makeRect();
+                            tui.addBlock(activeBlock);
+                            tc.moveOnKeyPress(activeBlock);
+                        } else {
+                            if (game) {
+                                fall(activeBlock);
+                                tui.setScore(score);
+                            } else if (game1) {
+                                fall(activeBlock);
+                                tui.setScore1(score1);
+                            }
                         }
                     }
                 });
             }
         };
         fall.schedule(task, 0, 100);
+    }
+
+    public void setRestartStatus(boolean input) {
+        restartStatus = input;
     }
 
     public void switchPlayer() {

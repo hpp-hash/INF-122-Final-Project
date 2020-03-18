@@ -25,22 +25,22 @@ public class Form {
 			color = Color.BLUE;
 			break;
 		case "l":
-			color = Color.DARKGOLDENROD;
+			color = Color.ORANGE;
 			break;
 		case "o":
-			color = Color.INDIANRED;
+			color = Color.YELLOW;
 			break;
 		case "s":
-			color = Color.FORESTGREEN;
+			color = Color.GREEN;
 			break;
 		case "t":
-			color = Color.CADETBLUE;
+			color = Color.PURPLE;
 			break;
 		case "z":
-			color = Color.HOTPINK;
+			color = Color.RED;
 			break;
 		case "i":
-			color = Color.SANDYBROWN;
+			color = Color.CYAN;
 			break;
 		}
 
