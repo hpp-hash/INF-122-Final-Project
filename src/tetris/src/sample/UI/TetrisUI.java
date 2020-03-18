@@ -1,4 +1,4 @@
-package tetris.src.sample;
+package tetris.src.sample.UI;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -15,6 +15,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import tetris.src.sample.Form;
+import tetris.src.sample.TetrisGameLogic;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,7 +57,7 @@ public class TetrisUI {
         ImageView imageView;
 
         ClassLoader resource = this.getClass().getClassLoader();
-        URL path = this.getClass().getResource("./resources/logo.png");
+        URL path = this.getClass().getResource("../resources/logo.png");
         inputStream = new FileInputStream(new File(path.toURI()));
         image = new Image(inputStream);
         imageView = new ImageView(image);
@@ -65,7 +67,6 @@ public class TetrisUI {
 
         imageView.setFitWidth(119);
         imageView.setFitHeight(95.4444);
-
 
 
         line = new Line(TetrisGameLogic.XMAX, 0, TetrisGameLogic.XMAX, TetrisGameLogic.YMAX);
@@ -129,7 +130,7 @@ public class TetrisUI {
     }
 
     public void addBlock(Form block){
-        group.getChildren().addAll(block.a, block.b, block.c, block.d);
+        group.getChildren().addAll(block.getA(), block.getB(), block.getC(), block.getD());
     }
 
     public Scene getScene(){
