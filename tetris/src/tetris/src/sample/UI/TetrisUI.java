@@ -135,6 +135,10 @@ public class TetrisUI {
         scoreText.setText("Score: " + score);
     }
 
+    public void setScore1(int score1){
+        scoreText1.setText("Score: " + score1);
+    }
+
     public void addPlayer2Btn() {
         if (!TetrisGameLogic.getInstance().getAlreadyAdded()) {
             player2Btn = new Button("Player 2's Turn");
@@ -150,6 +154,11 @@ public class TetrisUI {
             getPane().getChildren().addAll(player2Btn);
         }
 
+    }
+
+    public void changePlayerText(String player, String player1) {
+        playerText.setText(player);
+        player1Text.setText(player1);
     }
 
     public void resetPlayer() {

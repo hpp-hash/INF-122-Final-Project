@@ -88,15 +88,22 @@ public class TetrisGameLogic extends GameLogic {
                                     if (isPlayer1) {
                                         tui.addPlayer2Btn();
                                         alreadyAdded = true;
-                                    }
-                                    else {
+                                    } else {
                                         tui.exitBtn();
                                     }
                                     game = false;
-                                }
-                                else if (game1 && alreadyAdded) {
+                                } else if (game1 && alreadyAdded) {
                                     tui.exitBtn();
                                     game1 = false;
+                                    if (score > score1) {
+                                        tui.changePlayerText("Player 1 (Winner)", "Player 2");
+                                    }
+                                    else if (score < score1){
+                                        tui.changePlayerText("Player 1", "Player 2 (Winner)");
+                                    }
+                                    else {
+                                        tui.changePlayerText("Player 1 (Tie)", "Player 2 (Tie)");
+                                    }
                                 }
                             }
                         }
@@ -107,13 +114,17 @@ public class TetrisGameLogic extends GameLogic {
                             removePlayer2Btn = false;
                             activeBlock = Form.makeRect();
                             tui.addBlock(activeBlock);
+                            tc.moveOnKeyPress(activeBlock);
                             game = false;
                             game1 = true;
                         }
 
-                        if (game || game1) {
+                        if (game) {
                             fall(activeBlock);
                             tui.setScore(score);
+                        } else if (game1) {
+                            fall(activeBlock);
+                            tui.setScore1(score1);
                         }
                     }
                 });
@@ -137,11 +148,21 @@ public class TetrisGameLogic extends GameLogic {
 
     // suggestion to add incrementScore to the framework
     public void incrementScore() {
-        score++;
+        if (game) {
+            score++;
+        }
+        else if (game1) {
+            score1++;
+        }
     }
+
 
     public boolean getGameStatus() {
         return game;
+    }
+
+    public boolean getGameStatus1() {
+        return game1;
     }
 
     @Override

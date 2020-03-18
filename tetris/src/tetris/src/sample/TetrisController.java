@@ -18,7 +18,7 @@ public class TetrisController {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (gameLogic.getGameStatus()) {
+                if (gameLogic.getGameStatus() ^ gameLogic.getGameStatus1()) {
                     switch (event.getCode()) {
                         case RIGHT:
                             System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
