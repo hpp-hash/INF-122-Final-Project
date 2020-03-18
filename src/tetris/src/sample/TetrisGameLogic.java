@@ -23,7 +23,6 @@ public class TetrisGameLogic extends GameLogic {
     public static final int SIZE = 25;
     public static final int XMAX = SIZE * 12;
     public static final int YMAX = SIZE * 24;
-    public
 
     //Scoreboard
     public int score = 0;
