@@ -96,14 +96,13 @@ public class TetrisGameLogic extends GameLogic {
                                 }
                                 else if (game1 && alreadyAdded) {
                                     tui.exitBtn();
+                                    game1 = false;
                                 }
-
                             }
                         }
 
                         if (removePlayer2Btn) {
                             tui.removePlayer2Btn();
-//                            tui.getPane().getChildren().clear();
                             switchPlayer();
                             removePlayer2Btn = false;
                             activeBlock = Form.makeRect();
@@ -112,13 +111,9 @@ public class TetrisGameLogic extends GameLogic {
                             game1 = true;
                         }
 
-                        if (game) {
+                        if (game || game1) {
                             fall(activeBlock);
                             tui.setScore(score);
-                        }
-                        else if (game1) {
-                            fall(activeBlock);
-                            tui.setScore(score1);
                         }
                     }
                 });
