@@ -257,6 +257,8 @@ public class BejeweledController{
         userLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                userField.setDisable(true);
+                userLogin.setDisable(true);
                 URL url = null; // URL to your application
                 try {
                     url = new URL(serverURL + "login.php");
@@ -329,9 +331,11 @@ public class BejeweledController{
                     {
                         GEM_SET.push(Integer.parseInt(arrOfStr[i]));
                     }
-                    DEFAULT_GAMELENGTH = 30;
                     map.fillMap();
                     draw();
+                    gameLength = 30;
+                    timer.cancel();
+                    setTimmer();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
