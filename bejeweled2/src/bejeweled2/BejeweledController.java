@@ -29,7 +29,7 @@ import java.util.Random;
 
 public class BejeweledController{
 
-    private static int DEFAULT_GAMELENGTH = 5;
+    private static int DEFAULT_GAMELENGTH = 30;
     int counter = 0;
     private final int GAME_WIDTH = 1280, GAME_HEIGHT = 720, GEM_SIZE = 64;
     private final int ROW = 10, COLUMN = 14;
