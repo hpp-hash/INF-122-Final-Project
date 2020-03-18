@@ -5,10 +5,10 @@ import javafx.scene.shape.Rectangle;
 
 
 public class Form {
-	Rectangle a;
-	Rectangle b;
-	Rectangle c;
-	Rectangle d;
+	private Rectangle a;
+	private Rectangle b;
+	private Rectangle c;
+	private Rectangle d;
 	Color color;
 	private String name;
 	public int form = 1;
@@ -48,6 +48,22 @@ public class Form {
 		this.b.setFill(color);
 		this.c.setFill(color);
 		this.d.setFill(color);
+	}
+
+	public Rectangle getA() {
+		return a;
+	}
+
+	public Rectangle getB() {
+		return b;
+	}
+
+	public Rectangle getC() {
+		return c;
+	}
+
+	public Rectangle getD() {
+		return d;
 	}
 
 
@@ -127,5 +143,4 @@ public class Form {
 		}
 		return new Form(a, b, c, d, name);
 	}
-
 }

@@ -1,20 +1,16 @@
-package tetris.src.sample;
+package tetris.src.sample.UI;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import tetris.src.sample.Form;
+import tetris.src.sample.TetrisGameLogic;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,24 +21,29 @@ import java.net.URL;
 
 public class TetrisUI {
 
+    private static TetrisUI instance = null;
+
     private Pane group;
 
     private Scene scene;
 
     private Line line;
 
+    private Text playerText;
+
     private Text scoreText;
+
     private Text gameOverText;
 
     Stage stage;
 
-    public TetrisUI() throws FileNotFoundException, URISyntaxException {
+    private TetrisUI() throws FileNotFoundException, URISyntaxException {
         group = new Pane();
 
         group.setId("pane");
 
-        scene = new Scene(group, TetrisGameLogic.XMAX + 150, TetrisGameLogic.YMAX);
-        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+        scene = new Scene(group, TetrisGameLogic.XMAX + 150 , TetrisGameLogic.YMAX);
+        scene.getStylesheets().addAll(this.getClass().getResource("/resources/style.css").toExternalForm());
 
         stage = new Stage();
 
@@ -63,18 +64,28 @@ public class TetrisUI {
         imageView.setFitHeight(95.4444);
 
 
-
         line = new Line(TetrisGameLogic.XMAX, 0, TetrisGameLogic.XMAX, TetrisGameLogic.YMAX);
+
+        playerText = new Text("Player 1 (left)");
+        playerText.setStyle("-fx-font: 15 arial;");
+        playerText.setY(260);
+        playerText.setX(TetrisGameLogic.XMAX + 5);
 
         Region rectangle = new Region();
         rectangle.setPrefSize(140, 40);
         rectangle.setStyle("-fx-background-color: white; -fx-background-radius: 10 10 10 10");
         rectangle.relocate(TetrisGameLogic.XMAX + 5, 264);
 
+        Region rectangle1 = new Region();
+        rectangle1.setPrefSize(140, 40);
+        rectangle1.setStyle("-fx-background-color: white; -fx-background-radius: 10 10 10 10");
+        rectangle1.relocate(TetrisGameLogic.XMAX + 5, 334);
+
         scoreText = new Text();
         scoreText.setStyle("-fx-font: 15 arial;");
         scoreText.setY(290);
         scoreText.setX(TetrisGameLogic.XMAX + 15);
+
 
         gameOverText = new Text();
         gameOverText.setFill(Color.BLUE);
@@ -82,11 +93,18 @@ public class TetrisUI {
         gameOverText.setY(TetrisGameLogic.YMAX / 2);
         gameOverText.setX((50));
 
-        group.getChildren().addAll(line, gameOverText, rectangle, imageView, scoreText);
+        group.getChildren().addAll(line, gameOverText, rectangle, imageView, scoreText, rectangle1, playerText);
 
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
         stage.show();
+    }
+
+    public static TetrisUI getInstance() throws FileNotFoundException, URISyntaxException {
+        if(instance == null){
+            instance = new TetrisUI();
+        }
+        return instance;
     }
 
     public void setScore(int score){
@@ -103,8 +121,8 @@ public class TetrisUI {
         }
     }
 
-    public void addBlock(Form block){
-        group.getChildren().addAll(block.a, block.b, block.c, block.d);
+    public void addBlock(Form block) {
+        group.getChildren().addAll(block.getA(), block.getB(), block.getC(), block.getD());
     }
 
     public Scene getScene(){
