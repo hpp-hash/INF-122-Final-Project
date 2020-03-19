@@ -241,6 +241,10 @@ public class BejeweledController{
         setTimmer();
         loginForm();
     }
+
+    /* **************************************** */
+    /*                 Network                  */
+    /* **************************************** */
     private void loginForm()
     {
         userLabel = new Label("Username: ");
@@ -259,41 +263,19 @@ public class BejeweledController{
             public void handle(ActionEvent actionEvent) {
                 userField.setDisable(true);
                 userLogin.setDisable(true);
-                URL url = null; // URL to your application
+                URL url = null;
                 try {
                     url = new URL(serverURL + "login.php");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                Map<String,Object> params = new LinkedHashMap<>();
-                params.put("username", userField.getText().toString()); // All parameters, also easy
-
-                StringBuilder postData = new StringBuilder();
-                // POST as urlencoded is basically key-value pairs, as with GET
-                // This creates key=value&key=value&... pairs
-                for (Map.Entry<String,Object> param : params.entrySet()) {
-                    if (postData.length() != 0) postData.append('&');
-                    try {
-                        postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    postData.append('=');
-                    try {
-                        postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Convert string to byte array, as it should be sent
+                String postData = "username=" + userField.getText();
                 byte[] postDataBytes = new byte[0];
                 try {
-                    postDataBytes = postData.toString().getBytes("UTF-8");
+                    postDataBytes = postData.getBytes("UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-
                 // Connect, easy
                 HttpURLConnection conn = null;
                 try {
@@ -333,9 +315,8 @@ public class BejeweledController{
                     }
                     map.fillMap();
                     draw();
-                    gameLength = 30;
-                    timer.cancel();
-                    setTimmer();
+                    label.setText("Start!");
+                    gameLength = DEFAULT_GAMELENGTH;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -350,32 +331,11 @@ public class BejeweledController{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Map<String,Object> params = new LinkedHashMap<>();
-        params.put("action", "update_score"); // All parameters, also easy
-        params.put("user", currentUser); // All parameters, also easy
-        params.put("score", score);
 
-        StringBuilder postData = new StringBuilder();
-        // POST as urlencoded is basically key-value pairs, as with GET
-        // This creates key=value&key=value&... pairs
-        for (Map.Entry<String,Object> param : params.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
-            try {
-                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            postData.append('=');
-            try {
-                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        // Convert string to byte array, as it should be sent
+        String postData = "action=update_score&user=" + currentUser + "&score=" + score;
         byte[] postDataBytes = new byte[0];
         try {
-            postDataBytes = postData.toString().getBytes("UTF-8");
+            postDataBytes = postData.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -425,16 +385,11 @@ public class BejeweledController{
         try{
 
             if (os.indexOf( "win" ) >= 0) {
-                // this doesn't support showing urls in the form of "page.html#nameLink"
                 rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
             } else if (os.indexOf( "mac" ) >= 0) {
                 rt.exec( "open " + url);
             } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {
-                // Do a best guess on unix until we get a platform independent way
-                // Build a list of browsers to try, in this order.
-                String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
-                        "netscape","opera","links","lynx"};
-                // Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
+                String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape","opera","links","lynx"};
                 StringBuffer cmd = new StringBuffer();
                 for (int i=0; i<browsers.length; i++)
                     cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
@@ -446,6 +401,10 @@ public class BejeweledController{
             return;
         }
     }
+
+    /* **************************************** */
+    /*                 Timmer                   */
+    /* **************************************** */
     private void setTimmer()
     {
         timer = new Timer();
@@ -463,6 +422,8 @@ public class BejeweledController{
         {
             timer.cancel();
             gameOver();
+            checkResult();
+            reset();
             Platform.runLater(() -> {
                 showTime.setText("Game Over!");
             });
@@ -478,6 +439,7 @@ public class BejeweledController{
         int nSeconds = ((secs % 86400 ) % 3600 ) % 60;
         return String.format("%02d", nHours) + ":" + String.format("%02d", nMinutes) + ":" + String.format("%02d", nSeconds);
     }
+    // End Timmer
 
     private void reset() {
         showTime.setText("");
@@ -511,8 +473,6 @@ public class BejeweledController{
     }
     private void gameOver()
     {
-        checkResult();
-
         root.getChildren().clear();
         root.getChildren().add(background);
 
@@ -522,6 +482,10 @@ public class BejeweledController{
         root.getChildren().add(showTime);
         root.getChildren().addAll(player1Label, region1, player1ScoreLabel);
         root.getChildren().addAll(player2Label, region2, player2ScoreLabel);
+
+        userField.setDisable(false);
+        userLogin.setDisable(false);
+        root.getChildren().addAll(userLogin, userLabel, userField);
 
         if(!playerTurn) {
             label.setText("Player 2 Go!");
