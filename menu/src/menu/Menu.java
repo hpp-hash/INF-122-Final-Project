@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import tetris.src.sample.Main;
+import tetris.Main;
 
 import java.net.URL;
 

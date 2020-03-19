@@ -62,8 +62,8 @@ public class TetrisUI {
 
         ImageView imageView;
 
-        URL path = this.getClass().getResource("/resources/logo.png");
-        imageView = new ImageView(new Image(String.valueOf(path)));
+        URL path = this.getClass().getResource("/logo.png");
+        imageView = new ImageView(new Image(path.toURI().toString()));
 
         imageView.setX(TetrisGameLogic.XMAX + 15);
         imageView.setY(130);
