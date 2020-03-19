@@ -21,6 +21,10 @@ public abstract class AbstractBlock {
         this.b = b;
         this.c = c;
         this.d = d;
+        this.a.setFill(color);
+        this.b.setFill(color);
+        this.c.setFill(color);
+        this.d.setFill(color);
     }
 
     public Rectangle getA() {
