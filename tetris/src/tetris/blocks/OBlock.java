@@ -11,6 +11,6 @@ public class OBlock extends AbstractBlock {
 
     @Override
     public void rotateBlock(TetrisGameLogic gameLogic) {
-
+        //No need to rotate this block is the same on all sides.
     }
 }

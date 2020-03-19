@@ -12,8 +12,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import tetris.blocks.AbstractBlock;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -45,11 +45,11 @@ public class TetrisUI {
     Button restartBtn;
     Button exitBtn;
 
-    private Stack<Form> formStack;
+    private Stack<AbstractBlock> blockStack;
 
     private TetrisUI() throws FileNotFoundException, URISyntaxException {
 
-        formStack = new Stack<Form>();
+        blockStack = new Stack<AbstractBlock>();
 
         group = new Pane();
 
@@ -162,11 +162,11 @@ public class TetrisUI {
     }
 
     public void resetPlayer() {
-        for (Form entry : formStack) {
+        for (AbstractBlock entry : blockStack) {
             getPane().getChildren().removeAll(entry.getA(), entry.getB(), entry.getC(), entry.getD());
         }
 
-        formStack.clear();
+        blockStack.clear();
         setGameOverText(false);
         playerText.setText("Player 1");
         player1Text.setText("Player 2 (current)");
@@ -206,11 +206,11 @@ public class TetrisUI {
     }
 
     public void restartGame() {
-        for (Form entry : formStack) {
+        for (AbstractBlock entry : blockStack) {
             getPane().getChildren().removeAll(entry.getA(), entry.getB(), entry.getC(), entry.getD());
         }
 
-        formStack.clear();
+        blockStack.clear();
         getPane().getChildren().removeAll(restartBtn, exitBtn);
         setGameOverText(false);
         playerText.setText("Player 1 (current)");
@@ -233,9 +233,9 @@ public class TetrisUI {
         }
     }
 
-    public void addBlock(Form block) {
+    public void addBlock(AbstractBlock block) {
         group.getChildren().addAll(block.getA(), block.getB(), block.getC(), block.getD());
-        formStack.push(block);
+        blockStack.push(block);
     }
 
     public Scene getScene(){

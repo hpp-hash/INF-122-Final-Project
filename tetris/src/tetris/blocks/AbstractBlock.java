@@ -3,6 +3,7 @@ package tetris.blocks;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import tetris.Form;
 import tetris.TetrisGameLogic;
 
 
@@ -20,6 +21,19 @@ public abstract class AbstractBlock {
         this.b = b;
         this.c = c;
         this.d = d;
+    }
+
+    public Rectangle getA() {
+        return a;
+    }
+    public Rectangle getB() {
+        return b;
+    }
+    public Rectangle getC() {
+        return c;
+    }
+    public Rectangle getD() {
+        return d;
     }
 
     public abstract void rotateBlock(TetrisGameLogic gameLogic);
@@ -96,6 +110,68 @@ public abstract class AbstractBlock {
         if (y < 0)
             yb = rect.getY() + y * TetrisGameLogic.MOVE < TetrisGameLogic.YMAX;
         return xb && yb && gameLogic.MESH[((int) rect.getX() / TetrisGameLogic.SIZE) + x][((int) rect.getY() / TetrisGameLogic.SIZE) - y] == 0;
+    }
+
+    public static AbstractBlock makeRect() {
+        int block = (int) (Math.random() * 100);
+        Rectangle a = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1), b = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1), c = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1),
+                d = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1);
+        if (block < 15) {
+            a.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            b.setY(TetrisGameLogic.SIZE);
+            c.setX(TetrisGameLogic.XMAX / 2);
+            c.setY(TetrisGameLogic.SIZE);
+            d.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            d.setY(TetrisGameLogic.SIZE);
+            return new JBlock(a, b, c, d, Color.BLUE);
+        } else if (block < 30) {
+            a.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            b.setY(TetrisGameLogic.SIZE);
+            c.setX(TetrisGameLogic.XMAX / 2);
+            c.setY(TetrisGameLogic.SIZE);
+            d.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            d.setY(TetrisGameLogic.SIZE);
+            return new LBlock(a, b, c, d, Color.ORANGE);
+        } else if (block < 45) {
+            a.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2);
+            c.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            c.setY(TetrisGameLogic.SIZE);
+            d.setX(TetrisGameLogic.XMAX / 2);
+            d.setY(TetrisGameLogic.SIZE);
+            return new OBlock(a, b, c, d, Color.YELLOW);
+        } else if (block < 60) {
+            a.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2);
+            c.setX(TetrisGameLogic.XMAX / 2);
+            c.setY(TetrisGameLogic.SIZE);
+            d.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            d.setY(TetrisGameLogic.SIZE);
+            return new SBlock(a, b, c, d, Color.GREEN);
+        } else if (block < 75) {
+            a.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2);
+            c.setX(TetrisGameLogic.XMAX / 2);
+            c.setY(TetrisGameLogic.SIZE);
+            d.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            return new TBlock(a, b, c, d, Color.PURPLE);
+        } else if (block < 90) {
+            a.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2);
+            c.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            c.setY(TetrisGameLogic.SIZE);
+            d.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE + TetrisGameLogic.SIZE);
+            d.setY(TetrisGameLogic.SIZE);
+            return new ZBlock(a, b, c, d, Color.RED);
+        } else {
+            a.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE - TetrisGameLogic.SIZE);
+            b.setX(TetrisGameLogic.XMAX / 2 - TetrisGameLogic.SIZE);
+            c.setX(TetrisGameLogic.XMAX / 2);
+            d.setX(TetrisGameLogic.XMAX / 2 + TetrisGameLogic.SIZE);
+            return new IBlock(a, b, c, d, Color.CYAN);
+        }
     }
 
 }

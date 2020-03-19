@@ -27,7 +27,7 @@ public class TetrisController {
                             break;
                         case DOWN:
                             System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
-                            gameLogic.fall(form);
+                            gameLogic.fall(block);
                             gameLogic.incrementScore();
                             break;
                         case LEFT:
