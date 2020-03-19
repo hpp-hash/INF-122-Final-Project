@@ -13,4 +13,8 @@ public class NextTileEntity{
     public void addNewTileEntity(String entityName, Tile tile){
         tile.addEntity(factory.createTileEntity(entityName));
     }
+
+    public void setFactory(TileEntityFactory factory) {
+        this.factory = factory;
+    }
 }
