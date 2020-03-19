@@ -66,9 +66,8 @@ public class TetrisUI {
 
         ClassLoader resource = this.getClass().getClassLoader();
         URL path = this.getClass().getResource("/logo.png");
-        System.out.println(path.getPath());
-        inputStream = new FileInputStream(new File(path.getPath()));
-        image = new Image(inputStream);
+        System.out.println(path.toURI().toString());
+        image = new Image(path.toURI().toString());
         imageView = new ImageView(image);
 
         imageView.setX(TetrisGameLogic.XMAX + 15);
