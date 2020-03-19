@@ -22,7 +22,5 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         TetrisGameLogic.getInstance().startGame();
     }
-    public void start() {
-        TetrisGameLogic.getInstance().startGame();
-    }
+
 }

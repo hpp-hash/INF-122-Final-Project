@@ -1,5 +1,6 @@
 package tetris;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.WindowEvent;
 import tetris.blocks.AbstractBlock;
 
 import java.io.FileInputStream;
@@ -116,6 +118,13 @@ public class TetrisUI {
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
         stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
 
