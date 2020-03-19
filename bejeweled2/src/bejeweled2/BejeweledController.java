@@ -1,6 +1,5 @@
 package bejeweled2;
 
-import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -15,17 +14,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+import network.Network;
 import player.Player;
 import tileEntityFactory.NextTileEntity;
 import tilemap.TileEntity;
-import java.awt.Desktop;
-import java.net.URI;
 
-import java.io.*;
 import java.net.*;
 import java.util.*;
 
@@ -65,8 +61,7 @@ public class BejeweledController{
     private Label userLabel;
     private TextField userField;
     private Button userLogin;
-    private int currentUser;
-    private String serverURL = "https://a5games.xyz/";
+    private static int currentUser;
     protected static LinkedList<Integer> GEM_SET;
 
     private Random rand = new Random();
@@ -145,16 +140,12 @@ public class BejeweledController{
 
 
     public void setup() {
-        // Set Background
-//        background = new ImageView(new Image("images/border.png"));
         GEM_SET = new LinkedList<>();
         URL borderURL = this.getClass().getResource("/images/border.png");
         background = new ImageView(new Image(String.valueOf(borderURL)));
         background.setFitWidth(GAME_WIDTH);
         background.setFitHeight(GAME_HEIGHT);
 
-        // Set Cursor
-//        cursor = new ImageView(new Image("images/bejeweled2/images/cursor.png"));
         URL cursorURL = this.getClass().getResource("/images/cursor.png");
         cursor = new ImageView(new Image(String.valueOf(cursorURL)));
         cursor.setFitWidth(GEM_SIZE);
@@ -263,143 +254,17 @@ public class BejeweledController{
             public void handle(ActionEvent actionEvent) {
                 userField.setDisable(true);
                 userLogin.setDisable(true);
-                URL url = null;
-                try {
-                    url = new URL(serverURL + "login.php");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                String postData = "username=" + userField.getText();
-                byte[] postDataBytes = new byte[0];
-                try {
-                    postDataBytes = postData.getBytes("UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                // Connect, easy
-                HttpURLConnection conn = null;
-                try {
-                    conn = (HttpURLConnection)url.openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // Tell server that this is POST and in which format is the data
-                try {
-                    conn.setRequestMethod("POST");
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                }
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-                conn.setDoOutput(true);
-                try {
-                    conn.getOutputStream().write(postDataBytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                // This gets the output from your server
-                Reader in = null;
-                String output = "";
-                try {
-                    in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-                    for (int c; (c = in.read()) >= 0;)
-                    {
-                        output += (char)c;
-                    }
-                    String[] arrOfStr = output.split(",");
-                    currentUser = Integer.parseInt(arrOfStr[0]);
-                    for(int i = 1; i < 1000; i++)
-                    {
-                        GEM_SET.push(Integer.parseInt(arrOfStr[i]));
-                    }
-                    map.fillMap();
-                    draw();
-                    label.setText("Start!");
-                    gameLength = DEFAULT_GAMELENGTH;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String output = Network.postQuery("bejeweled", userField.getText());
+                String[] arrOfStr = output.split(",");
+                currentUser = Integer.parseInt(arrOfStr[0]);
+                for(int i = 1; i < 1000; i++)
+                    GEM_SET.push(Integer.parseInt(arrOfStr[i]));
+                map.fillMap();
+                draw();
+                label.setText("Start!");
+                gameLength = DEFAULT_GAMELENGTH;
             }
         });
-    }
-    private void checkResult()
-    {
-        URL url = null; // URL to your application
-        try {
-            url = new URL(serverURL + "action.php");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        String postData = "action=update_score&user=" + currentUser + "&score=" + score;
-        byte[] postDataBytes = new byte[0];
-        try {
-            postDataBytes = postData.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        // Connect, easy
-        HttpURLConnection conn = null;
-        try {
-            conn = (HttpURLConnection)url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // Tell server that this is POST and in which format is the data
-        try {
-            conn.setRequestMethod("POST");
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        }
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-        conn.setDoOutput(true);
-        try {
-            conn.getOutputStream().write(postDataBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // This gets the output from your server
-        Reader in = null;
-        String output = "";
-        try {
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            for (int c; (c = in.read()) >= 0;)
-            {
-                output += (char)c;
-            }
-            System.out.println(output);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        openBrowser();
-    }
-    private void openBrowser()
-    {
-        String url = serverURL + "index.php";
-        String os = System.getProperty("os.name").toLowerCase();
-        Runtime rt = Runtime.getRuntime();
-        try{
-
-            if (os.indexOf( "win" ) >= 0) {
-                rt.exec( "rundll32 url.dll,FileProtocolHandler " + url);
-            } else if (os.indexOf( "mac" ) >= 0) {
-                rt.exec( "open " + url);
-            } else if (os.indexOf( "nix") >=0 || os.indexOf( "nux") >=0) {
-                String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape","opera","links","lynx"};
-                StringBuffer cmd = new StringBuffer();
-                for (int i=0; i<browsers.length; i++)
-                    cmd.append( (i==0  ? "" : " || " ) + browsers[i] +" \"" + url + "\" ");
-                rt.exec(new String[] { "sh", "-c", cmd.toString() });
-            } else {
-                return;
-            }
-        }catch (Exception e){
-            return;
-        }
     }
 
     /* **************************************** */
@@ -421,9 +286,8 @@ public class BejeweledController{
         if (gameLength == 1)
         {
             timer.cancel();
+            Network.checkResult("bejeweled", currentUser, score);
             gameOver();
-            checkResult();
-            reset();
             Platform.runLater(() -> {
                 showTime.setText("Game Over!");
             });

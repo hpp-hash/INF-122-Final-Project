@@ -21,21 +21,17 @@ public class TetrisController {
                 if (gameLogic.getGameStatus() ^ gameLogic.getGameStatus1()) {
                     switch (event.getCode()) {
                         case RIGHT:
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             MoveRight(form);
                             break;
                         case DOWN:
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             gameLogic.fall(form);
                             gameLogic.incrementScore();
                             break;
                         case LEFT:
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             MoveLeft(form);
                             break;
                         case UP:
                             // rotate block
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             Rotate(form);
                             break;
                     }

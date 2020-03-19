@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import network.Network;
 import tetris.src.sample.UI.TetrisUI;
 import gameLogic.GameLogic;
 
@@ -93,6 +94,7 @@ public class TetrisGameLogic extends GameLogic {
                                         tui.exitBtn();
                                     }
                                     game = false;
+                                    Network.checkResult("tetris", TetrisUI.currentUser, score);
                                 } else if (game1 && alreadyAdded) {
                                     tui.exitBtn();
                                     game1 = false;
@@ -106,6 +108,7 @@ public class TetrisGameLogic extends GameLogic {
                                         tui.changePlayerText("Player 1 (Tie)", "Player 2 (Tie)");
                                     }
                                     tui.restartBtn();
+                                    Network.checkResult("tetris", TetrisUI.currentUser, score1);
                                 }
                             }
                         }

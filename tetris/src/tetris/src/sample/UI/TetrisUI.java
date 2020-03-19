@@ -1,9 +1,11 @@
 package tetris.src.sample.UI;
 
 import gameLogic.GameLogic;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -13,14 +15,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import network.Network;
 import tetris.src.sample.Form;
 import tetris.src.sample.TetrisGameLogic;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
+import java.util.LinkedList;
 import java.util.Stack;
 
 
@@ -48,11 +49,19 @@ public class TetrisUI {
     Button restartBtn;
     Button exitBtn;
 
+    // User Network
+    private Text userLabel;
+    private TextField userField;
+    private Button userLogin;
+    public static int currentUser;
+    public static LinkedList<Integer> TITE_SET;
+
     private Stack<Form> formStack;
 
     private TetrisUI() throws FileNotFoundException, URISyntaxException {
 
         formStack = new Stack<Form>();
+        TITE_SET = new LinkedList<>();
 
         group = new Pane();
 
@@ -116,11 +125,43 @@ public class TetrisUI {
 
         group.getChildren().addAll(line, gameOverText, rectangle, imageView, scoreText, rectangle1, playerText, player1Text, scoreText1);
 
+        loginForm();
+        group.getChildren().addAll(userField, userLabel, userLogin);
+
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
         stage.show();
     }
 
+    private void loginForm()
+    {
+        userLabel = new Text("Username ");
+        userLabel.setStyle("-fx-font: 15 arial;");
+        userLabel.setY(20);
+        userLabel.setX(TetrisGameLogic.XMAX + 15);
+
+        userField = new TextField();
+        userField.setPrefHeight(30);
+        userField.setPrefWidth(120);
+        userField.setTranslateX(TetrisGameLogic.XMAX + 15);
+        userField.setTranslateY(30);
+
+        userLogin = new Button("Login");
+        userLogin.setTranslateX(TetrisGameLogic.XMAX + 15);
+        userLogin.setTranslateY(70);
+        userLogin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                userField.setDisable(true);
+                userLogin.setDisable(true);
+                String output = Network.postQuery("tetris", userField.getText());
+                String[] arrOfStr = output.split(",");
+                currentUser = Integer.parseInt(arrOfStr[0]);
+                for(int i = 1; i < 800; i++)
+                    TITE_SET.push(Integer.parseInt(arrOfStr[i]));
+            }
+        });
+    }
 
     public static TetrisUI getInstance() throws FileNotFoundException, URISyntaxException {
         if(instance == null){
@@ -219,10 +260,10 @@ public class TetrisUI {
         scoreText1.setText("Score: 0");
     }
 
-
-
     public void setGameOverText(boolean isOver){
         if(isOver){
+            userField.setDisable(false);
+            userLogin.setDisable(false);
             gameOverText.setText("GAME OVER");
             gameOverText.toFront();
         }
