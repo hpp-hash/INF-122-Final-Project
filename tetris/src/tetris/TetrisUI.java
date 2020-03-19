@@ -60,15 +60,10 @@ public class TetrisUI {
 
         stage = new Stage();
 
-        FileInputStream inputStream;
-        Image image;
         ImageView imageView;
 
-        ClassLoader resource = this.getClass().getClassLoader();
-        URL path = this.getClass().getResource("/logo.png");
-        System.out.println(path.toURI().toString());
-        image = new Image(path.toURI().toString());
-        imageView = new ImageView(image);
+        URL path = this.getClass().getResource("/resources/logo.png");
+        imageView = new ImageView(new Image(String.valueOf(path)));
 
         imageView.setX(TetrisGameLogic.XMAX + 15);
         imageView.setY(130);
