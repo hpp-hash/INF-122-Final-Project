@@ -23,4 +23,8 @@ public class Main extends Application {
         TetrisGameLogic.getInstance().startGame();
     }
 
+    public void start() {
+        TetrisGameLogic.getInstance().startGame();
+    }
+
 }

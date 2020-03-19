@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import gameLogic.GameLogic;
+import network.Network;
 import tetris.blocks.AbstractBlock;
 
 import java.io.FileNotFoundException;
