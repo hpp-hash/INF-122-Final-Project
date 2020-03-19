@@ -69,7 +69,6 @@ public class Network {
         }
 
         String postData = "action=update_score&type=" + game + "&user=" + user + "&score=" + score;
-        System.out.println(postData);
         byte[] postDataBytes = new byte[0];
         try {
             postDataBytes = postData.getBytes("UTF-8");
