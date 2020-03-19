@@ -64,18 +64,18 @@ public class TetrisUI {
         Image image;
         ImageView imageView;
 
-        ClassLoader resource = this.getClass().getClassLoader();
-        URL path = this.getClass().getResource("/logo.png");
-        System.out.println(path.getPath());
-        inputStream = new FileInputStream(new File(path.getPath()));
-        image = new Image(inputStream);
-        imageView = new ImageView(image);
-
-        imageView.setX(TetrisGameLogic.XMAX + 15);
-        imageView.setY(130);
-
-        imageView.setFitWidth(119);
-        imageView.setFitHeight(95.4444);
+//        ClassLoader resource = this.getClass().getClassLoader();
+//        URL path = this.getClass().getResource("/logo.png");
+//        System.out.println(path.getPath());
+//        inputStream = new FileInputStream(new File(path.getPath()));
+//        image = new Image(inputStream);
+//        imageView = new ImageView(image);
+//
+//        imageView.setX(TetrisGameLogic.XMAX + 15);
+//        imageView.setY(130);
+//
+//        imageView.setFitWidth(119);
+//        imageView.setFitHeight(95.4444);
 
 
         line = new Line(TetrisGameLogic.XMAX, 0, TetrisGameLogic.XMAX, TetrisGameLogic.YMAX);
@@ -117,7 +117,7 @@ public class TetrisUI {
         gameOverText.setY(TetrisGameLogic.YMAX / 2);
         gameOverText.setX((35));
 
-        group.getChildren().addAll(line, gameOverText, imageView, rectangle, scoreText, rectangle1, playerText, player1Text, scoreText1);
+        group.getChildren().addAll(line, gameOverText, rectangle, scoreText, rectangle1, playerText, player1Text, scoreText1);
 
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
