@@ -12,5 +12,6 @@
     <orderEntry type="module" module-name="gameLogic" />
     <orderEntry type="module" module-name="userinput" />
     <orderEntry type="module" module-name="player" />
+    <orderEntry type="module" module-name="network" />
   </component>
 </module>

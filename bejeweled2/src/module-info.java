@@ -6,5 +6,6 @@ module bejeweled2 {
     requires userinput;
     requires player;
     requires java.desktop;
+    requires network;
     exports bejeweled2;
 }

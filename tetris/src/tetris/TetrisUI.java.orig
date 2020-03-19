@@ -1,8 +1,11 @@
 package tetris;
 
+<<<<<<< HEAD:tetris/src/tetris/TetrisUI.java
 import javafx.application.Platform;
+=======
 import gameLogic.GameLogic;
 import javafx.event.ActionEvent;
+>>>>>>> origin/vinh:tetris/src/tetris/src/sample/UI/TetrisUI.java
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,17 +19,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+<<<<<<< HEAD:tetris/src/tetris/TetrisUI.java
 import javafx.stage.WindowEvent;
 import tetris.blocks.AbstractBlock;
-import network.Network;
 
-import java.io.*;
-import java.net.*;
-import java.util.LinkedList;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
+=======
+import network.Network;
+import tetris.src.sample.Form;
+import tetris.src.sample.TetrisGameLogic;
+
+import java.io.*;
+import java.net.*;
+import java.util.LinkedList;
+>>>>>>> origin/vinh:tetris/src/tetris/src/sample/UI/TetrisUI.java
 import java.util.Stack;
 
 
@@ -54,7 +63,13 @@ public class TetrisUI {
     Button restartBtn;
     Button exitBtn;
 
+<<<<<<< HEAD:tetris/src/tetris/TetrisUI.java
     private Stack<AbstractBlock> blockStack;
+
+    private TetrisUI() throws FileNotFoundException, URISyntaxException {
+
+        blockStack = new Stack<AbstractBlock>();
+=======
     // User Network
     private Text userLabel;
     private TextField userField;
@@ -62,10 +77,13 @@ public class TetrisUI {
     public static int currentUser;
     public static LinkedList<Integer> TITE_SET;
 
+    private Stack<Form> formStack;
+
     private TetrisUI() throws FileNotFoundException, URISyntaxException {
 
-        blockStack = new Stack<AbstractBlock>();
+        formStack = new Stack<Form>();
         TITE_SET = new LinkedList<>();
+>>>>>>> origin/vinh:tetris/src/tetris/src/sample/UI/TetrisUI.java
 
         group = new Pane();
 
