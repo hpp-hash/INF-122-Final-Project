@@ -25,31 +25,24 @@ public class BejeweledGemFactory implements TileEntityFactory {
         URL url;
         switch(name){
             case "blue":
-//                return new TileEntity(64, "images/bejeweled2/fruits/blue.png");
                 url = this.getClass().getResource("/fruits/blue.png");
                 break;
             case "green":
-//                return new TileEntity(64, "images/bejeweled2/fruits/green.png");
                 url = this.getClass().getResource("/fruits/green.png");
                 break;
             case "orange":
-//                return new TileEntity(64, "images/bejeweled2/fruits/orange.png");
                 url = this.getClass().getResource("/fruits/orange.png");
                 break;
             case "purple":
-//                return new TileEntity(64, "images/bejeweled2/fruits/purple.png");
                 url = this.getClass().getResource("/fruits/purple.png");
                 break;
             case "red":
-//                return new TileEntity(64, "images/bejeweled2/fruits/red.png");
                 url = this.getClass().getResource("/fruits/red.png");
                 break;
             case "white":
-//                return new TileEntity(64, "images/bejeweled2/fruits/white.png");
                 url = this.getClass().getResource("/fruits/white.png");
                 break;
             case "yellow":
-//                return new TileEntity(64, "images/bejeweled2/fruits/yellow.png");
                 url = this.getClass().getResource("/fruits/yellow.png");
                 break;
             default:
