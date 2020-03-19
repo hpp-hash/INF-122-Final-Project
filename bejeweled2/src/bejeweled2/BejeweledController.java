@@ -573,7 +573,6 @@ public class BejeweledController{
                 root.getChildren().add(map.getTile(r,c).getTileEntity().getImgV());
             }
         }
-        //handleUserInput();
         moveOnMouseDrag();
         otherMove();
     }
@@ -584,10 +583,8 @@ public class BejeweledController{
         transition.setDuration(Duration.seconds(1));
         transition.setToX(dX * GEM_SIZE + 20);
         transition.setToY(dY * GEM_SIZE + 30);
-        //transition.setNode(cells[Y][X]);
         transition.play();
     }
-    // private boolean eatable(int y, int x) {
     public boolean eatable(int rowIndex, int colIndex) {
         int count = 0, maxCount = 0;
         int startColIndex = colIndex, startRowIndex = rowIndex;
