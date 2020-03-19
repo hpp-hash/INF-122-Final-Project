@@ -33,7 +33,7 @@ public class TetrisGameLogic extends GameLogic {
     private Form activeBlock;
 
     // [12][24]
-    protected int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
+    public int[][] MESH = new int[XMAX / SIZE][YMAX / SIZE];
 
     //TetrisUI View
     private TetrisUI tui;
