@@ -1,4 +1,4 @@
-package tetris.src.sample;
+package tetris;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;

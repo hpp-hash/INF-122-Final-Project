@@ -1,4 +1,4 @@
-package tetris.src.sample;
+package tetris;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -8,7 +8,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Alert;
 import javafx.concurrent.Task;
 
-import java.io.File;
 import java.net.URL;
 
 public class Main extends Application {
@@ -32,9 +31,9 @@ public class Main extends Application {
             @Override
             protected Object call() throws Exception {
                 ClassLoader resource = this.getClass().getClassLoader();
-                URL path = this.getClass().getResource("/resources/music.mp3");
-                System.out.println(path);
-                Media media = new Media(path.toString());
+                URL path = this.getClass().getResource("/music.mp3");
+                System.out.println(path.toURI().toString());
+                Media media = new Media(path.toURI().toString());
                 mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                 mediaPlayer.play();

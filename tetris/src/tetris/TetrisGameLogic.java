@@ -1,4 +1,4 @@
-package tetris.src.sample;
+package tetris;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -6,13 +6,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import tetris.src.sample.UI.TetrisUI;
 import gameLogic.GameLogic;
 
 import java.io.FileNotFoundException;
