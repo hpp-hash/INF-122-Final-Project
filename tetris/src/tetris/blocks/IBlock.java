@@ -11,51 +11,51 @@ public class IBlock extends AbstractBlock {
 
     @Override
     public void rotateBlock(TetrisGameLogic gameLogic) {
-        if (form == 1 && cB(a, 1, -1, gameLogic) && cB(c, -1, -1, gameLogic) && cB(d, -2, -2, gameLogic)) {
-            MoveRectangleRight(a);
-            MoveRectangleDown(a);
-            MoveRectangleDown(c);
-            MoveRectangleLeft(c);
-            MoveRectangleDown(d);
-            MoveRectangleDown(d);
-            MoveRectangleLeft(d);
-            MoveRectangleLeft(d);
-            changeBlock();
-            return;
-        }
-        if (form == 2 && cB(a, -1, -1, gameLogic) && cB(c, -1, 1, gameLogic) && cB(d, -2, 2, gameLogic)) {
-            MoveRectangleDown(a);
-            MoveRectangleLeft(a);
-            MoveRectangleLeft(c);
-            MoveRectangleUp(c);
-            MoveRectangleLeft(d);
-            MoveRectangleLeft(d);
-            MoveRectangleUp(d);
-            MoveRectangleUp(d);
-            changeBlock();
-            return;
-        }
-        if (form == 3 && cB(a, -1, 1, gameLogic) && cB(c, 1, 1, gameLogic) && cB(d, 2, 2, gameLogic)) {
-            MoveRectangleLeft(a);
+        if (form == 1 && cB(a, 2, 2, gameLogic) && cB(b, 1, 1, gameLogic) && cB(d, -1, -1, gameLogic)) {
             MoveRectangleUp(a);
-            MoveRectangleUp(c);
-            MoveRectangleRight(c);
-            MoveRectangleUp(d);
-            MoveRectangleUp(d);
-            MoveRectangleRight(d);
-            MoveRectangleRight(d);
-            changeBlock();
-            return;
-        }
-        if (form == 4 && cB(a, 1, 1, gameLogic) && cB(c, 1, -1, gameLogic) && cB(d, 2, -2, gameLogic)) {
             MoveRectangleUp(a);
             MoveRectangleRight(a);
-            MoveRectangleRight(c);
-            MoveRectangleDown(c);
-            MoveRectangleRight(d);
-            MoveRectangleRight(d);
+            MoveRectangleRight(a);
+            MoveRectangleUp(b);
+            MoveRectangleRight(b);
             MoveRectangleDown(d);
+            MoveRectangleLeft(d);
+            changeBlock();
+            return;
+        }
+        if (form == 2 && cB(a, -2, -2, gameLogic) && cB(b, -1, -1, gameLogic) && cB(d, 1, 1, gameLogic)) {
+            MoveRectangleDown(a);
+            MoveRectangleDown(a);
+            MoveRectangleLeft(a);
+            MoveRectangleLeft(a);
+            MoveRectangleDown(b);
+            MoveRectangleLeft(b);
+            MoveRectangleUp(d);
+            MoveRectangleRight(d);
+            changeBlock();
+            return;
+        }
+        if (form == 3 && cB(a, 2, 2, gameLogic) && cB(b, 1, 1, gameLogic) && cB(d, -1, -1, gameLogic)) {
+            MoveRectangleUp(a);
+            MoveRectangleUp(a);
+            MoveRectangleRight(a);
+            MoveRectangleRight(a);
+            MoveRectangleUp(b);
+            MoveRectangleRight(b);
             MoveRectangleDown(d);
+            MoveRectangleLeft(d);
+            changeBlock();
+            return;
+        }
+        if (form == 4 && cB(a, -2, -2, gameLogic) && cB(b, -1, -1, gameLogic) && cB(d, 1, 1, gameLogic)) {
+            MoveRectangleDown(a);
+            MoveRectangleDown(a);
+            MoveRectangleLeft(a);
+            MoveRectangleLeft(a);
+            MoveRectangleDown(b);
+            MoveRectangleLeft(b);
+            MoveRectangleUp(d);
+            MoveRectangleRight(d);
             changeBlock();
             return;
         }

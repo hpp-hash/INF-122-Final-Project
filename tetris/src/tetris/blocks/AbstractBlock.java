@@ -32,7 +32,7 @@ public abstract class AbstractBlock {
         }
     }
 
-    protected void moveBlockLeft(TetrisGameLogic gameLogic) {
+    public void moveBlockLeft(TetrisGameLogic gameLogic) {
         if (a.getX() - TetrisGameLogic.MOVE >= 0 && b.getX() - TetrisGameLogic.MOVE >= 0 && c.getX() - TetrisGameLogic.MOVE >= 0
                 && d.getX() - TetrisGameLogic.MOVE >= 0) {
             int movea = gameLogic.MESH[((int) a.getX() / TetrisGameLogic.SIZE) - 1][((int) a.getY() / TetrisGameLogic.SIZE)];
@@ -48,7 +48,7 @@ public abstract class AbstractBlock {
         }
     }
 
-    protected void moveBlockRight(TetrisGameLogic gameLogic) {
+    public void moveBlockRight(TetrisGameLogic gameLogic) {
         if (a.getX() + TetrisGameLogic.MOVE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE && b.getX() + TetrisGameLogic.SIZE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE
                 && c.getX() + TetrisGameLogic.SIZE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE && d.getX() + TetrisGameLogic.SIZE <= TetrisGameLogic.XMAX - TetrisGameLogic.SIZE) {
             int movea = gameLogic.MESH[((int) a.getX() / TetrisGameLogic.SIZE) + 1][((int) a.getY() / TetrisGameLogic.SIZE)];
