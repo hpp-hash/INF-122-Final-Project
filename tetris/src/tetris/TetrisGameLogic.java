@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import gameLogic.GameLogic;
 import network.Network;
+import player.Player;
 import tetris.blocks.AbstractBlock;
 
 import java.io.FileNotFoundException;
@@ -24,6 +25,11 @@ public class TetrisGameLogic extends GameLogic {
     public static final int SIZE = 25;
     public static final int XMAX = SIZE * 12;
     public static final int YMAX = SIZE * 24;
+
+    //Players
+    Player player1;
+    Player player2;
+    Player currentPlayer;
 
     //Scoreboard
     public int score = 0;
@@ -55,6 +61,12 @@ public class TetrisGameLogic extends GameLogic {
 
     private TetrisGameLogic() {
         System.out.println("start Starts");
+
+        //init players
+        player1 = new Player();
+        player2 = new Player();
+        currentPlayer = player1;
+
         try {
             tui = TetrisUI.getInstance();
         } catch (FileNotFoundException | URISyntaxException e) {
