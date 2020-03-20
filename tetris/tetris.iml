@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="gameLogic" />
     <orderEntry type="module" module-name="network" />
+    <orderEntry type="module" module-name="player" />
   </component>
 </module>

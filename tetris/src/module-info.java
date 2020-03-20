@@ -4,5 +4,6 @@ module tetris {
     requires gameLogic;
     requires javafx.media;
     requires network;
+    requires player;
     exports tetris;
 }
