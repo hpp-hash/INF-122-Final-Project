@@ -1,0 +1,3 @@
+module network {
+    exports network;
+}

@@ -8,7 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="gameLogic" />
-    <orderEntry type="module" module-name="network" />
+    <orderEntry type="module" module-name="bejeweled2" />
+    <orderEntry type="module" module-name="tetris" />
   </component>
 </module>

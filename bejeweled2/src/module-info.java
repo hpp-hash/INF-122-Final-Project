@@ -5,5 +5,7 @@ module bejeweled2 {
     requires gameLogic;
     requires userinput;
     requires player;
+    requires java.desktop;
+    requires network;
     exports bejeweled2;
 }

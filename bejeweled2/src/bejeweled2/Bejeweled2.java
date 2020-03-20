@@ -13,4 +13,8 @@ public class Bejeweled2 extends Application{
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void start() {
+        BejeweledGameLogic.getInstance().startGame();
+    }
 }

@@ -1,8 +1,13 @@
 package tetris;
 
+import javafx.application.Platform;
+
+import gameLogic.GameLogic;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -13,7 +18,13 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
+import javafx.stage.WindowEvent;
+import tetris.blocks.AbstractBlock;
+import network.Network;
+
+import java.io.*;
+import java.net.*;
+import java.util.LinkedList;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -45,11 +56,18 @@ public class TetrisUI {
     Button restartBtn;
     Button exitBtn;
 
-    private Stack<Form> formStack;
+    private Stack<AbstractBlock> blockStack;
+    // User Network
+    private Text userLabel;
+    private TextField userField;
+    private Button userLogin;
+    public static int currentUser;
+    public static LinkedList<Integer> TITE_SET;
 
     private TetrisUI() throws FileNotFoundException, URISyntaxException {
 
-        formStack = new Stack<Form>();
+        TITE_SET = new LinkedList<>();
+        blockStack = new Stack<AbstractBlock>();
 
         group = new Pane();
 
@@ -60,15 +78,10 @@ public class TetrisUI {
 
         stage = new Stage();
 
-        FileInputStream inputStream;
-        Image image;
         ImageView imageView;
 
-        ClassLoader resource = this.getClass().getClassLoader();
         URL path = this.getClass().getResource("/logo.png");
-        System.out.println(path.toURI().toString());
-        image = new Image(path.toURI().toString());
-        imageView = new ImageView(image);
+        imageView = new ImageView(new Image(path.toURI().toString()));
 
         imageView.setX(TetrisGameLogic.XMAX + 15);
         imageView.setY(130);
@@ -118,11 +131,50 @@ public class TetrisUI {
 
         group.getChildren().addAll(line, gameOverText, rectangle, imageView, scoreText, rectangle1, playerText, player1Text, scoreText1);
 
+        loginForm();
+        group.getChildren().addAll(userField, userLabel, userLogin);
+
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
         stage.show();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
+    private void loginForm()
+    {
+        userLabel = new Text("Username ");
+        userLabel.setStyle("-fx-font: 15 arial;");
+        userLabel.setY(20);
+        userLabel.setX(TetrisGameLogic.XMAX + 15);
+
+        userField = new TextField();
+        userField.setPrefHeight(30);
+        userField.setPrefWidth(120);
+        userField.setTranslateX(TetrisGameLogic.XMAX + 15);
+        userField.setTranslateY(30);
+
+        userLogin = new Button("Login");
+        userLogin.setTranslateX(TetrisGameLogic.XMAX + 15);
+        userLogin.setTranslateY(70);
+        userLogin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                userField.setDisable(true);
+                userLogin.setDisable(true);
+                String output = Network.postQuery("tetris", userField.getText());
+                String[] arrOfStr = output.split(",");
+                currentUser = Integer.parseInt(arrOfStr[0]);
+                for(int i = 1; i < 800; i++)
+                    TITE_SET.push(Integer.parseInt(arrOfStr[i]));
+            }
+        });
+    }
 
     public static TetrisUI getInstance() throws FileNotFoundException, URISyntaxException {
         if(instance == null){
@@ -162,11 +214,11 @@ public class TetrisUI {
     }
 
     public void resetPlayer() {
-        for (Form entry : formStack) {
+        for (AbstractBlock entry : blockStack) {
             getPane().getChildren().removeAll(entry.getA(), entry.getB(), entry.getC(), entry.getD());
         }
 
-        formStack.clear();
+        blockStack.clear();
         setGameOverText(false);
         playerText.setText("Player 1");
         player1Text.setText("Player 2 (current)");
@@ -206,11 +258,11 @@ public class TetrisUI {
     }
 
     public void restartGame() {
-        for (Form entry : formStack) {
+        for (AbstractBlock entry : blockStack) {
             getPane().getChildren().removeAll(entry.getA(), entry.getB(), entry.getC(), entry.getD());
         }
 
-        formStack.clear();
+        blockStack.clear();
         getPane().getChildren().removeAll(restartBtn, exitBtn);
         setGameOverText(false);
         playerText.setText("Player 1 (current)");
@@ -221,10 +273,10 @@ public class TetrisUI {
         scoreText1.setText("Score: 0");
     }
 
-
-
     public void setGameOverText(boolean isOver){
         if(isOver){
+            userField.setDisable(false);
+            userLogin.setDisable(false);
             gameOverText.setText("GAME OVER");
             gameOverText.toFront();
         }
@@ -233,9 +285,9 @@ public class TetrisUI {
         }
     }
 
-    public void addBlock(Form block) {
+    public void addBlock(AbstractBlock block) {
         group.getChildren().addAll(block.getA(), block.getB(), block.getC(), block.getD());
-        formStack.push(block);
+        blockStack.push(block);
     }
 
     public Scene getScene(){

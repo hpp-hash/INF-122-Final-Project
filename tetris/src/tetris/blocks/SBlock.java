@@ -6,6 +6,7 @@ import tetris.TetrisGameLogic;
 
 public class SBlock extends AbstractBlock {
     public SBlock(Rectangle a, Rectangle b, Rectangle c, Rectangle d, Color color) {
+
         super(a, b, c, d, color);
     }
 
