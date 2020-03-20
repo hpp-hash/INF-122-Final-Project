@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/INF-122-Final-Project.iml" filepath="$PROJECT_DIR$/.idea/INF-122-Final-Project.iml" />
       <module fileurl="file://$PROJECT_DIR$/bejeweled2/bejeweled2.iml" filepath="$PROJECT_DIR$/bejeweled2/bejeweled2.iml" />
       <module fileurl="file://$PROJECT_DIR$/gameLogic/gameLogic.iml" filepath="$PROJECT_DIR$/gameLogic/gameLogic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/menu/menu.iml" filepath="$PROJECT_DIR$/menu/menu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/player/player.iml" filepath="$PROJECT_DIR$/player/player.iml" />
       <module fileurl="file://$PROJECT_DIR$/session/session.iml" filepath="$PROJECT_DIR$/session/session.iml" />
       <module fileurl="file://$PROJECT_DIR$/tetris/tetris.iml" filepath="$PROJECT_DIR$/tetris/tetris.iml" />

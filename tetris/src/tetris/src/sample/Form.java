@@ -1,7 +1,8 @@
-package tetris;
+package tetris.src.sample;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import tetris.src.sample.UI.TetrisUI;
 
 
 public class Form {
@@ -81,7 +82,11 @@ public class Form {
 	}
 
 	public static Form makeRect() {
-		int block = (int) (Math.random() * 100);
+		int block;
+		if( TetrisUI.TITE_SET.size() == 0 )
+			block = (int) (Math.random() * 100);
+		else
+			block = TetrisUI.TITE_SET.pop();
 		String name;
 		Rectangle a = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1), b = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1), c = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1),
 				d = new Rectangle(TetrisGameLogic.SIZE-1, TetrisGameLogic.SIZE-1);

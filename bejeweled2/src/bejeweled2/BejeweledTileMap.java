@@ -25,9 +25,13 @@ public class BejeweledTileMap extends TileMap {
         NextTileEntity nextTileEntity = new NextTileEntity(BejeweledGemFactory.getInstance());
         String[] tileEntityNames = {"blue", "green", "orange", "purple", "red", "white", "yellow"};
         Random random = new Random();
+        int randomIndex;
         for (int r = 0; r < this.getNumberOfRows(); r++){
             for (int c = 0; c < this.getNumberOfColumns(); c++){
-                int randomIndex = random.nextInt(tileEntityNames.length);
+                if(BejeweledController.GEM_SET.size() == 0)
+                    randomIndex = random.nextInt(tileEntityNames.length);
+                else
+                    randomIndex = BejeweledController.GEM_SET.pop();
                 nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], this.getTile(r,c));
             }
         }

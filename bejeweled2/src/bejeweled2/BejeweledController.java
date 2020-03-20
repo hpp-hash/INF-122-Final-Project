@@ -1,6 +1,5 @@
 package bejeweled2;
 
-import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -10,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,15 +17,13 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+import network.Network;
 import player.Player;
 import tileEntityFactory.NextTileEntity;
 import tilemap.TileEntity;
 
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import java.util.Random;
+import java.net.*;
+import java.util.*;
 
 public class BejeweledController{
 
@@ -59,6 +57,12 @@ public class BejeweledController{
     private Button player2Button;
     private Button playAgainButton;
     private Button exitButton;
+    // User Network
+    private Label userLabel;
+    private TextField userField;
+    private Button userLogin;
+    private static int currentUser;
+    protected static LinkedList<Integer> GEM_SET;
 
     private Random rand = new Random();
     private String[] dialogue = {"Somethin's Cookin'", "You're On Fire!", "Indiana Jones\nin the House",
@@ -99,7 +103,7 @@ public class BejeweledController{
                         TileEntity temp = map.getTile(tY, tX).getTileEntity();
                         map.getTile(tY, tX).addEntity(map.getTile(cY, cX).getTileEntity());
                         map.getTile(cY, cX).addEntity(temp);
-                        
+
                         if (eatable(tY, tX) || eatable(cY, cX)) {
                             label.setText("Your Score: " + score + "\n     --Cleared--\n\n" + dialogue[rand.nextInt(dialogue.length)]);
                             currentScoreLabel.setText("Score: " + score);
@@ -136,15 +140,12 @@ public class BejeweledController{
 
 
     public void setup() {
-        // Set Background
-//        background = new ImageView(new Image("images/border.png"));
+        GEM_SET = new LinkedList<>();
         URL borderURL = this.getClass().getResource("/images/border.png");
         background = new ImageView(new Image(String.valueOf(borderURL)));
         background.setFitWidth(GAME_WIDTH);
         background.setFitHeight(GAME_HEIGHT);
 
-        // Set Cursor
-//        cursor = new ImageView(new Image("images/bejeweled2/images/cursor.png"));
         URL cursorURL = this.getClass().getResource("/images/cursor.png");
         cursor = new ImageView(new Image(String.valueOf(cursorURL)));
         cursor.setFitWidth(GEM_SIZE);
@@ -229,7 +230,46 @@ public class BejeweledController{
         map.fillMap();
         setupPlayers();
         setTimmer();
+        loginForm();
     }
+
+    /* **************************************** */
+    /*                 Network                  */
+    /* **************************************** */
+    private void loginForm()
+    {
+        userLabel = new Label("Username: ");
+        userLabel.setTranslateX(GAME_WIDTH - 300);
+        userLabel.setTranslateY(40);
+        userLabel.setFont(Font.font("Arial", FontWeight.BLACK, 20));
+        userField = new TextField();
+        userField.setPrefHeight(30);
+        userField.setTranslateX(GAME_WIDTH - 200);
+        userField.setTranslateY(40);
+        userLogin = new Button("Login");
+        userLogin.setTranslateX(GAME_WIDTH - 200);
+        userLogin.setTranslateY(100);
+        userLogin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                userField.setDisable(true);
+                userLogin.setDisable(true);
+                String output = Network.postQuery("bejeweled", userField.getText());
+                String[] arrOfStr = output.split(",");
+                currentUser = Integer.parseInt(arrOfStr[0]);
+                for(int i = 1; i < 1000; i++)
+                    GEM_SET.push(Integer.parseInt(arrOfStr[i]));
+                map.fillMap();
+                draw();
+                label.setText("Start!");
+                gameLength = DEFAULT_GAMELENGTH;
+            }
+        });
+    }
+
+    /* **************************************** */
+    /*                 Timmer                   */
+    /* **************************************** */
     private void setTimmer()
     {
         timer = new Timer();
@@ -241,11 +281,12 @@ public class BejeweledController{
             }
         }, 1000, 1000);
     }
-    
+
     private int setInterval() {
         if (gameLength == 1)
         {
             timer.cancel();
+            Network.checkResult("bejeweled", currentUser, score);
             gameOver();
             Platform.runLater(() -> {
                 showTime.setText("Game Over!");
@@ -262,6 +303,7 @@ public class BejeweledController{
         int nSeconds = ((secs % 86400 ) % 3600 ) % 60;
         return String.format("%02d", nHours) + ":" + String.format("%02d", nMinutes) + ":" + String.format("%02d", nSeconds);
     }
+    // End Timmer
 
     private void reset() {
         showTime.setText("");
@@ -304,6 +346,10 @@ public class BejeweledController{
         root.getChildren().add(showTime);
         root.getChildren().addAll(player1Label, region1, player1ScoreLabel);
         root.getChildren().addAll(player2Label, region2, player2ScoreLabel);
+
+        userField.setDisable(false);
+        userLogin.setDisable(false);
+        root.getChildren().addAll(userLogin, userLabel, userField);
 
         if(!playerTurn) {
             label.setText("Player 2 Go!");
@@ -378,6 +424,7 @@ public class BejeweledController{
         root.getChildren().add(showTime);
         root.getChildren().addAll(player1Label, region1, player1ScoreLabel);
         root.getChildren().addAll(player2Label, region2, player2ScoreLabel);
+        root.getChildren().addAll(userLabel, userField, userLogin);
 
         for(int r = 0; r < ROW; r++) {
             for(int c = 0; c < COLUMN; c++) {
@@ -390,7 +437,6 @@ public class BejeweledController{
                 root.getChildren().add(map.getTile(r,c).getTileEntity().getImgV());
             }
         }
-        //handleUserInput();
         moveOnMouseDrag();
         otherMove();
     }
@@ -401,10 +447,8 @@ public class BejeweledController{
         transition.setDuration(Duration.seconds(1));
         transition.setToX(dX * GEM_SIZE + 20);
         transition.setToY(dY * GEM_SIZE + 30);
-        //transition.setNode(cells[Y][X]);
         transition.play();
     }
-    // private boolean eatable(int y, int x) {
     public boolean eatable(int rowIndex, int colIndex) {
         int count = 0, maxCount = 0;
         int startColIndex = colIndex, startRowIndex = rowIndex;
@@ -462,11 +506,14 @@ public class BejeweledController{
                 }else count = 0;
             }
         }
-
+        int randomIndex;
         if(maxCount > 2)
         {
             for(int i = 0; i < maxCount; i++){
-                int randomIndex = random.nextInt(tileEntityNames.length);
+                if(BejeweledController.GEM_SET.size() == 0)
+                    randomIndex = random.nextInt(tileEntityNames.length);
+                else
+                    randomIndex = BejeweledController.GEM_SET.pop();
                 if(vertical == true) {
                     nextTileEntity.addNewTileEntity(tileEntityNames[randomIndex], map.getTile(startRowIndex + i, startColIndex));
                     int temp = score;
