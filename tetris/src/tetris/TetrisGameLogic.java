@@ -31,14 +31,9 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
     Player player2;
     Player currentPlayer;
 
-    //Scoreboard
-    public int score = 0;
-    public int score1 = 0;
-
     //Is game over?
     private boolean game = true;
     private boolean game1 = false;
-    private boolean isPlayer1 = true;
 
     //Current block
     private AbstractBlock activeBlock;
@@ -99,7 +94,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                             if (MESH[i][0] != 0) {
                                 tui.setGameOverText(true);
                                 if (game) {
-                                    if (isPlayer1) {
+                                    if (currentPlayer == player1) {
                                         tui.addPlayer2Btn();
                                         alreadyAdded = true;
                                     } else {
@@ -110,10 +105,10 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                                 } else if (game1 && alreadyAdded) {
                                     tui.exitBtn();
                                     game1 = false;
-                                    if (score > score1) {
+                                    if (player1.getHighScore() > player2.getHighScore()) {
                                         tui.changePlayerText("Player 1 (Winner)", "Player 2");
                                     }
-                                    else if (score < score1){
+                                    else if (player1.getHighScore() < player2.getHighScore()){
                                         tui.changePlayerText("Player 1", "Player 2 (Winner)");
                                     }
                                     else {
@@ -141,18 +136,23 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                             tui.restartGame();
                             game = true;
                             alreadyAdded = false;
-                            isPlayer1 = true;
+
+                            //Reset players and their scores
+                            player1.setHighScore(0);
+                            player2.setHighScore(0);
+                            currentPlayer = player1;
+
                             restartStatus = false;
                             activeBlock = AbstractBlock.makeRect();
                             tui.addBlock(activeBlock);
                             tc.moveOnKeyPress(activeBlock);
                         } else {
-                            if (game) {
+                            if (currentPlayer == player1) {
                                 fall(activeBlock);
-                                tui.setScore(score);
-                            } else if (game1) {
+                                tui.setScore(player1.getHighScore());
+                            } else if (currentPlayer == player2) {
                                 fall(activeBlock);
-                                tui.setScore1(score1);
+                                tui.setScore1(player2.getHighScore());
                             }
                         }
                     }
@@ -181,11 +181,8 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
 
     // suggestion to add incrementScore to the framework
     public void incrementScore() {
-        if (game) {
-            score++;
-        }
-        else if (game1) {
-            score1++;
+        if (currentPlayer != null) {
+            currentPlayer.setHighScore(currentPlayer.getHighScore() + 1);
         }
     }
 
@@ -295,7 +292,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                     if (node instanceof Rectangle)
                         rects.add(node);
                 }
-                score += 50;
+                currentPlayer.setHighScore(currentPlayer.getHighScore() + 50);
 
                 for (Node node : rects) {
                     Rectangle a = (Rectangle) node;
