@@ -5,8 +5,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-public class Network {
-    private static String serverURL = "https://a5games.xyz/";
+public class Network {//transfers the game information to the host web server
+    private static String serverURL = "https://a5games.xyz/";//server url
     public Network(){}
     public static String postQuery(String game, String user)
     {

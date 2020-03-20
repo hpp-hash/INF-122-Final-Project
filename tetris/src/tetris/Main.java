@@ -10,7 +10,7 @@ import javafx.concurrent.Task;
 
 import java.net.URL;
 
-public class Main extends Application {
+public class Main extends Application {//Main class includes the main method for tetris game
 
     private static MediaPlayer mediaPlayer;
 

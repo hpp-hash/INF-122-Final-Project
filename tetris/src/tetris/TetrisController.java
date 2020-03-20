@@ -6,7 +6,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import tetris.blocks.AbstractBlock;
 
-public class TetrisController {
+public class TetrisController {//controls the game and handle events
     private Scene scene;
     private TetrisGameLogic gameLogic;
 

@@ -14,7 +14,7 @@ import tetris.Main;
 
 import java.net.URL;
 
-public class Menu extends Application {
+public class Menu extends Application {//The main menu where you choose between Tetris and Bejeweled
     int gameWidth = 730, gameHeight = 470;
     Group root = new Group();
     ImageView bejeweled, tetris;

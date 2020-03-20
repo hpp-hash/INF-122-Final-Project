@@ -32,7 +32,7 @@ import java.net.URL;
 import java.util.Stack;
 
 
-public class TetrisUI {
+public class TetrisUI {//user interface for tetris game
 
     private static TetrisUI instance = null;
 
