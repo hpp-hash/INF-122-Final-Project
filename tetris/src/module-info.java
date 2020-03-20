@@ -3,6 +3,6 @@ module tetris {
     requires javafx.controls;
     requires gameLogic;
     requires javafx.media;
-    exports tetris;
     requires network;
+    exports tetris;
 }

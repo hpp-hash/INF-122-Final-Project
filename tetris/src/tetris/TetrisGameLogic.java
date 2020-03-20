@@ -12,8 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import network.Network;
 import gameLogic.GameLogic;
+import network.Network;
 import tetris.blocks.AbstractBlock;
 
 import java.io.FileNotFoundException;

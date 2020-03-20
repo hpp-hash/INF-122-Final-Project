@@ -1,6 +1,7 @@
 package tetris;
 
 import javafx.application.Platform;
+
 import gameLogic.GameLogic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.stage.WindowEvent;
 import tetris.blocks.AbstractBlock;
 import network.Network;
@@ -64,8 +66,8 @@ public class TetrisUI {
 
     private TetrisUI() throws FileNotFoundException, URISyntaxException {
 
-        blockStack = new Stack<AbstractBlock>();
         TITE_SET = new LinkedList<>();
+        blockStack = new Stack<AbstractBlock>();
 
         group = new Pane();
 
