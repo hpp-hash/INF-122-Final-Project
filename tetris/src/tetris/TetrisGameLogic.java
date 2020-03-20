@@ -101,10 +101,12 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                                         tui.exitBtn();
                                     }
                                     game = false;
+                                    player1 = null;
                                     Network.checkResult("tetris", TetrisUI.currentUser, player1.getHighScore());
                                 } else if (game1 && alreadyAdded) {
                                     tui.exitBtn();
                                     game1 = false;
+                                    player2 = null;
                                     if (player1.getHighScore() > player2.getHighScore()) {
                                         tui.changePlayerText("Player 1 (Winner)", "Player 2");
                                     }
@@ -129,6 +131,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                             tc.moveOnKeyPress(activeBlock);
                             game = false;
                             game1 = true;
+                            currentPlayer = player2;
                         }
 
                         if (restartStatus) {
