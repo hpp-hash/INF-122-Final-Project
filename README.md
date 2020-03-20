@@ -2,7 +2,7 @@ Tile-Matching Game Environment (TMGE)
 
 Instructions on executing the game jar file
 Download Runnable Jar: 
-https://drive.google.com/a/uci.edu/file/d/1liqzAyWWg8v3Tdp3ntkQmH5ovIk1SwT4/view?usp=sharing
+https://drive.google.com/open?id=1QUXatuJq304D4rZSoXDBRykuMoJuU_2g
 
 
 Instructions for running the jar file on WindowsOS 
