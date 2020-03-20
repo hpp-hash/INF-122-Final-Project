@@ -50,7 +50,6 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
     private static TetrisGameLogic instance = null;
 
     private TetrisGameLogic() {
-        System.out.println("start Starts");
 
         //init players
         tetrisMultiplayer = new Multiplayer();

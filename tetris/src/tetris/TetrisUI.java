@@ -230,9 +230,9 @@ public class TetrisUI {//user interface for tetris game
     }
 
     public void removePlayer2Btn() {
-        System.out.println("hi");
         getPane().getChildren().remove(player2Btn);
     }
+
 
     public void exitBtn() {
         exitBtn = new Button("Exit");
