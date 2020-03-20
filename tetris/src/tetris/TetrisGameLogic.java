@@ -101,7 +101,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                                         tui.exitBtn();
                                     }
                                     game = false;
-                                    Network.checkResult("tetris", TetrisUI.currentUser, score);
+                                    Network.checkResult("tetris", TetrisUI.currentUser, player1.getHighScore());
                                 } else if (game1 && alreadyAdded) {
                                     tui.exitBtn();
                                     game1 = false;
@@ -115,7 +115,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                                         tui.changePlayerText("Player 1 (Tie)", "Player 2 (Tie)");
                                     }
                                     tui.restartBtn();
-                                    Network.checkResult("tetris", TetrisUI.currentUser, score1);
+                                    Network.checkResult("tetris", TetrisUI.currentUser, player2.getHighScore());
                                 }
                             }
                         }

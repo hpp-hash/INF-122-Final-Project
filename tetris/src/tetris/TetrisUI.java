@@ -267,8 +267,6 @@ public class TetrisUI {//user interface for tetris game
         setGameOverText(false);
         playerText.setText("Player 1 (current)");
         player1Text.setText("Player 2");
-        TetrisGameLogic.getInstance().score = 0;
-        TetrisGameLogic.getInstance().score1 = 0;
         scoreText.setText("Score: 0");
         scoreText1.setText("Score: 0");
     }
