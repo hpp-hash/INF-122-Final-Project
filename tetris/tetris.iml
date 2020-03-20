@@ -11,5 +11,6 @@
     <orderEntry type="module" module-name="gameLogic" />
     <orderEntry type="module" module-name="network" />
     <orderEntry type="module" module-name="player" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

@@ -14,10 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import network.Network;
+import player.Multiplayer;
 import player.Player;
 import tileEntityFactory.NextTileEntity;
 import tilemap.TileEntity;
@@ -41,22 +43,19 @@ public class BejeweledController{
     private static int gameLength = DEFAULT_GAMELENGTH; // in seconds
     static Timer timer;
 
-    private Player player1;
-    private Player player2;
     private Label player1Label;
     private Label player2Label;
     private Region region1;
     private Region region2;
     private Label player1ScoreLabel;
     private Label player2ScoreLabel;
-    private boolean playerTurn;
-    private Player currentPlayer;
-    private int player1RawScore;
-    private int player2RawScore;
     private Label currentScoreLabel;
     private Button player2Button;
     private Button playAgainButton;
     private Button exitButton;
+
+    private Multiplayer bejMultiplayer;
+
     // User Network
     private Label userLabel;
     private TextField userField;
@@ -130,12 +129,9 @@ public class BejeweledController{
     }
 
     public void setupPlayers() {
-        playerTurn = false;
-        player1 = new Player();
-        player2 = new Player();
-        currentPlayer = player1;
+        bejMultiplayer = new Multiplayer(false);
         currentScoreLabel = player1ScoreLabel;
-        player1RawScore = score;
+        bejMultiplayer.setPlayer1HighScore(score);
     }
 
 
@@ -151,7 +147,7 @@ public class BejeweledController{
         cursor.setFitWidth(GEM_SIZE);
         cursor.setFitHeight(GEM_SIZE);
 
-        label = new Label("Player 1 Go!");
+        label = new Label("Player 1 login!");
         label.setTranslateX(GAME_WIDTH - 330);
         label.setTranslateY(200);
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
@@ -192,7 +188,7 @@ public class BejeweledController{
         player2ScoreLabel.setTranslateY(628);
         player2ScoreLabel.setFont(Font.font("Arial", FontWeight.BLACK, 20));
 
-        player2Button = new Button("Player 2 Start!");
+        player2Button = new Button("Player 2's turn!");
         player2Button.setFont(Font.font("Arial", FontWeight.BLACK, 15));
         player2Button.setTranslateX(400);
         player2Button.setTranslateY(500);
@@ -229,7 +225,6 @@ public class BejeweledController{
 
         map.fillMap();
         setupPlayers();
-        setTimmer();
         loginForm();
     }
 
@@ -239,9 +234,9 @@ public class BejeweledController{
     private void loginForm()
     {
         userLabel = new Label("Username: ");
-        userLabel.setTranslateX(GAME_WIDTH - 300);
-        userLabel.setTranslateY(40);
-        userLabel.setFont(Font.font("Arial", FontWeight.BLACK, 20));
+        userLabel.setTranslateX(GAME_WIDTH - 345);
+        userLabel.setTranslateY(35);
+        userLabel.getStyleClass().add("login");
         userField = new TextField();
         userField.setPrefHeight(30);
         userField.setTranslateX(GAME_WIDTH - 200);
@@ -254,15 +249,16 @@ public class BejeweledController{
             public void handle(ActionEvent actionEvent) {
                 userField.setDisable(true);
                 userLogin.setDisable(true);
+                userField.clear();
                 String output = Network.postQuery("bejeweled", userField.getText());
                 String[] arrOfStr = output.split(",");
                 currentUser = Integer.parseInt(arrOfStr[0]);
                 for(int i = 1; i < 1000; i++)
                     GEM_SET.push(Integer.parseInt(arrOfStr[i]));
-                map.fillMap();
-                draw();
-                label.setText("Start!");
+                label.setText("Go!");
                 gameLength = DEFAULT_GAMELENGTH;
+
+                setTimmer();
             }
         });
     }
@@ -307,32 +303,31 @@ public class BejeweledController{
 
     private void reset() {
         showTime.setText("");
-        currentPlayer.saveSession(score);
+        bejMultiplayer.getCurrentPlayer().saveSession(score);
 
-        if (!playerTurn) {
-            currentPlayer = player2;
-            player1RawScore = score;
+        if (!bejMultiplayer.isPlayer2GameActive()) {
+            bejMultiplayer.switchPlayer();
+            bejMultiplayer.setPlayer1HighScore(score);
             currentScoreLabel = player2ScoreLabel;
             makePlayer2LabelCurrent();
             resetPlayer1Label();
         }
         else {
-            currentPlayer = player1;
-            player2RawScore = score;
+            bejMultiplayer.switchPlayer();
+            bejMultiplayer.setPlayer2HighScore(score);
             currentScoreLabel = player1ScoreLabel;
             makePlayer1LabelCurrent();
             resetPlayer2Label();
         }
 
         score = 0;
-        playerTurn = !playerTurn;
+        bejMultiplayer.switchActiveGame();
 
         gameLength = DEFAULT_GAMELENGTH;
 
 
         root.getChildren().clear();
         map.fillMap();
-        setTimmer();
         draw();
     }
     private void gameOver()
@@ -340,7 +335,7 @@ public class BejeweledController{
         root.getChildren().clear();
         root.getChildren().add(background);
 
-        gameoverLabel.setText(currentPlayer.getName() + " Score: " + score + "\n\n" + dialogue[rand.nextInt(dialogue.length)]);
+        gameoverLabel.setText(bejMultiplayer.getCurrentPlayer().getName() + " Score: " + score + "\n\n" + dialogue[rand.nextInt(dialogue.length)]);
 
         root.getChildren().add(gameoverLabel);
         root.getChildren().add(showTime);
@@ -351,20 +346,20 @@ public class BejeweledController{
         userLogin.setDisable(false);
         root.getChildren().addAll(userLogin, userLabel, userField);
 
-        if(!playerTurn) {
-            label.setText("Player 2 Go!");
+        if(!bejMultiplayer.isPlayer2GameActive()) {
+            label.setText("Player 2 login!");
             root.getChildren().add(player2Button);
         }
         else {
-            label.setText("Player 1 Go!");
-            currentPlayer.saveSession(score);
-            player2RawScore = score;
+            label.setText("Player 1 login!");
+            bejMultiplayer.getCurrentPlayer().saveSession(score);
+            bejMultiplayer.setPlayer2HighScore(score);
 
             String winner;
-            if(player1RawScore == player2RawScore)
+            if(bejMultiplayer.getPlayer1HighScore() == bejMultiplayer.getPlayer2HighScore())
                 winner = "IT'S A TIE!!\n\nPlay a tiebreaker!";
             else {
-                winner = player1RawScore >= player2RawScore? "Player 1": "Player 2";
+                winner = bejMultiplayer.getPlayer1HighScore() >= bejMultiplayer.getPlayer2HighScore()? "Player 1": "Player 2";
                 winner = winner + " WINS!!\n\nCONGRATULATIONS!";
             }
 

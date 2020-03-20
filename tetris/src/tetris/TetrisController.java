@@ -19,24 +19,20 @@ public class TetrisController {//controls the game and handle events
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (gameLogic.getGameStatus() ^ gameLogic.getGameStatus1()) {
+                if (gameLogic.tetrisMultiplayer.isPlayer1GameActive() ^ gameLogic.tetrisMultiplayer.isPlayer2GameActive()) {
                     switch (event.getCode()) {
                         case RIGHT:
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             block.moveBlockRight(gameLogic);
                             break;
                         case DOWN:
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             gameLogic.fall(block);
                             gameLogic.incrementScore();
                             break;
                         case LEFT:
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             block.moveBlockLeft(gameLogic);
                             break;
                         case UP:
                             // rotate block
-                            System.out.println("You Pressing : " + ((KeyEvent) event).getCode() );
                             block.rotateBlock(gameLogic);
                             break;
                     }

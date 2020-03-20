@@ -3,6 +3,7 @@ package player;
 import session.Session;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -47,5 +48,29 @@ public class Player {
 
     public String getName() {
         return "Player " + playerID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return playerID == player.playerID &&
+                highScore == player.highScore &&
+                Objects.equals(lastSession, player.lastSession) &&
+                Objects.equals(finishedSessions, player.finishedSessions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerID, lastSession, finishedSessions, highScore);
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "playerID=" + playerID +
+                ", highScore=" + highScore +
+                '}';
     }
 }

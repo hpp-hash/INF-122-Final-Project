@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="bejeweled2" />
     <orderEntry type="module" module-name="tetris" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
