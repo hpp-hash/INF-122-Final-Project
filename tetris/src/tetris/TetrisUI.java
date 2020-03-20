@@ -1,6 +1,8 @@
 package tetris;
 
 import javafx.application.Platform;
+
+import gameLogic.GameLogic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -15,17 +17,18 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import network.Network;
+
 import javafx.stage.WindowEvent;
 import tetris.blocks.AbstractBlock;
+import network.Network;
 
+import java.io.*;
+import java.net.*;
+import java.util.LinkedList;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.io.*;
-import java.net.*;
-import java.util.LinkedList;
 import java.util.Stack;
 
 
@@ -53,14 +56,13 @@ public class TetrisUI {
     Button restartBtn;
     Button exitBtn;
 
+    private Stack<AbstractBlock> blockStack;
     // User Network
     private Text userLabel;
     private TextField userField;
     private Button userLogin;
     public static int currentUser;
     public static LinkedList<Integer> TITE_SET;
-
-    private Stack<AbstractBlock> blockStack;
 
     private TetrisUI() throws FileNotFoundException, URISyntaxException {
 
