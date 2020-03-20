@@ -134,6 +134,7 @@ public class TetrisUI {//user interface for tetris game
         loginForm();
         group.getChildren().addAll(userField, userLabel, userLogin);
 
+        group.requestFocus();
         stage.setScene(scene);
         stage.setTitle("INF 122 - Tetris");
         stage.show();
@@ -166,6 +167,7 @@ public class TetrisUI {//user interface for tetris game
             @Override
             public void handle(ActionEvent actionEvent) {
                 userField.setDisable(true);
+                userField.clear();
                 userLogin.setDisable(true);
                 String output = Network.postQuery("tetris", userField.getText());
                 String[] arrOfStr = output.split(",");
@@ -199,6 +201,9 @@ public class TetrisUI {//user interface for tetris game
             player2Btn.setOnMouseReleased(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
+                    userField.setDisable(false);
+                    userLogin.setDisable(false);
+                    group.requestFocus();
                     TetrisGameLogic.getInstance().setRemovePlayer2Btn(true);
                 }
             });
@@ -250,6 +255,9 @@ public class TetrisUI {//user interface for tetris game
         restartBtn.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                userField.setDisable(false);
+                userLabel.setDisable(false);
+                group.requestFocus();
                 TetrisGameLogic.getInstance().setRestartStatus(true);
             }
         });
@@ -273,8 +281,8 @@ public class TetrisUI {//user interface for tetris game
 
     public void setGameOverText(boolean isOver){
         if(isOver){
-            userField.setDisable(false);
-            userLogin.setDisable(false);
+//            userField.setDisable(true);
+//            userLogin.setDisable(false);
             gameOverText.setText("GAME OVER");
             gameOverText.toFront();
         }

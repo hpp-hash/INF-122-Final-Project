@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import gameLogic.GameLogic;
 import network.Network;
+import player.Multiplayer;
 import player.Player;
 import tetris.blocks.AbstractBlock;
 
@@ -27,13 +28,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
     public static final int YMAX = SIZE * 24;
 
     //Players
-    Player player1;
-    Player player2;
-    Player currentPlayer;
-
-    //Is game over?
-    private boolean game = true;
-    private boolean game1 = false;
+    Multiplayer tetrisMultiplayer;
 
     //Current block
     private AbstractBlock activeBlock;
@@ -58,9 +53,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
         System.out.println("start Starts");
 
         //init players
-        player1 = new Player();
-        player2 = new Player();
-        currentPlayer = player1;
+        tetrisMultiplayer = new Multiplayer();
 
         try {
             tui = TetrisUI.getInstance();
@@ -93,29 +86,30 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                         for (int i = 0; i < (XMAX / SIZE); i++) {
                             if (MESH[i][0] != 0) {
                                 tui.setGameOverText(true);
-                                if (game) {
-                                    if (currentPlayer == player1) {
+                                if (tetrisMultiplayer.isPlayer1GameActive()) {
+                                    if (tetrisMultiplayer.isPlayer1()) {
                                         tui.addPlayer2Btn();
                                         alreadyAdded = true;
                                     } else {
                                         tui.exitBtn();
                                     }
-                                    game = false;
-                                    Network.checkResult("tetris", TetrisUI.currentUser, player1.getHighScore());
-                                } else if (game1 && alreadyAdded) {
+                                    tetrisMultiplayer.setPlayer1GameActive(false);
+                                    Network.checkResult("tetris", TetrisUI.currentUser, tetrisMultiplayer.getPlayer1HighScore());
+                                } else if (tetrisMultiplayer.isPlayer2GameActive() && alreadyAdded) {
                                     tui.exitBtn();
-                                    game1 = false;
-                                    if (player1.getHighScore() > player2.getHighScore()) {
+                                    tetrisMultiplayer.setPlayer2GameActive(false);
+//                                    player2 = null;
+                                    if (tetrisMultiplayer.getPlayer1HighScore() > tetrisMultiplayer.getPlayer2HighScore()) {
                                         tui.changePlayerText("Player 1 (Winner)", "Player 2");
                                     }
-                                    else if (player1.getHighScore() < player2.getHighScore()){
+                                    else if (tetrisMultiplayer.getPlayer1HighScore() < tetrisMultiplayer.getPlayer2HighScore()){
                                         tui.changePlayerText("Player 1", "Player 2 (Winner)");
                                     }
                                     else {
                                         tui.changePlayerText("Player 1 (Tie)", "Player 2 (Tie)");
                                     }
                                     tui.restartBtn();
-                                    Network.checkResult("tetris", TetrisUI.currentUser, player2.getHighScore());
+                                    Network.checkResult("tetris", TetrisUI.currentUser, tetrisMultiplayer.getPlayer2HighScore());
                                 }
                             }
                         }
@@ -127,33 +121,33 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                             activeBlock = AbstractBlock.makeRect();
                             tui.addBlock(activeBlock);
                             tc.moveOnKeyPress(activeBlock);
-                            game = false;
-                            game1 = true;
-                            currentPlayer = player2;
+                            tetrisMultiplayer.setPlayer1GameActive(false);
+                            tetrisMultiplayer.setPlayer2GameActive(true);
+                            tetrisMultiplayer.switchPlayer();
                         }
 
                         if (restartStatus) {
                             MESH = new int[XMAX / SIZE][YMAX / SIZE];
                             tui.restartGame();
-                            game = true;
+                            tetrisMultiplayer.setPlayer1GameActive(true);
                             alreadyAdded = false;
 
                             //Reset players and their scores
-                            player1.setHighScore(0);
-                            player2.setHighScore(0);
-                            currentPlayer = player1;
+                            tetrisMultiplayer.setPlayer1HighScore(0);
+                            tetrisMultiplayer.setPlayer2HighScore(0);
+                            tetrisMultiplayer.switchPlayer();
 
                             restartStatus = false;
                             activeBlock = AbstractBlock.makeRect();
                             tui.addBlock(activeBlock);
                             tc.moveOnKeyPress(activeBlock);
                         } else {
-                            if (game) {
+                            if (tetrisMultiplayer.isPlayer1GameActive()) {
                                 fall(activeBlock);
-                                tui.setScore(player1.getHighScore());
-                            } else if (game1) {
+                                tui.setScore(tetrisMultiplayer.getPlayer1HighScore());
+                            } else if (tetrisMultiplayer.isPlayer2GameActive()) {
                                 fall(activeBlock);
-                                tui.setScore1(player2.getHighScore());
+                                tui.setScore1(tetrisMultiplayer.getPlayer2HighScore());
                             }
                         }
                     }
@@ -182,18 +176,9 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
 
     // suggestion to add incrementScore to the framework
     public void incrementScore() {
-        if (currentPlayer != null) {
-            currentPlayer.setHighScore(currentPlayer.getHighScore() + 1);
+        if (tetrisMultiplayer.isGameActive()) {
+            tetrisMultiplayer.setCurrentPlayerHighScore(tetrisMultiplayer.getCurrentPlayerHighScore() + 1);
         }
-    }
-
-
-    public boolean getGameStatus() {
-        return game;
-    }
-
-    public boolean getGameStatus1() {
-        return game1;
     }
 
     @Override
@@ -293,7 +278,7 @@ public class TetrisGameLogic extends GameLogic {//uses the framework
                     if (node instanceof Rectangle)
                         rects.add(node);
                 }
-                currentPlayer.setHighScore(currentPlayer.getHighScore() + 50);
+                tetrisMultiplayer.setCurrentPlayerHighScore(tetrisMultiplayer.getCurrentPlayerHighScore() + 50);
 
                 for (Node node : rects) {
                     Rectangle a = (Rectangle) node;

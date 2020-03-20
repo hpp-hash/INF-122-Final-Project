@@ -5,3 +5,11 @@
     -fx-font-size: 30px;
     -fx-font-weight: bold;
 }
+
+.login.label .text {
+    -fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 2px;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
