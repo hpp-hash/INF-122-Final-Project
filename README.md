@@ -2,8 +2,7 @@ Tile-Matching Game Environment (TMGE)
 
 Instructions on executing the game jar file <br /><br />
 Download Runnable Jar from git repo: <br />
-For Windows: INF-122-Final-Project_WINDOWS.jar <br />
-For MACOS: INF-122-Final-Project_MACOS.jar <br />
+project.jar <br />
 
 Instructions for running the jar file on WindowsOS 
 
